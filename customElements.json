@@ -1,0 +1,163 @@
+[
+    {
+        "name": "pl-app",
+        "path": "@nfjs/front-pl/components/pl-app.js"
+    },
+    {
+        "name": "pl-codeeditor",
+        "path": "@nfjs/front-pl/components/pl-codeeditor.js"
+    },
+    {
+        "name": "pl-action",
+        "path": "@nfjs/front-pl/components/pl-action.js"
+    },
+    {
+        "name": "pl-app-menu",
+        "path": "@nfjs/front-pl/components/pl-app-menu.js"
+    },
+    {
+        "name": "pl-toast",
+        "path": "@nfjs/front-pl/components/pl-toast.js"
+    },
+
+    {
+        "name": "pl-app-side-list",
+        "path": "@nfjs/front-pl/components/pl-app-side-list.js"
+    },
+    {
+        "name": "pl-app-side",
+        "path": "@nfjs/front-pl/components/pl-app-side.js"
+    },
+    {
+        "name": "pl-dataset",
+        "path": "@nfjs/front-pl/components/pl-dataset.js"
+    },
+    {
+        "name": "pl-form",
+        "path": "@nfjs/front-pl/components/pl-form.js"
+    },
+    {
+        "name": "pl-header",
+        "path": "@nfjs/front-pl/components/pl-header.js"
+    },
+    {
+        "name": "pl-modal-form",
+        "path": "@nfjs/front-pl/components/pl-modal-form.js"
+    },
+    {
+        "name": "pl-router",
+        "path": "@nfjs/front-pl/components/pl-router.js"
+    },
+    {
+        "name": "pl-filter-item",
+        "path": "@nfjs/front-pl/components/pl-filter-item.js"
+    },
+    {
+        "name": "pl-filter-container",
+        "path": "@nfjs/front-pl/components/pl-filter-container.js"
+    },
+    {
+        "name": "pl-badge",
+        "path": "@plcmp/pl-badge/pl-badge.js"
+    },
+    {
+        "name": "pl-button",
+        "path": "@plcmp/pl-button/pl-button.js"
+    },
+    {
+        "name": "pl-checkbox",
+        "path": "@plcmp/pl-checkbox/pl-checkbox.js"
+    },
+    {
+        "name": "pl-codeeditor",
+        "path": "@plcmp/pl-codeeditor/pl-codeeditor.js"
+    },
+    {
+        "name": "pl-combobox",
+        "path": "@plcmp/pl-combobox/pl-combobox.js"
+    },
+    {
+        "name": "pl-data-observer",
+        "path": "@plcmp/pl-data-observer/pl-data-observer.js"
+    },
+    {
+        "name": "pl-datetime",
+        "path": "@plcmp/pl-datetime/pl-datetime.js"
+    },
+    {
+        "name": "pl-datetime-month-selector.js",
+        "path": "@plcmp/pl-datetime/pl-datetime-month-selector.js"
+    },
+    {
+        "name": "pl-datetime-year-selector.js",
+        "path": "@plcmp/pl-datetime/pl-datetime-year-selector.js"
+    },
+    {
+        "name": "pl-calendar.js",
+        "path": "@plcmp/pl-datetime/pl-calendar.js"
+    },
+    {
+        "name": "pl-drawer.js",
+        "path": "@plcmp/pl-drawer/pl-drawer.js"
+    },
+    {
+        "name": "pl-dropdown",
+        "path": "@plcmp/pl-dropdown/pl-dropdown.js"
+    },
+    {
+        "name": "pl-flex-layout",
+        "path": "@plcmp/pl-flex-layout/pl-flex-layout.js"
+    },
+    {
+        "name": "pl-grid",
+        "path": "@plcmp/pl-grid/pl-grid.js"
+    },
+    {
+        "name": "pl-grid-column",
+        "path": "@plcmp/pl-grid/pl-grid-column.js"
+    },
+    {
+        "name": "pl-icon",
+        "path": "@plcmp/pl-icon/pl-icon.js"
+    },
+    {
+        "name": "pl-icon-button",
+        "path": "@plcmp/pl-icon-button/pl-icon-button.js"
+    },
+    {
+        "name": "pl-input",
+        "path": "@plcmp/pl-input/pl-input.js"
+    },
+    {
+        "name": "pl-input-mask",
+        "path": "@plcmp/pl-input-mask/pl-input-mask.js"
+    },
+    {
+        "name": "pl-labeled-container",
+        "path": "@plcmp/pl-labeled-container/pl-labeled-container.js"
+    },
+    {
+        "name": "pl-radio-group",
+        "path": "@plcmp/pl-radio-group/pl-radio-group.js"
+    },
+    {
+        "name": "pl-radio-button",
+        "path": "@plcmp/pl-radio-button/pl-radio-button.js"
+    },
+    {
+        "name": "pl-repeat",
+        "path": "@plcmp/pl-repeat/pl-repeat.js"
+    },
+    {
+        "name": "pl-textarea",
+        "path": "@plcmp/pl-textarea/pl-textarea.js"
+    },
+    {
+        "name": "pl-valid-observer",
+        "path": "@plcmp/pl-valid-observer/pl-valid-observer.js"
+    },
+    {
+        "name": "pl-virtual-scroll",
+        "path": "@plcmp/pl-virtual-scroll.js"
+    }
+]

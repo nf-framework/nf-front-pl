@@ -1,0 +1,26 @@
+[
+    {
+        "caption":  "Polylib",
+        "path":     "",
+        "order":    70,
+        "form":     "polylib"
+    },
+    {
+        "caption":  "Vac",
+        "path":     "",
+        "order":    80,
+        "form":     "vac"
+    },
+    {
+        "caption":  "Mkb",
+        "path":     "",
+        "order":    90,
+        "form":     "nsi.mkb10"
+    },
+    {
+        "caption":  "action-test",
+        "path":     "",
+        "order":    90,
+        "form":     "test.action-test"
+    }
+]

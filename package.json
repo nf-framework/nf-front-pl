@@ -1,0 +1,55 @@
+{
+	"name": "@nfjs/front-pl",
+	"version": "1.0.0",
+	"description": "Front",
+	"license": "MIT",
+	"type": "module",
+	"main": "index.js",
+	"repository": {
+		"url": "https://github.com/nf-framework/nf-front-pl.git"
+	},
+	"author": {
+		"name": "Azat Yamalov",
+		"email": "yamalov.azat@live.com"
+	},
+	"contributors": [
+		{
+			"name": "Dmitry Boikov",
+			"email": "boikovdv@gmail.com"
+		},
+		{
+			"name": "Andrey Maksimov",
+			"email": "andrmaxmail@gmail.com"
+		}
+	],
+	"dependencies": {
+		"polylib": "^1.0.0",
+		"dayjs": "^1.10.4",
+		"imask": "^6.1.0",
+		"ace-builds": "^1.4.13",
+		"@plcmp/utils": "^0.0.1",
+		"@plcmp/pl-badge": "^0.0.1",
+		"@plcmp/pl-button": "^0.0.1",
+		"@plcmp/pl-checkbox": "^0.0.1",
+		"@plcmp/pl-combobox": "^0.0.1",
+		"@plcmp/pl-data-observer": "^0.0.1",
+		"@plcmp/pl-datetime": "^0.0.1",
+		"@plcmp/pl-drawer": "^0.0.1",
+		"@plcmp/pl-dropdown": "^0.0.1",
+		"@plcmp/pl-flex-layout": "^0.0.1",
+		"@plcmp/pl-grid": "^0.0.1",
+		"@plcmp/pl-icon": "^0.0.1",
+		"@plcmp/pl-icon-button": "^0.0.1",
+		"@plcmp/pl-iconset": "^0.0.1",
+		"@plcmp/pl-iconset-default": "^0.0.1",
+		"@plcmp/pl-input": "^0.0.1",
+		"@plcmp/pl-input-mask": "^0.0.1",
+		"@plcmp/pl-labeled-container": "^0.0.1",
+		"@plcmp/pl-radio-group": "^0.0.1",
+		"@plcmp/pl-radio-button": "^0.0.1",
+		"@plcmp/pl-repeat": "^0.0.1",
+		"@plcmp/pl-textarea": "^0.0.1",
+		"@plcmp/pl-valid-observer": "^0.0.1",
+		"@plcmp/pl-virtual-scroll": "^0.0.1"
+	}
+}
