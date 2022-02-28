@@ -1,26 +1,10 @@
 [
     {
-        "caption":  "Polylib",
-        "path":     "",
-        "order":    70,
-        "form":     "polylib"
-    },
-    {
-        "caption":  "Vac",
-        "path":     "",
-        "order":    80,
-        "form":     "vac"
-    },
-    {
-        "caption":  "Mkb",
-        "path":     "",
-        "order":    90,
-        "form":     "nsi.mkb10"
-    },
-    {
-        "caption":  "action-test",
-        "path":     "",
-        "order":    90,
-        "form":     "test.action-test"
+        "caption":  "О системе",
+        "path":     "Система",
+        "form":     "about",
+        "icon":     "info-circle",
+        "guid":     "a6a28f08-c30f-4375-8bfe-e91845b46dbe",
+        "order":    999
     }
 ]

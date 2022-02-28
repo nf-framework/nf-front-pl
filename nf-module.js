@@ -111,7 +111,15 @@ async function init() {
         async (context) => { await endpointData(context, endpointPlAction);}
     );
 
-
+    web.on('POST', '/front/action/getPackages', async (context) => {
+        const root = await api.getRootPackageInfo();
+        const exts = extension.getSortedExtensions().map(e => ({ name: e.name, version: e.version }));
+        context.send({ data: {
+            root: root,
+            modules: exts
+        } });
+        context.end();
+    });
 }
 
 export {
