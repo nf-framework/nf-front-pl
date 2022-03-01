@@ -99,14 +99,14 @@ export class PlForm extends PlElement {
                 canClose = await canClose;
             }
         }
+        if (canClose === false)
+            return false;
 
-        if (canClose) {
-            this._formPromise && this._formPromise(result);
-            this.dispatchEvent(new CustomEvent('close-form', { bubbles: true, composed: true }));
-            this.parentElement.removeChild(this);
-        }
+        this._formPromise && this._formPromise(result);
+        this.dispatchEvent(new CustomEvent('close-form', { bubbles: true, composed: true }));
+        this.parentElement.removeChild(this);
 
-        return canClose;
+        return true;
     }
 
     async showDialog(header, content, buttons = []) {
