@@ -108,4 +108,50 @@ export class PlForm extends PlElement {
 
         return canClose;
     }
+
+    async showDialog(header, content, buttons = []) {
+        const dialog = document.createElement('pl-dialog');
+        customLoader('pl-dialog');
+        dialog.header = header;
+        dialog.content = content;
+        dialog.buttons = buttons;
+        this.root.appendChild(dialog);
+
+        return new Promise((resolve) => {
+            dialog.addEventListener('pl-dialog-closed', (event) => {
+                resolve(event.detail.action);
+            });
+        });
+    }
+
+    async showAlert(content, options) {
+        options = Object.assign({
+            header: 'Внимание',
+            buttons: [{
+                label: 'Ок',
+                variant: 'primary',
+                action: true
+            }]
+        }, options);
+
+        return this.showDialog(options.header, content, options.buttons)
+    }
+
+    async showConfirm(content, options) {
+        options = Object.assign({
+            header:'Подтвердите действие',
+            buttons: [{
+                label: 'Да',
+                variant: 'primary',
+                action: true,
+            },
+            {
+                label: 'Отмена',
+                variant: 'secondary',
+                action: false
+            }]
+        }, options);
+    
+       return this.showDialog(options.header, content, options.buttons)
+    }
 }
