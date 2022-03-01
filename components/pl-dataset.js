@@ -1,6 +1,7 @@
 import { PlElement, css } from "polylib";
 import { ControlledArray, PlaceHolder } from "@plcmp/utils";
 import { requestData } from "../lib/RequestServer.js";
+import assignDeep from "deep-object-assign-with-reduce";
 
 class PlDataset extends PlElement {
     static get properties() {
@@ -38,18 +39,22 @@ class PlDataset extends PlElement {
 
     connectedCallback() {
         super.connectedCallback();
-        if (!(this.data instanceof ControlledArray)) {
-            this.data = ControlledArray.from([])
+        let data = this.data;
+        if (!(data instanceof ControlledArray)) {
+            data = ControlledArray.from([])
         }
-        if (this.data instanceof ControlledArray) {
-            this.data.load = (x) =>
-                this.loadByPlaceHolder(x);
-
+        if (data instanceof ControlledArray) {
+            data.load = (x) => this.loadByPlaceHolder(x);
         }
+        this.data = data;
     }
     loadByPlaceHolder(ph) {
-        this.data.control.range.chunk_start = ph.rn;
-        this.data.control.range.chunk_end = ph.rn + 99;
+        console.log(ph)
+        this.data.control.range.chunk_start = ph.rn ?? 0;
+        this.data.control.range.chunk_end = (ph.rn ?? 0) + 99;
+        if (this.data.control.treeMode) {
+            this.data.control.treeMode.hidValue = ph.hid;
+        }
         this.execute(undefined, true);
     }
     _argsChanged(val) {
@@ -63,7 +68,7 @@ class PlDataset extends PlElement {
         }
     }
     prepareSQLEndpointParams(args, control) {
-        return Object.assign({
+        return assignDeep({
             args: args || this.args || {},
             sqlPath: this.innerText,
             control: {
@@ -71,7 +76,7 @@ class PlDataset extends PlElement {
                 sorts: this.data?.sorts,
                 filters: this.data?.filters
             }
-        }, { control })
+        }, { control: this.data.control }, { control })
     }
     prepareSimpleEndpointParams(args) {
         return { args: args || this.args, control: {
@@ -89,6 +94,9 @@ class PlDataset extends PlElement {
                 }
                 chunk_start = this.data?.control?.range?.chunk_start ?? 0;
                 chunk_end = this.data?.control?.range?.chunk_end ?? 99;
+                if (this.data?.control?.treeMode && !merge) {
+                    this.data.control.treeMode.hidValue = null;
+                }
             }
             const req = await requestData(this.endpoint, {
                 headers: { 'Content-Type': 'application/json' },
@@ -98,19 +106,20 @@ class PlDataset extends PlElement {
             });
             const json = await req.json();
             const { data, error, stack } = json;
+            if (error) throw error;
+
             if (data.length && this.data.control?.partialData) {
                 if (data[0].r_n_ < chunk_start) {
                     if (this.data[data[0].r_n_]) {
                         data.shift();
                     } else {
-                        data[0] = new PlaceHolder(data[0].r_n_ ?? chunk_start);
+                        data[0] = new PlaceHolder({ rn: data[0].r_n_ ?? chunk_start });
                     }
                 }
                 if (data[data.length - 1].r_n_ > chunk_end) {
-                    data[data.length - 1] = new PlaceHolder(data[data.length - 1].r_n_ ?? chunk_end);
+                    data[data.length - 1] = new PlaceHolder({ rn: data[data.length - 1].r_n_ ?? chunk_end });
                 }
             }
-            if (error) throw error;
 
             if (this.data instanceof ControlledArray) {
                 let start = data[0]?.r_n_ ?? 0, del = merge ? 0 : this.data.length;
@@ -125,7 +134,7 @@ class PlDataset extends PlElement {
         }
         catch (err) {
             console.log(err);
-            alert(err);
+            document.dispatchEvent(new CustomEvent('error', {detail: err}));
         }
     }
 }

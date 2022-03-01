@@ -91,7 +91,7 @@ async function init() {
     registerLibDir('imask');
     registerLibDir('dayjs');
     registerLibDir('ace-builds', 'node_modules/ace-builds/src-noconflict');
-
+    registerLibDir('deep-object-assign-with-reduce');
     registerLibDir('@nfjs/front-pl');
     registerLibDir('@plcmp');
 
