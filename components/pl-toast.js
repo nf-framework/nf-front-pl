@@ -5,64 +5,64 @@ import { addOverlay, removeOverlay } from "@plcmp/utils";
 class PlToast extends PlElement {
     static get css() {
         return css`
-            :host {
-                display: flex;
-                position: absolute;
-                left: 10%;
-                transform: translateX(-50%) translateY(110%);
-                bottom: 0;
-                background-color: #292929;
-                color: white;
-                border-radius: 4px;
-                padding: 16px;
-                font: var(--font-sm);
+        :host {
+            display: flex;
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%) translateY(110%);
+            bottom: 0;
+            background-color: var(--menu-background-color);
+            color: white;
+            text-align: center;
+            border-radius: 4px;
+            padding: 16px;
+          }
+          :host(.show) {
+            bottom: 32px;
+            transform: translateX(-50%);
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+          }
+          @-webkit-keyframes fadein {
+            from {
+              bottom: 0;
+              transform: translateX(-50%) translateY(110%);
             }
-            :host(.show) {
-                bottom: 40px;
-                transform: translateX(-50%);
-                -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-                animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            to {
+              bottom: 32px;
+              transform: translateX(-50%) translateY(0);
             }
-            @-webkit-keyframes fadein {
-                from {
-                    bottom: 0;
-                    transform: translateX(-50%) translateY(110%);
-                }
-                to {
-                    bottom: var(--lt-bottom, 40px);
-                    transform: translateX(-50%) translateY(0);
-                }
+          }
+          @keyframes fadein {
+            from {
+              bottom: 0;
+              transform: translateX(-50%) translateY(110%);
             }
-            @keyframes fadein {
-                from {
-                    bottom: 0;
-                    transform: translateX(-50%) translateY(110%);
-                }
-                to {
-                    bottom: var(--lt-bottom, 40px);
-                    transform: translateX(-50%) translateY(0);
-                }
+            to {
+              bottom: 32px;
+              transform: translateX(-50%) translateY(0);
             }
-            @-webkit-keyframes fadeout {
-                from {
-                    bottom: var(--lt-bottom, 40px);
-                    transform: translateX(-50%) translateY(0);
-                }
-                to {
-                    bottom: 0;
-                    transform: translateX(-50%) translateY(110%);
-                }
+          }
+          @-webkit-keyframes fadeout {
+            from {
+              bottom: 32px;
+              transform: translateX(-50%) translateY(0);
             }
-            @keyframes fadeout {
-                from {
-                    bottom: var(--lt-bottom, 40px);
-                    transform: translateX(-50%) translateY(0);
-                }
-                to {
-                    bottom: 0;
-                    transform: translateX(-50%) translateY(110%);
-                }
+            to {
+              bottom: 0;
+              transform: translateX(-50%) translateY(110%);
             }
+          }
+          @keyframes fadeout {
+            from {
+              bottom: 32px;
+              transform: translateX(-50%) translateY(0);
+            }
+            to {
+              bottom: 0;
+              transform: translateX(-50%) translateY(110%);
+            }
+          }
         `;
     }
 
@@ -78,7 +78,7 @@ class PlToast extends PlElement {
             [[text]]
 		`;
     }
-    show(text = '', duration = 3000) {
+    show(text = '', duration = 4000) {
         return new Promise((resolve, reject) => {
             if (this.className === 'show') {
                 // Do nothing, prevent spamming
