@@ -40,7 +40,7 @@ class PlAppSide extends PlElement {
 			.logo {
 				display: flex;
 				padding: 8px 16px;
-				margin-bottom: 8px;
+				margin: 8px 0;
 			}
 
 			.menuItems {

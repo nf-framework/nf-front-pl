@@ -84,6 +84,13 @@ async function logout(context) {
     context.end();
 }
 
+async function getUserProfile(context) {
+    const data = {
+        username: context.session.get('context.user')
+    }
+     context.send({ data });
+     context.end();
+}
 
 async function init() {
     registerLibDir('front-pl', __dirname + '/static');
@@ -98,7 +105,8 @@ async function init() {
     web.on('GET', '/forms/:form', formsHandler);
     web.on('GET', '/load-custom-element/:component', customElementsHandler);
 
-    web.on('POST', '/checkSession', { middleware: ['session', 'auth'] }, checkSession);
+    web.on('POST', '/front/action/checkSession', { middleware: ['session', 'auth'] }, checkSession);
+    web.on('POST', '/front/action/getUserProfile', { middleware: ['session', 'auth'] }, getUserProfile);
 
     web.on('POST', '/front/action/login', { middleware: ['json', 'session'] }, login);
     web.on('POST', '/front/action/logout', { middleware: ['session', 'json'] }, logout);

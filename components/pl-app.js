@@ -3,12 +3,10 @@ import '@plcmp/pl-iconset-default';
 import { customLoader } from "../lib/CustomElementsLoader.js";
 window.customLoader = customLoader;
 
-customLoader('pl-form-login');
-
 class App extends PlElement {
 	static get properties() {
 		return {
-			auth: { type: Boolean, value: false, observer: '_authObserver' }
+			auth: { type: Boolean, value: undefined, observer: '_authObserver' }
 		};
 	}
 
@@ -25,7 +23,7 @@ class App extends PlElement {
 		super.connectedCallback();
 		customLoader('pl-action').then(() => {
 			this.aSessionCheck = this.$.aSessionCheck;
-			this.aSessionCheck.execute();
+			this.aSessionCheck.execute()
 		})
 
 		this.resizers = [];
@@ -55,19 +53,28 @@ class App extends PlElement {
 
 	static get template() {
 		return html`
-			<pl-action id="aSessionCheck" data="{{auth}}"  endpoint="/checkSession"></pl-action>
-			<pl-form-login hidden$=[[auth]] auth="{{auth}}"></pl-form-login>
+			<pl-action id="aSessionCheck" data="{{auth}}"  endpoint="/front/action/checkSession"></pl-action>
 		`;
 	}
 
 	async _authObserver(auth) {
 		if (auth) {
-			if (!customElements.get('pl-form-main')) {
-				await customLoader('pl-form-main');
+			customLoader('pl-form-main').then(async () => {
 				let form = document.createElement('pl-form-main');
 				await form.ready;
 				this.root.appendChild(form);
-			}
+
+				if(this.loginForm) {
+					this.loginForm.remove();
+				}
+			});
+
+		} else {
+			await customLoader('pl-form-login').then(async ()  => {
+				this.loginForm = document.createElement('pl-form-login');
+				await this.loginForm.ready;
+				this.root.appendChild(this.loginForm);
+			});
 		}
 	}
 
