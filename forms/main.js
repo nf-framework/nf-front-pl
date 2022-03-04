@@ -75,8 +75,7 @@ export default class MainView extends PlForm {
             <pl-app-side id="menu" opened={{menuOpened}} items="[[menuItems]]" on-menu-item-selected="[[onMenuItemSelected]]">
                 <pl-icon-button slot="logo" iconset="pl-default" icon="menu" variant="link"  on-click="[[onMenuButtonClick]]"></pl-icon-button>
                 <pl-flex-layout vertical slot="bottom">
-                    <pl-icon-button variant="link" size="24" id="btnProfile" iconset="pl-default" icon="profile" on-click="[[onProfileClick]]">
-                    </pl-icon-button>
+                    <pl-icon-button variant="link" size="24" id="btnProfile" iconset="pl-default" icon="profile" on-click="[[onProfileClick]]"></pl-icon-button>
                 </pl-flex-layout>
             </pl-app-side>
             <div class="content">
@@ -89,7 +88,9 @@ export default class MainView extends PlForm {
                 <pl-flex-layout vertical fit>
                     <div class="username">[[userProfile.username]]</div>
                     <pl-flex-layout stretch justify="flex-end">
-                        <pl-button label="Выйти из профиля" on-click="[[onLogoutClick]]"></pl-button>
+                        <pl-button label="Выйти" on-click="[[onLogoutClick]]">
+                            <pl-icon iconset="pl-default" icon="logout-filled" slot="suffix">
+                        </pl-button>
                     </pl-flex-layout>
                 </pl-flex-layout>
             </pl-dropdown>
