@@ -26,19 +26,12 @@ class PlTabPanel extends PlElement {
                 position: relative;
                 display: flex;
                 flex-direction: row;
-                gap: 24px;
+                gap: 16px;
                 box-sizing: border-box;
                 overflow: hidden;
                 flex-shrink:0;
-            }
-
-            .tab-header::after {
-                content:'';
-                width: 100%;
+                background: var(--grey-lightest);
                 border: 1px solid var(--grey-light);
-                position: absolute;
-                bottom: 0;
-                right: 0;
             }
 
             .tab {
@@ -51,7 +44,9 @@ class PlTabPanel extends PlElement {
                 font-weight: 500;
                 position: relative;
                 flex-shrink:0;
+                padding:  0 8px;
                 gap: 8px;
+                position: relative;
             }
 
             .suffix:empty, .prefix:empty {
@@ -62,21 +57,27 @@ class PlTabPanel extends PlElement {
                 color: var(--black-dark);
             }
 
-            .tab[active]::after {
-                content:'';
-                width: 100%;
-                border: 1px solid var(--primary-base);
+            .tab::after {
+                content: "";
                 position: absolute;
                 bottom: 0;
-                right: 0;
-                z-index: 1;
+                left: 50%;
+                height: 2px;
+                width: 0%;
+                background: var(--primary-base);
+                transition: all 0.5s ease;
+            }
+
+            .tab[active]::after {
+                width: 100%;
+                content:'';
+                left: 0;
             }
 
             .content {
                 display: flex;
                 height: 100%;
                 width: 100%;
-                padding-top: 8px;
                 box-sizing: border-box;
                 overflow: auto;
             }
