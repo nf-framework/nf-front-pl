@@ -8,6 +8,10 @@
         "path": "@nfjs/front-pl/components/pl-codeeditor.js"
     },
     {
+        "name": "pl-dialog",
+        "path": "@nfjs/front-pl/components/pl-dialog.js"
+    },
+    {
         "name": "pl-action",
         "path": "@nfjs/front-pl/components/pl-action.js"
     },

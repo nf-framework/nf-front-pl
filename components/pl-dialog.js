@@ -81,7 +81,7 @@ class PlAppMenu extends PlElement {
                 <div class="button">
                     <pl-repeat items="[[buttons]]">
                         <template>
-                            <pl-button variant="[[item.variant]]" label="[[item.label]]" action="[[item.action]]" on-click="[[close]]"></pl-button>
+                            <pl-button negative="[[item.negative]]" variant="[[item.variant]]" label="[[item.label]]" action="[[item.action]]" on-click="[[close]]"></pl-button>
                         </template>
                     </pl-repeat>
                 </div>
