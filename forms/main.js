@@ -37,8 +37,9 @@ export default class MainView extends PlForm {
                 margin-left: 64px;
                 display: flex;
                 flex-direction: column;
-                width: 100%;
-                height: 100%;
+                flex: 1;
+                overflow-x: auto;
+                overflow-y: auto;
             }
 
             #ddProfile {
@@ -47,20 +48,6 @@ export default class MainView extends PlForm {
                 color: #3F3F3F;
                 padding: 16px 8px;
                 border-radius: 4px;
-            }
-
-            @media (min-width: 320px) and (max-width: 768px) {
-                :host {
-                    flex-direction: column;
-                }
-
-                .app-bar {
-                    width: 100%;
-                    height: 64px;
-                    justify-content: flex-start;
-                    align-items: center;
-                }
-
             }
 
             pl-icon-button[variant="link"] {
