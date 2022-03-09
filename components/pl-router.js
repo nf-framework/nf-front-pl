@@ -123,12 +123,11 @@ class PlRouter extends PlElement {
                 this.current = formInfo;
             }
             catch (err) {
-                console.error(err);
+                document.dispatchEvent(new CustomEvent('error', {detail: `Форма ${formName} не найдена`}));
             }
         } else if (this.forms.length > 0) {
             this.current = this.forms[frmIndex];
         }
-        // window.dispatchEvent(new CustomEvent('form-change', {detail: { form:  this.current.form }}));
     }
 
     currentObserver(formInfo) {
@@ -157,7 +156,6 @@ class PlRouter extends PlElement {
     closeForm(e) {
         const frmIdx = this.forms.findIndex(x => x.form == e.target);
         this.splice('forms', frmIdx, 1);
-
         if (this.forms.length > 0) {
             const lastFormInfo = this.forms[this.forms.length - 1];
             this.current = lastFormInfo;
