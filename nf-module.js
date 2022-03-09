@@ -1,12 +1,12 @@
 import path from 'path';
 import mime from 'mime';
-import { web } from '@nfjs/back';
-import fs from "fs";
-import { auth } from "@nfjs/auth";
+import fs from "fs/promises";
+import url from "url";
 
+import { auth } from "@nfjs/auth";
+import { web, ComponentCache, endpointData, endpointPlAction, endpointPlDataset } from "@nfjs/back";
 import { registerLibDir, prepareResponse, getCacheKey } from "@nfjs/front-server";
 import { api, extension } from "@nfjs/core";
-import { ComponentCache, endpointData, endpointPlAction } from "@nfjs/back";
 
 const __dirname = path.join(path.dirname(decodeURI(new URL(import.meta.url).pathname))).replace(/^\\([A-Z]:\\)/, "$1");
 const menu = await api.loadJSON(`${__dirname}/menu.json`);
@@ -14,25 +14,32 @@ const customElementsJson = await api.loadJSON(`${__dirname}/customElements.json`
 
 async function formsHandler(context) {
     try {
-
-        const frmpath = context.params.form.replace(/\./g, '/');
+        const formPath = context.params.form.replace(/\./g, '/');
         const formsDir = 'forms/';
 
-        let file = await extension.getFiles(formsDir + frmpath + '.js');
+        let file = await extension.getFiles(formsDir + formPath + '.js');
+        if (!file) {
+            context.code(404);
+            context.end();
+            return;
+        }
         const customOptions = context.customOptions;
         const cacheKey = getCacheKey(context.url, customOptions);
         const mimeType = mime.getType(file);
         const contentType = mimeType?.split('/')[1] || 'javascript';
 
-        const response = await prepareResponse(cacheKey,
+        const response = await prepareResponse(
+            cacheKey,
             { customOptions, contentType, mimeType, minify: false },
-            () => {
-                const stream = fs.createReadStream(file);
-                stream.on('error', (e) => {
-                    context.code(404);
-                    context.end(`${e}`);
-                })
-                return stream;
+            async () => {
+                let form = await fs.readFile(file, 'utf8');
+                const rex = new RegExp('serverEndpoints(.*|\\n|\\r\\n)*\\/\\/serverEndpoints', 'm');
+                const serverEndpointText = form.match(rex);
+                if (serverEndpointText) {
+                    await ComponentCache.save(`/pl-form/${context.params.form}.js`, `export const ${serverEndpointText[0]}`);
+                    form = form.replace(rex, '');
+                }
+                return form;
             }
         );
         if (response.headers) context.headers(response.headers);
@@ -101,6 +108,7 @@ async function init() {
     registerLibDir('deep-object-assign-with-reduce');
     registerLibDir('@nfjs/front-pl');
     registerLibDir('@plcmp');
+    registerLibDir('@nfjs/core/api/common.js', 'node_modules/@nfjs/core/api/common.js', { singleFile: true });
 
     web.on('GET', '/forms/:form', formsHandler);
     web.on('GET', '/load-custom-element/:component', customElementsHandler);
@@ -112,11 +120,18 @@ async function init() {
     web.on('POST', '/front/action/logout', { middleware: ['session', 'json'] }, logout);
     web.on('POST', '/front/action/getMenu', {}, (context) => context.send({ data: extension.menuInfo }));
 
+
+    async function loadFormServerEndpoint(context, type) {
+        const path = ComponentCache.getPath(context, 'pl-form', `${context?.params?.form}.js`);
+        const urlFile = url.pathToFileURL(path).toString();
+        const formCache = await import(urlFile);
+        context.cachedObj = formCache?.serverEndpoints?.[type]?.[context?.params?.id];
+    }
     web.on(
         'POST',
-        '/@nfjs/front-pl/pl-action/:form/:id',
-        { middleware: ['session', context => ComponentCache.load(context, 'pl-form', context?.params?.form), 'auth', 'json'] },
-        async (context) => { await endpointData(context, endpointPlAction);}
+        '/@nfjs/front-pl/fse/:form/:type/:id',
+        { middleware: ['session', context => loadFormServerEndpoint(context, context?.params?.type), 'auth', 'json'] },
+        context => endpointData(context, (context?.params?.type === 'dataset') ? endpointPlDataset : endpointPlAction)
     );
 
     web.on('POST', '/front/action/getPackages', async (context) => {
