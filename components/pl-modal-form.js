@@ -27,7 +27,6 @@ class PlDrawer extends PlElement {
                 position: fixed;
                 background: rgb(255, 255, 255);
                 will-change: contents;
-                z-index: var(--modal-z-index);
                 top: 0px;
                 opacity: 0;
                 transform: translateX(30%);
@@ -38,7 +37,6 @@ class PlDrawer extends PlElement {
                 flex-direction: column;
                 will-change: transform, opacity;
                 transition: all ease 200ms;
-                border: 1px solid var(--grey-light);
                 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
             }
 
