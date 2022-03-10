@@ -22,9 +22,6 @@ class PlDataset extends PlElement {
             unauthorized: {
                 type: Boolean,
                 value: false
-            },
-            type: {
-                type: String // [simple??] | sql-endpoint
             }
         }
     }
@@ -66,7 +63,7 @@ class PlDataset extends PlElement {
             this.execute(this.args);
         }
     }
-    prepareSQLEndpointParams(args, control) {
+    prepareEndpointParams(args, control) {
         return assignDeep({
             args: args || this.args || {},
             sqlPath: this.innerText,
@@ -77,12 +74,7 @@ class PlDataset extends PlElement {
             }
         }, { control: this.data.control }, { control })
     }
-    prepareSimpleEndpointParams(args) {
-        return { args: args || this.args, control: {
-            sorts: this.data?.sorts,
-            filters: this.data?.filters
-        }}
-    }
+
     async execute(args, opts) {
         try {
             let {merge, placeHolder} = opts ?? {};
@@ -101,7 +93,7 @@ class PlDataset extends PlElement {
             const req = await requestData(this.endpoint, {
                 headers: { 'Content-Type': 'application/json' },
                 method: 'POST',
-                body: JSON.stringify(this.type === 'sql-endpoint' ? this.prepareSQLEndpointParams(args, { range: { chunk_start, chunk_end } }) : this.prepareSimpleEndpointParams(args)),
+                body: JSON.stringify( this.prepareEndpointParams(args, { range: { chunk_start, chunk_end } }) ),
                 unauthorized: this.unauthorized
             });
             const json = await req.json();
