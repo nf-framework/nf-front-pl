@@ -48,16 +48,15 @@ class PlDataset extends PlElement {
         }
         this.data = data;
     }
-    loadByPlaceHolder(ph) {
-        console.log(ph)
-        this.data.control.range.chunk_start = ph.rn ?? 0;
-        this.data.control.range.chunk_end = (ph.rn ?? 0) + 99;
+    loadByPlaceHolder(placeHolder) {
+        this.data.control.range.chunk_start = placeHolder.rn ?? 0;
+        this.data.control.range.chunk_end = (placeHolder.rn ?? 0) + 99;
         if (this.data.control.treeMode) {
-            this.data.control.treeMode.hidValue = ph.hid;
+            this.data.control.treeMode.hidValue = placeHolder.hid;
         }
-        this.execute(undefined, true);
+        return this.execute(undefined, { merge: true, placeHolder });
     }
-    _argsChanged(val) {
+    _argsChanged() {
         if (this.executeOnArgsChange) {
             this.execute(this.args);
         }
@@ -84,8 +83,9 @@ class PlDataset extends PlElement {
             filters: this.data?.filters
         }}
     }
-    async execute(args, merge) {
+    async execute(args, opts) {
         try {
+            let {merge, placeHolder} = opts ?? {};
             let chunk_start, chunk_end;
             if (this.data?.control?.partialData) {
                 if (!merge) {
@@ -122,9 +122,16 @@ class PlDataset extends PlElement {
             }
 
             if (this.data instanceof ControlledArray) {
-                let start = data[0]?.r_n_ ?? 0, del = merge ? 0 : this.data.length;
-                if (merge && this.data[start] instanceof PlaceHolder) del = 1;
-                this.splice('data', start, del, ...data);
+                let phIndex = this.data.indexOf(placeHolder);
+                if (phIndex >= 0) {
+                    this.splice('data', phIndex, 1, ...data);
+                } else {
+                    if (merge) {
+                        this.splice('data', this.data.length, 0, ...data);
+                    } else {
+                        this.splice('data', 0, this.data.length, ...data);
+                    }
+                }
             } else {
                 this.data = ControlledArray.from(data);
             }
