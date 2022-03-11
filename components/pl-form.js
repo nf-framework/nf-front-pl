@@ -22,6 +22,35 @@ export class PlForm extends PlElement {
     connectedCallback() {
         super.connectedCallback()
         this.onConnect?.();
+
+        // Повышаем z-index всех родительских элементов до формы при показе дропдауна,
+        // необходимо для правильного отображения комбобоксов в строках гридов и подобных элементах
+        this.addEventListener('pl-dropdown-show', (e) => {
+            const path = e.composedPath();
+            const currentZIndex = path[0].style.zIndex;
+            path.find((p) => {
+                if (p instanceof HTMLElement) {
+                    p._oldZIndex = p.style.zIndex;
+                    p.style.zIndex = currentZIndex;
+                }
+                return p === this;
+            });
+            e.stopImmediatePropagation();
+        });
+
+        // Откатываем z-index всех родительских элементов до формы при скрытии дропдауна
+        this.addEventListener('pl-dropdown-hide', (e) => {
+            const path = e.composedPath();
+            path.find((p) => {
+                if (p instanceof HTMLElement) {
+                    p.style.zIndex = p._oldZIndex;
+                    p._oldZIndex = undefined;
+                    delete p._oldZIndex;
+                }
+                return p === this;
+            });
+            e.stopImmediatePropagation();
+        });
     }
 
     /**
