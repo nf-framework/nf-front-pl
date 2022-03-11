@@ -8,6 +8,14 @@
         "path": "@nfjs/front-pl/components/pl-codeeditor.js"
     },
     {
+        "name": "pl-card",
+        "path": "@nfjs/front-pl/components/pl-card.js"
+    },
+    {
+        "name": "pl-comboinput",
+        "path": "@nfjs/front-pl/components/pl-comboinput.js"
+    },
+    {
         "name": "pl-dialog",
         "path": "@nfjs/front-pl/components/pl-dialog.js"
     },
