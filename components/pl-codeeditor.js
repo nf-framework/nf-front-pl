@@ -37,6 +37,10 @@ class PlCodeEditor extends PlElement {
             }, 100)
             debouncer();
         });
+
+        if(this.value) {
+            this.setValue(this.value);
+        }
     }
 
     setValue(value){
