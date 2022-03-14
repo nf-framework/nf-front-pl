@@ -1,7 +1,7 @@
 import { PlElement, html, css } from "polylib";
 import { addOverlay, removeOverlay } from "@plcmp/utils";
 
-class PlDrawer extends PlElement {
+class PlModalForm extends PlElement {
     static get properties() {
         return {
             opened: { type: Boolean, reflectToAttribute: true },
@@ -142,4 +142,4 @@ class PlDrawer extends PlElement {
     }
 }
 
-customElements.define('pl-modal-form', PlDrawer);
+customElements.define('pl-modal-form', PlModalForm);
