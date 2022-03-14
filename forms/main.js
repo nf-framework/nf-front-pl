@@ -7,7 +7,12 @@ export default class MainView extends PlForm {
             userProfile: { type: Object, value: () => ({}) },
             menuItems: { type: Array, value: () => ([]) },
             menuOpened: { type: Boolean, value: false },
-            currentForm: { type: Object }
+            currentForm: {
+                type: Object, 
+                value: () => ({
+                    hideHeader: true
+                })
+            }
         };
     }
 
@@ -60,13 +65,15 @@ export default class MainView extends PlForm {
         return html`
             <pl-dataset id="dsMenu" data="{{menuItems}}" endpoint="/front/action/getMenu"></pl-dataset>
             <pl-app-side id="menu" opened={{menuOpened}} items="[[menuItems]]" on-menu-item-selected="[[onMenuItemSelected]]">
-                <pl-icon-button slot="logo" iconset="pl-default" icon="menu" variant="link"  on-click="[[onMenuButtonClick]]"></pl-icon-button>
+                <pl-icon-button slot="logo" iconset="pl-default" icon="menu" variant="link" on-click="[[onMenuButtonClick]]">
+                </pl-icon-button>
                 <pl-flex-layout vertical slot="bottom">
-                    <pl-icon-button variant="link" size="24" id="btnProfile" iconset="pl-default" icon="profile" on-click="[[onProfileClick]]"></pl-icon-button>
+                    <pl-icon-button variant="link" size="24" id="btnProfile" iconset="pl-default" icon="profile"
+                        on-click="[[onProfileClick]]"></pl-icon-button>
                 </pl-flex-layout>
             </pl-app-side>
             <div class="content">
-                <pl-header hidden$="[[!currentForm]]" current-form="[[currentForm]]">
+                <pl-header hidden$="[[currentForm.hideHeader]]" current-form="[[currentForm]]">
                     [[currentForm.headerTemplate]]
                 </pl-header>
                 <pl-router id="router" current-form="{{currentForm}}"></pl-router>

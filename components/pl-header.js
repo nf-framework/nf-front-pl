@@ -9,7 +9,7 @@ class PlHeader extends PlElement {
     static get css() {
         return css`
             :host{
-                margin: 8px 16px 0 16px;
+                margin: 8px 16px;
                 display: flex;
                 height: 48px;
                 box-sizing: border-box;

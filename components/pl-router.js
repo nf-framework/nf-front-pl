@@ -49,6 +49,7 @@ class PlRouter extends PlElement {
             this.processUrl(hash);
         } else {
             history.replaceState({}, null, '#');
+            this.openForm(null);
         }
 
         onhashchange = (e) => {
@@ -93,12 +94,13 @@ class PlRouter extends PlElement {
             const params = args ? Object.fromEntries(new URLSearchParams(args)) : undefined;
             this.openForm(name, params);
         } else {
-            this.openForm('');
+            this.openForm(null);
         }
     }
 
     async openForm(formName, params, options) {
-        let formId = `#${formName}`;
+        let formId = formName ? `#${formName}` : '#';
+        formName = formName || 'index';
         if (params) {
             formId = formId + '?' + new URLSearchParams(params).toString();
         }
@@ -149,7 +151,7 @@ class PlRouter extends PlElement {
                 }, null, formInfo.formId);
             }
         } else {
-            this.currentForm = null;
+            this.openForm(null);
         }
     }
 
@@ -161,7 +163,7 @@ class PlRouter extends PlElement {
             this.current = lastFormInfo;
         } else {
             history.pushState({}, null, '#');
-            this.current = null;
+            this.openForm(null);
         }
     }
 }
