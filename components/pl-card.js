@@ -19,6 +19,7 @@ class PlCard extends PlElement {
                 width: fit-content;
                 height: fit-content;
                 box-sizing: border-box;
+                gap: 8px;
             }
 
             :host([fit]) {
@@ -42,13 +43,11 @@ class PlCard extends PlElement {
                 box-sizing: border-box;
                 justify-content: space-between;
                 gap: 8px;
-                min-height: 48px;
                 overflow:hidden;
             }
             
             .header-text {
-                font-weight: 500;
-                font: var(--font-xl);
+                font: var(--font-lg);
                 color: var(--black-base);
                 text-align: start;
                 flex: 1 1 0%;

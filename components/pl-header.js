@@ -11,7 +11,7 @@ class PlHeader extends PlElement {
             :host{
                 margin: 8px 16px 0 16px;
                 display: flex;
-                height: 56px;
+                height: 48px;
                 box-sizing: border-box;
                 gap: 8px;
                 align-items: center;
@@ -40,21 +40,15 @@ class PlHeader extends PlElement {
                 display: flex;
                 flex-direction: column;
                 user-select: none;
-                gap: 4px;
             }
             .form-breadcrumbs {
-                font-size: 12px;
-                line-height: 100%;
+                font: var(--font-sm);
                 color: var(--grey-darkest);
-                font-style: normal;
-                font-weight: normal;
             }
 
             #form-label {
+                font: var(--font-xl);
                 font-weight: 500;
-                font-size: 16px;
-                font-size: 18px;
-                line-height: 100%;
                 color: var(--black-base);
             }
         `;
