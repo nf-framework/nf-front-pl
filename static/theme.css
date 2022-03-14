@@ -33,12 +33,13 @@
     --black-light: #4A4D61;
     --black-lightest: #8D8F9B;
 
-    --font-xs: normal 150% 12px;
-    --font-sm: normal 150% 13px;
-    --font-md: normal 150% 14px;
-    --font-lg: normal 150% 16px;
+    --font-xs: normal 12px/1.2 apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    --font-sm: normal 13px/1.2 apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    --font-md: normal 14px/1.2 apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    --font-lg: normal 16px/1.2 apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    --font-xl: normal 20px/1.2 apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 
-    --label-width: 200px;
+    --label-width: 240px;
     --content-width: 300px;
 
     --space-sm: 8px;
