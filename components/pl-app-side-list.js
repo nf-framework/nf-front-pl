@@ -23,7 +23,7 @@ class PlAppSideList extends PlElement {
             }
 
             :host([variant="main"]) .items-flex:hover {
-                --menu-background-color: #30686B;
+                --menu-background-color: var(--primary-base);
                 --pl-icon-fill-color: var(--white);
                 color: var(--white);
                 transition: 0.3s;
