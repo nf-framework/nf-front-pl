@@ -7,7 +7,8 @@ class PlCard extends PlElement {
             fit: {
                 type: Boolean,
                 reflectToAttribute: true
-            }
+            },
+            hidden: { type: Boolean, reflectToAttribute: true }
         }
     }
 
@@ -20,6 +21,10 @@ class PlCard extends PlElement {
                 height: fit-content;
                 box-sizing: border-box;
                 gap: 8px;
+            }
+
+            :host([hidden]) {
+                display: none;
             }
 
             :host([fit]) {
@@ -51,6 +56,7 @@ class PlCard extends PlElement {
                 color: var(--black-base);
                 text-align: start;
                 flex: 1 1 0%;
+                font-weight: 500;
             }
 
             .content {

@@ -15,46 +15,52 @@ class PlAppSideList extends PlElement {
             :host {
                 height: 100%;
                 transition: 0.3s;
-                box-sizing: border-box; 
-                --menu-color: var(--menu-background-color);
-                --menu-background: var(--white);
+                box-sizing: border-box;
             }
 
             :host([variant=main]) {
-                --menu-color: var(--white);
-                --menu-background: var(--menu-background-color);
+                color: var(--menu-text-color);
+            }
+
+            :host([variant="main"]) .items-flex:hover {
+                --menu-background-color: #30686B;
+                --pl-icon-fill-color: var(--white);
+                color: var(--white);
+                transition: 0.3s;
             }
 
             .items-flex {
+                --menu-text-color: #464B52;
                 display: flex;
                 align-items: center;
-                height: 40px;
-                position: relative;
+                height: 48px;
                 cursor: pointer;
-                color: var(--menu-color);
-                --pl-icon-fill-color: var(--menu-color);
+                transition: 0.3s;
+            }
+
+            .items-flex:hover {
+                --menu-background-color: #F5F6F7;
+                background-color: var(--menu-background-color);
             }
 
             .items-flex pl-icon {
+                --menu-text-color: #464B52;
+                padding: 0 12px;
+            }
+
+            :host([variant="main"]) pl-icon {
                 padding: 0 24px;
             }
 
-            .items-flex:hover{
-                background-color: var(--menu-color);
-                color: var(--menu-background);
-                --pl-icon-fill-color: var(--menu-background);
-            }
-
             .submenu-title {
-                font-size: 21px;
-                margin: 8px 16px;
-                padding-bottom: 8px;
-                border-bottom: 1px solid #c3c3c3;
-                color: rgb(72, 83, 99);
+                --menu-text-color: #1C273D;
+                font-size: 16px;
+                font-weight: 700;
+                margin: 12px;
             }
 
             .submenu-title pl-icon-button {
-                color: rgb(72, 83, 99);
+                --menu-text-color: #1C273D;
             }
 
             .submenu-title:empty {
@@ -63,11 +69,9 @@ class PlAppSideList extends PlElement {
 
             .submenu-caption {
                 user-select: none;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow-x: hidden;
                 flex-grow: 1;
-            }
+                padding-right: 8px;
+            } 
 
             :host([opened]) .submenu-caption {
                 display: inline-flex;
@@ -93,6 +97,7 @@ class PlAppSideList extends PlElement {
                     <div class="items-flex" on-click="[[onMenuClick]]">
                         <pl-icon iconset="pl-default" icon="[[item.icon]]"></pl-icon>
                         <span class="submenu-caption">[[item.caption]]</span>
+                        <pl-icon iconset="pl-default" hidden="[[!item.hasChildren]]" icon="chevron-right"></pl-icon>   
                     </div> 
                 </template>
             </pl-repeat>

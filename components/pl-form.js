@@ -117,7 +117,7 @@ export class PlForm extends PlElement {
     }
 
     async close(result) {
-        if(result instanceof Event){
+        if (result instanceof Event) {
             result = undefined;
         }
         let canClose = true;
@@ -168,7 +168,7 @@ export class PlForm extends PlElement {
 
     async showConfirm(content, options) {
         options = Object.assign({
-            header:'Подтвердите действие',
+            header: 'Подтвердите действие',
             buttons: [{
                 label: 'Да',
                 variant: 'primary',
@@ -180,7 +180,21 @@ export class PlForm extends PlElement {
                 action: false
             }]
         }, options);
-    
-       return this.showDialog(options.header, content, options.buttons)
+
+        return this.showDialog(options.header, content, options.buttons)
     }
+
+    notify(message, options) {
+        options = Object.assign({
+            type: 'success',
+        }, options);
+
+        document.dispatchEvent(new CustomEvent(options.type, {
+            bubbles: true,
+            composed: true,
+            detail: {
+                message: message
+            }
+        }));
+    } 
 }

@@ -37,10 +37,14 @@ class PlAppSide extends PlElement {
 				width: var(--menu-opened-width);
 			}
 
+			:host ::slotted(pl-icon-button) {
+				fill: red;
+			}
+
 			.logo {
 				display: flex;
 				padding: 8px 16px;
-				margin: 8px 0;
+				margin-bottom: 8px;
 			}
 
 			.menuItems {
@@ -55,13 +59,13 @@ class PlAppSide extends PlElement {
 			}
 
 			.submenu {
+				display: flex;
 				position: absolute;
 				top: 0;
 				right: 0;
 				width:0;
-				height:100%;
 				box-sizing: border-box;
-				display: flex;
+				height:100%;
 			}
 
 			.submenu-item { 
@@ -70,11 +74,16 @@ class PlAppSide extends PlElement {
 				background: #fff; 
 				min-width: var(--menu-opened-width);
 				animation: slide 0.3s;
-			} 
-			 
+			}
+
 			@keyframes slide { 
 				0% { transform: translateX(-100%); opacity: 0;} 
 				100% { transform: translateX(0); opacity: 1;}   
+			}
+
+			:host .submenu-item:nth-child(odd) {
+				border-left: 1px solid #E9EDF0;
+				filter: drop-shadow(0px 8px 32px rgba(0, 0, 0, 0.12));
 			}
     	`;
 	}
@@ -84,9 +93,6 @@ class PlAppSide extends PlElement {
 			<div class="logo">
 				<slot name="logo"></slot>
 			</div>
-			<div class="menuItems">
-				<pl-app-side-list opened$=[[opened]] variant="main" items="[[_computeItems(items, items.0)]]" on-menu-click="[[onMenuClick]]"></pl-app-side-list>
-			</div>
 			<div class="submenu">
 				<pl-repeat items="[[_selectedItemsStack]]" as="subitem" >
 					<template>
@@ -95,7 +101,11 @@ class PlAppSide extends PlElement {
 						</div>
 					</template>
 				</pl-repeat>
-            </div>
+			</div>
+			<div class="menuItems">
+				<pl-app-side-list opened$=[[opened]] variant="main" items="[[_computeItems(items, items.0)]]" on-menu-click="[[onMenuClick]]"></pl-app-side-list>
+			</div>
+			
 			<div class="logo">
 				<slot name="bottom"></slot>
 			</div>
@@ -151,7 +161,6 @@ class PlAppSide extends PlElement {
 		if (!value) {
             return;
         }
-
         let found = false;
         for (let i = this._selectedItemsStack.length; i--;) {
             const item = this._selectedItemsStack[i];
@@ -167,7 +176,10 @@ class PlAppSide extends PlElement {
 
         const items = this._computeItems(this.items, value);
         if (items && items.length > 0) {
-            this.push('_selectedItemsStack', { parent: value, items });
+            this.push('_selectedItemsStack', { 
+				parent: value, 
+				items
+			});
         }
 
         this.dispatchEvent(new CustomEvent('menuItemSelected', { detail: value, bubbles: true, composed: true }));
