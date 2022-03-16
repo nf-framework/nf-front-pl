@@ -1,6 +1,6 @@
 import { PlElement, css } from "polylib";
 import { requestData } from "../lib/RequestServer.js";
-import { setPath, getPath, cloneDeep } from "@nfjs/core/api/common";
+import { setPath, getPath, cloneDeep, clearObj } from "@nfjs/core/api/common";
 
 class PlAction extends PlElement {
     static get properties() {
@@ -101,19 +101,6 @@ class PlAction extends PlElement {
         return clonePaths(args, 'root');
     }
 
-    static _clear(obj) {
-        if (obj instanceof Object) {
-            for (const prop in obj) {
-                if (prop.startsWith('__')) {
-                    delete obj[prop];
-                } else {
-                    const o = obj[prop];
-                    if (o instanceof Object) PlAction._clear(o);
-                }
-            }
-        }
-    }
-
     async execute(args) {
         this.executing = true;
         try {
@@ -123,7 +110,7 @@ class PlAction extends PlElement {
             // Чтобы при последующей очистке не повлиять на данные на форме
             _args = cloneDeep(_args);
             // Очистка от служебных свойств (начинаются с __)
-            PlAction._clear(_args);
+            clearObj(_args);
             let url = this.endpoint;
             const params = {
                 headers: { 'Content-Type': 'application/json' },
