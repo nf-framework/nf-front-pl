@@ -121,8 +121,6 @@ class PlAppSide extends PlElement {
 				this.close();
             }
         }
-
-
 	}
 	
 
@@ -165,7 +163,7 @@ class PlAppSide extends PlElement {
         for (let i = this._selectedItemsStack.length; i--;) {
             const item = this._selectedItemsStack[i];
             if (item.items.some(item => item.id === value.id)) {
-                this.splice('_selectedItemsStack', i + 1);
+                this.splice('_selectedItemsStack', i, 1);
                 found = true;
                 break;
             }
