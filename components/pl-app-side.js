@@ -31,7 +31,6 @@ class PlAppSide extends PlElement {
 				--menu-width: 64px;
 				--menu-opened-width: 280px;
 				will-change: width;
-				overflow: hidden;
 			}
 
 			:host([opened]) {
@@ -45,6 +44,8 @@ class PlAppSide extends PlElement {
 			.logo {
 				display: flex;
 				padding: 8px;
+				margin-bottom: 8px;
+				overflow: hidden;
 			}
 
 			.menuItems {
