@@ -3,16 +3,15 @@
     /*Pinewood green */
     --primary-base: #3A817D;
     --primary-dark: #1C635F;
-    --primary-darkest: #084F4B;
-    --primary-light:#6BB1AC;
-    --primary-lightest: #DEF5EB;
+    --primary-darkest: #244751;
+    --primary-light:#BBD8CB;
+    --primary-lightest: #EAF4EF;
     
-    --negative-base: #FA4547;
+    --negative-base: #F54A4B;
     --negative-dark: #C83739;
     --negative-darkest: #7D2223;
-    --negative-light: #FDA2A3;
-    --negative-lightest: #FFECED;
-
+    --negative-light: #FEC3C4;
+    --negative-lightest: #FFECED;;
 
     --attention-base: #F9CF33;
     --attention-dark: #E0A61F;
