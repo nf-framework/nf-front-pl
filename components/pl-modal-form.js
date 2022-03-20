@@ -25,7 +25,7 @@ class PlModalForm extends PlElement {
             :host .modal{
                 height: 100%;
                 position: fixed;
-                background: rgb(255, 255, 255);
+                background: var(--background-color);
                 will-change: contents;
                 top: 0px;
                 opacity: 0;

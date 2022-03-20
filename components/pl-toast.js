@@ -8,59 +8,62 @@ class PlToast extends PlElement {
         :host {
             display: flex;
             position: fixed;
-            left: 50%;
-            transform: translateX(-50%) translateY(110%);
-            bottom: 0;
+            right: 0;
+            transform: translateX(-5%) translateY(-100%);
+            top: 0;
             background-color: var(--menu-background-color);
             color: white;
             text-align: center;
             border-radius: 4px;
             padding: 16px;
+            width: 320px;
           }
           :host(.show) {
-            bottom: 32px;
-            transform: translateX(-50%);
+            top: 32px;
+            transform: translateX(-5%) translateY(0);
             -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
             animation: fadein 0.5s, fadeout 0.5s 2.5s;
           }
           @-webkit-keyframes fadein {
             from {
-              bottom: 0;
-              transform: translateX(-50%) translateY(110%);
+              top: 0;
+              transform: translateX(-5%) translateY(-100%);
             }
             to {
-              bottom: 32px;
-              transform: translateX(-50%) translateY(0);
+              top: 32px;
+              transform: translateX(-5%) translateY(0);
             }
           }
           @keyframes fadein {
             from {
-              bottom: 0;
-              transform: translateX(-50%) translateY(110%);
+              top: 0;
+              transform: translateX(-5%) translateY(-100%);
             }
             to {
-              bottom: 32px;
-              transform: translateX(-50%) translateY(0);
+              top: 32px;
+              transform: translateX(-5%) translateY(0);
             }
           }
           @-webkit-keyframes fadeout {
             from {
-              bottom: 32px;
-              transform: translateX(-50%) translateY(0);
+              top: 32px;
+              transform: translateX(-5%) translateY(0);
             }
             to {
-              bottom: 0;
-              transform: translateX(-50%) translateY(110%);
+              top: 0;
+              transform: translateX(-5%) translateY(-100%);
             }
           }
           @keyframes fadeout {
             from {
-              bottom: 32px;
-              transform: translateX(-50%) translateY(0);
+              top: 32px;
+              opacity: 1;
+              transform: translateX(-5%) translateY(0);
             }
             to {
-              bottom: 0;
-              transform: translateX(-50%) translateY(110%);
+              top: 0;
+              opacity: 0;
+              transform: translateX(-5%) translateY(-100%);
             }
           }
         `;

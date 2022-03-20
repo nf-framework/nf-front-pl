@@ -26,6 +26,8 @@ class App extends PlElement {
 			this.aSessionCheck.execute()
 		})
 
+		customLoader('pl-toast');
+
 		this.resizers = [];
 
 		window.addEventListener('authorized', () => {
@@ -49,13 +51,25 @@ class App extends PlElement {
 
 		resizeObserver.observe(document.body);
 		document.querySelector('#preloader').style.display = "none";
+		document.addEventListener('error', this.showError.bind(this));
+        document.addEventListener('success', this.showSuccess.bind(this));
+
 	}
 
 	static get template() {
 		return html`
 			<pl-action id="aSessionCheck" data="{{auth}}"  endpoint="/front/action/checkSession"></pl-action>
+			<pl-toast id="toast"></pl-toast>
 		`;
 	}
+
+	showError(e) {
+        this.$.toast.show(e.detail)
+    }
+
+    showSuccess(e) {
+        this.$.toast.show(e.detail.message)
+    }
 
 	async _authObserver(auth) {
 		if (auth) {

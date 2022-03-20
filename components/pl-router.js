@@ -25,8 +25,8 @@ class PlRouter extends PlElement {
                 height: 100%;
                 width: 100%;
                 overflow: hidden;
-                background: var(--white);
-                padding: 0 16px 16px 16px;
+                background: var(--background-color);
+                padding: 0 var(--space-lg) var(--space-lg) var(--space-lg);
                 box-sizing: border-box;
             }
 

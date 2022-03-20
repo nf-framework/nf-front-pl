@@ -25,16 +25,16 @@ class PlAppMenu extends PlElement {
                 display: flex;
                 flex-direction: column;
                 align-items: flex-start;
-                padding: 16px;
+                padding: var(--space-lg);
                 position: absolute;
                 width: 360px;
                 top: 50%;  
                 left: 50%;
                 transform: translate(-50%, -50%);                
-                background: #FFFFFF;
+                background: var(--surface-color);
                 box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.08);
-                border-radius: 4px;
-                gap: 8px;
+                border-radius: var(--border-radius);
+                gap: var(--space-md);
             }
 
             .header {
@@ -44,23 +44,18 @@ class PlAppMenu extends PlElement {
 
             .header-text {
                 width: 100%;
-                font-weight: bold;
-                font-size: 14px;
-                line-height: 16px;
-                color: #2B2F33;
+                font: var(--font-h3);
+                color: var(--header-color);
             }
 
             .content {
-                font-style: normal;
-                font-weight: normal;
-                font-size: 13px;
-                line-height: 18px;
-                color: #464B52;
+                font: var(--text-font);
+                color: var(--text-color);
             }
 
             .button {
                 display: flex;
-                gap: 8px;
+                gap: var(--space-lg);
                 width: 100%;
                 justify-content: flex-end;
             }

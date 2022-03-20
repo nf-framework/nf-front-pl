@@ -79,9 +79,16 @@ async function login(context) {
     let { login, password } = context.body.args;
     let data = {};
     let r = await auth.login(login, password, context.session);
-    data = r.result;
-    context.send({ data });
-    context.end();
+
+    if(!r.result) {
+        const err = api.nfError(new Error(r.detail[0].result.detail));
+        context.send(err.json());
+        context.end();
+    } else {
+        data = r.result;
+        context.send({ data });
+        context.end();
+    }
 }
 
 async function logout(context) {

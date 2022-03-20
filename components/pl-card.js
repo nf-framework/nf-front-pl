@@ -52,11 +52,10 @@ class PlCard extends PlElement {
             }
             
             .header-text {
-                font: var(--font-lg);
+                font: var(--font-h1);
                 color: var(--black-base);
                 text-align: start;
                 flex: 1 1 0%;
-                font-weight: 500;
             }
 
             .content {

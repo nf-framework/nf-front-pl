@@ -38,7 +38,7 @@ export default class MainView extends PlForm {
             }
             
             .content {
-                background: white;
+                background: var(--background-color);
                 margin-left: 64px;
                 display: flex;
                 flex-direction: column;
@@ -65,7 +65,7 @@ export default class MainView extends PlForm {
         return html`
             <pl-dataset id="dsMenu" data="{{menuItems}}" endpoint="/front/action/getMenu"></pl-dataset>
             <pl-app-side id="menu" opened={{menuOpened}} items="[[menuItems]]" on-menu-item-selected="[[onMenuItemSelected]]">
-                <pl-icon-button slot="logo" iconset="pl-default" icon="menu" variant="link" on-click="[[onMenuButtonClick]]">
+            <pl-icon-button slot="logo" iconset="pl-default" icon="menu" variant="link" on-click="[[onMenuButtonClick]]">
                 </pl-icon-button>
                 <pl-flex-layout vertical slot="bottom">
                     <pl-icon-button variant="link" size="24" id="btnProfile" iconset="pl-default" icon="profile"
