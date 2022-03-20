@@ -95,19 +95,8 @@ export default class MainView extends PlForm {
     }
 
     onConnect() {
-        document.addEventListener('error', this.showError.bind(this));
-        document.addEventListener('success', this.showSuccess.bind(this));
-
         this.$.dsMenu.execute();
         this.$.aGetUserProfile.execute();
-    }
-
-    showError(e) {
-        this.$.toast.show(e.detail)
-    }
-
-    showSuccess(e) {
-        this.$.toast.show(e.detail.message)
     }
 
     onMenuButtonClick() {
