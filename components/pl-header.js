@@ -27,12 +27,9 @@ class PlHeader extends PlElement {
                 border: 1px solid var(--grey-light);
                 border-radius: 4px;
                 cursor: pointer;
-                --pl-icon-fill-color: none;
-                --pl-icon-stroke-color: var(--black-light);
             }
 
             .back:hover {
-                --pl-icon-stroke-color: var(--black-dark);
                 border: 1px solid var(--grey-base);
             }
             
@@ -42,14 +39,14 @@ class PlHeader extends PlElement {
                 user-select: none;
             }
             .form-breadcrumbs {
-                font: var(--font-sm);
+                font: var(--header-font);
                 color: var(--grey-darkest);
+                font-weight: 400;
             }
 
             #form-label {
-                font: var(--font-xl);
-                font-weight: 500;
-                color: var(--black-base);
+                font: var(--font-h2);
+                color: var(--text-color);
             }
         `;
     }
