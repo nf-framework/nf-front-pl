@@ -24,8 +24,7 @@ class PlAppSideList extends PlElement {
 
             :host([variant="main"]) .items-flex:hover {
                 --menu-background-color: var(--primary-base);
-                --pl-icon-fill-color: var(--white);
-                color: var(--white);
+                color: var(--primary-lightest);
                 transition: 0.3s;
             }
 
@@ -70,12 +69,8 @@ class PlAppSideList extends PlElement {
             .submenu-caption {
                 user-select: none;
                 flex-grow: 1;
-                padding-right: 8px;
+                
             } 
-
-            :host([opened]) .submenu-caption {
-                display: inline-flex;
-			}
 
             :host([opened]) .chevron {
                 display: inline-flex;

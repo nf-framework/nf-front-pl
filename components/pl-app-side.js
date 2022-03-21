@@ -27,7 +27,7 @@ class PlAppSide extends PlElement {
 				user-select: none;
 				height: 100%;
 				background: var(--menu-background-color);
-				transition: 0.3s;
+				transition: all 0.3s ease-in-out;
 				--menu-width: 64px;
 				--menu-opened-width: 280px;
 				will-change: width;
@@ -35,17 +35,18 @@ class PlAppSide extends PlElement {
 
 			:host([opened]) {
 				width: var(--menu-opened-width);
+				transition: all 0.3s ease-in-out;
 			}
 
-			:host ::slotted(pl-icon-button) {
-				fill: red;
+			:host([opened]) .logo {
+				align-items: flex-start;
 			}
 
 			.logo {
 				display: flex;
-				padding: 8px;
-				margin-bottom: 8px;
-				overflow: hidden;
+				flex-direction: column;
+				padding: 8px 16px;
+				align-items: center;
 			}
 
 			.menuItems {
@@ -93,6 +94,7 @@ class PlAppSide extends PlElement {
 		return html`
 			<div class="logo">
 				<slot name="logo"></slot>
+				<slot name="toggle"></slot>
 			</div>
 			<div class="submenu">
 				<pl-repeat items="[[_selectedItemsStack]]" as="subitem" >
@@ -164,7 +166,7 @@ class PlAppSide extends PlElement {
         for (let i = this._selectedItemsStack.length; i--;) {
             const item = this._selectedItemsStack[i];
             if (item.items.some(item => item.id === value.id)) {
-                this.splice('_selectedItemsStack', i, 1);
+                this.splice('_selectedItemsStack', i + 1);
                 found = true;
                 break;
             }

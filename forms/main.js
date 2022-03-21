@@ -47,16 +47,76 @@ export default class MainView extends PlForm {
                 overflow-y: auto;
             }
 
+            #btnProfile {
+                margin-bottom: 16px;
+            }
+
             #ddProfile {
                 width: auto;
-                background: #FFFFFF;
+                background: var(--background-color);
                 color: #3F3F3F;
                 padding: 16px 8px;
-                border-radius: 4px;
+                border-radius: var(--border-radius);
+                box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.12);
             }
 
             pl-icon-button[variant="link"] {
-                color: white;
+               --primary-base: var(--grey-light);
+               --primary-dark: var(--grey-lightest);
+               --primary-darkest:#fff;
+            }
+
+            .logo {
+                transform: scale(1);
+                transition: .3s;
+                flex-shrink: 0;
+            }
+
+            pl-app-side[opened] .logo {
+                transform: scale(1.1);
+                transition: .3s;
+                margin-left: 16px;
+            }
+
+            pl-app-side[opened] .icon-open {
+                transition: all 0.3s ease-in-out 0s;
+                transform: translateX(-41px);
+            }
+            
+            .logo-wrapper {
+                min-height: 40px;
+                margin: 16px 0;
+                verflow: hidden;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                overflow: hidden;
+            }
+
+            .close-icon {
+                display: none;
+            }
+
+            pl-app-side[opened] .close-icon {
+                display: inline-flex;
+            }
+
+            @keyframes show{
+                0%{
+                    opacity:0;
+                }
+                100% {
+                    opacity:1;
+                }
+            }
+
+            .logo{
+                height: 32px;
+                width: 200px;
+                background: url(/front-pl/menu-logo.svg);
+                background-repeat: no-repeat;
+                background-size: contain;
             }
         `;
     }
@@ -65,8 +125,11 @@ export default class MainView extends PlForm {
         return html`
             <pl-dataset id="dsMenu" data="{{menuItems}}" endpoint="/front/action/getMenu"></pl-dataset>
             <pl-app-side id="menu" opened={{menuOpened}} items="[[menuItems]]" on-menu-item-selected="[[onMenuItemSelected]]">
-            <pl-icon-button slot="logo" iconset="pl-default" icon="menu" variant="link" on-click="[[onMenuButtonClick]]">
-                </pl-icon-button>
+            <div slot="logo" class="logo-wrapper">
+                    <div class="logo" slot="logo"></div>
+                    <pl-icon-button variant="primary" class="close-icon" slot="logo" iconset="pl-default" icon="chevron-left" on-click="[[onMenuButtonClick]]"></pl-icon-button>
+                </div>
+                <pl-icon-button variant="link"  class="icon-open" slot="logo" iconset="pl-default" icon="menu" on-click="[[onMenuButtonClick]]"></pl-icon-button>
                 <pl-flex-layout vertical slot="bottom">
                     <pl-icon-button variant="link" size="24" id="btnProfile" iconset="pl-default" icon="profile"
                         on-click="[[onProfileClick]]"></pl-icon-button>
@@ -90,7 +153,6 @@ export default class MainView extends PlForm {
             </pl-dropdown>
             <pl-action id="aLogout" endpoint="/front/action/logout"></pl-action>
             <pl-action id="aGetUserProfile" data="{{userProfile}}" endpoint="/front/action/getUserProfile"></pl-action>
-            <pl-toast id="toast"></pl-toast>
         `;
     }
 
