@@ -76,6 +76,8 @@ class PlDataset extends PlElement {
     }
 
     async execute(args, opts) {
+        let _args = args || this.args;
+
         try {
             let {merge, placeHolder} = opts ?? {};
             let chunk_start, chunk_end;
@@ -93,7 +95,7 @@ class PlDataset extends PlElement {
             const req = await requestData(this.endpoint, {
                 headers: { 'Content-Type': 'application/json' },
                 method: 'POST',
-                body: JSON.stringify( this.prepareEndpointParams(args, { range: { chunk_start, chunk_end } }) ),
+                body: JSON.stringify( this.prepareEndpointParams(_args, { range: { chunk_start, chunk_end } }) ),
                 unauthorized: this.unauthorized
             });
             const json = await req.json();
