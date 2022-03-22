@@ -17,6 +17,11 @@ class PlCodeEditor extends PlElement {
 
     static get css() {
         return css`
+            :host {
+                dispaly: block;
+                width: 100%;
+                height: 100%;
+            }
             #editor{
                 width: 100%;
                 height: 100%;
