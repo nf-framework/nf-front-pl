@@ -140,6 +140,7 @@ class PlRouter extends PlElement {
         });
 
         if (formInfo) {
+            formInfo.formActivityTime = new Date();
             formInfo.form.classList.add('current');
             this.currentForm = formInfo.form;
 
@@ -159,8 +160,11 @@ class PlRouter extends PlElement {
         const frmIdx = this.forms.findIndex(x => x.form == e.target);
         this.splice('forms', frmIdx, 1);
         if (this.forms.length > 0) {
-            const lastFormInfo = this.forms[this.forms.length - 1];
-            this.current = lastFormInfo;
+            let sortedThreads = this.forms.slice().sort((a, b) => {
+                return new Date(a.date).getTime() > new Date(b.date).getTime() ? 1 : -1;  
+            });
+
+            this.current = sortedThreads[0];
         } else {
             history.pushState({}, null, '#');
             this.openForm(null);
