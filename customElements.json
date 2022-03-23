@@ -12,6 +12,15 @@
         "path": "@nfjs/front-pl/components/pl-card.js"
     },
     {
+        "name": "pl-file-upload",
+        "path": "@nfjs/front-pl/components/pl-file-upload.js"
+    },
+    {
+        "name": "pl-file-preview",
+        "path": "@nfjs/front-pl/components/pl-file-preview.js"
+    },
+
+    {
         "name": "pl-comboinput",
         "path": "@nfjs/front-pl/components/pl-comboinput.js"
     },
