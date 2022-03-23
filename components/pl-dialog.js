@@ -55,7 +55,7 @@ class PlAppMenu extends PlElement {
 
             .button {
                 display: flex;
-                gap: var(--space-lg);
+                gap: var(--space-sm);
                 width: 100%;
                 justify-content: flex-end;
             }
