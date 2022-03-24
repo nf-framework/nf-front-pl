@@ -12,6 +12,10 @@ const __dirname = path.join(path.dirname(decodeURI(new URL(import.meta.url).path
 const menu = await api.loadJSON(`${__dirname}/menu.json`);
 const customElementsJson = await api.loadJSON(`${__dirname}/customElements.json`);
 
+const meta = {
+    customElements: customElementsJson
+};
+
 async function formsHandler(context) {
     try {
         const formPath = context.params.form.replace(/\./g, '/');
@@ -53,7 +57,15 @@ async function formsHandler(context) {
 async function customElementsHandler(context) {
     try {
         const customElementName = context.params.component;
-        const finded = customElementsJson.find(x => x.name == customElementName);
+        const elements = extension.getExtensionsMetaByName('customElements');
+
+        let finded = null;
+        elements.forEach(elementArr => {
+            if(elementArr.find(x => x.name == customElementName)) {
+                finded = elementArr.find(x => x.name == customElementName);
+            }
+        });
+
         if(!finded) {
             console.error('Not Found', customElementName);
             throw new Error(`${customElementName} not found`);
@@ -117,6 +129,7 @@ async function init() {
     registerLibDir('@plcmp');
     registerLibDir('@nfjs/core/api/common.js', 'node_modules/@nfjs/core/api/common.js', { singleFile: true });
 
+
     web.on('GET', '/forms/:form', formsHandler);
     web.on('GET', '/load-custom-element/:component', customElementsHandler);
 
@@ -154,5 +167,6 @@ async function init() {
 
 export {
     init,
-    menu
+    menu,
+    meta
 };
