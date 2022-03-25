@@ -7,10 +7,12 @@ class PlFileUpload extends PlElement {
         return {
             dragActive: {
                 type: Boolean,
-                reflectToAttribute: true
+                reflectToAttribute: true,
+                value: false
             },
             multiple: {
-                type: Boolean
+                type: Boolean,
+                value: false
             },
             files: {
                 type: Array,
@@ -18,7 +20,8 @@ class PlFileUpload extends PlElement {
             },
             required: {
                 type: Boolean,
-                reflectToAttribute: true
+                reflectToAttribute: true,
+                value: false
             },
             accept: {
                 type: String
@@ -26,6 +29,10 @@ class PlFileUpload extends PlElement {
             endpoint: {
                 type: String,
                 value: 'upload'
+            },
+            downloadEndpoint: {
+                type: String,
+                value: 'download'
             }
         }
     }
@@ -86,26 +93,26 @@ class PlFileUpload extends PlElement {
 
     static get template() {
         return html`
-            <div id="uploader" class="uploader-container" on-click="[[onFileClick]]">
-                <input title="uploader" id="fileInput" accept="[[accept]]" type="file" multiple="[[multiple]]"
-                    on-change="[[onFileInputChange]]" hidden />
+            <div id="uploader" class="uploader-container">
+                <input id="fileInput" accept$="[[accept]]" type="file" multiple$="[[multiple]]" on-change="[[onFileInputChange]]" hidden/>
                 <pl-icon iconset="pl-default" size="32" icon="upload"></pl-icon>
             
                 <span class="hint">Перетащите файлы или нажмите здесь, чтобы загрузить</span>
             </div>
-            <pl-file-preview closable="true" files="{{files}}"></pl-file-preview>
+            <pl-file-preview endpoint="[[downloadEndpoint]]" can-delete="true" files="{{files}}" on-cancel-upload="[[onCancel]]"></pl-file-preview>
         `;
     }
 
     connectedCallback() {
         super.connectedCallback();
-        this.$.uploader.addEventListener("dragenter", this.dragenter, false);
-        this.$.uploader.addEventListener("dragover", this.dragover, false);
-        this.$.uploader.addEventListener("dragleave", this.dragleave, false);
-        this.$.uploader.addEventListener("drop", this.drop, false);
+        this.$.uploader.addEventListener('click', this.onFileClick.bind(this), false);
+        this.$.uploader.addEventListener("dragenter", this.dragenter.bind(this), false);
+        this.$.uploader.addEventListener("dragover", this.dragover.bind(this), false);
+        this.$.uploader.addEventListener("dragleave", this.dragleave.bind(this), false);
+        this.$.uploader.addEventListener("drop", this.drop.bind(this), false);
     }
 
-    onFileClick() {
+    onFileClick(event) {
         this.$.fileInput.click()
     }
 
@@ -120,7 +127,6 @@ class PlFileUpload extends PlElement {
         this.dragActive = false;
         e.stopPropagation();
         e.preventDefault();
-
     }
 
     dragover(e) {
@@ -199,6 +205,7 @@ class PlFileUpload extends PlElement {
         const xhr = new XMLHttpRequest();
         const formData = new FormData();
         const url = this.endpoint;
+        file._xhr = xhr;
         const idx = this.files.indexOf(file);
         formData.append('file', file, file.name);
         xhr.upload.onprogress = (event) => {

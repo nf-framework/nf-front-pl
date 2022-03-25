@@ -9,7 +9,7 @@ class PlFilePreview extends PlElement {
                 type: Array,
                 value: []
             },
-            closable: {
+            canDelete: {
                 type: Boolean,
                 value: false
             },
@@ -35,13 +35,15 @@ class PlFilePreview extends PlElement {
                 box-sizing: border-box;
                 border: 1px solid var(--grey-base);
                 border-radius: var(--border-radius);
+                position: relative;
+                overflow: hidden;
             }
 
             .file-info-container {
                 display:flex;
                 flex-direction:row;
                 justify-content:space-between;
-                width: 100$;
+                width: 100%;
                 height: 100%;
             }
 
@@ -55,6 +57,11 @@ class PlFilePreview extends PlElement {
                 height: 48px;
             }
 
+            .progress {
+                position: absolute;
+                bottom: 0;
+            }
+
             progress {
                 width: 100%;
                 height: 4px;
@@ -62,8 +69,12 @@ class PlFilePreview extends PlElement {
             }
 
             progress::-webkit-progress-value { background: var(--primary-base); }
-            progress::-moz-progress-bar { background: var(--primary-base);; }
-
+            progress::-moz-progress-bar { background: var(--primary-base); }
+            progress[value]::-webkit-progress-bar {
+                background-color: var(--grey-light);
+                border-radius: var(--border-radius);
+              }
+              
 
             .data-container {
                 display: flex;
@@ -104,15 +115,18 @@ class PlFilePreview extends PlElement {
                         </div>
                         <div class="data-container">
                             <div class="name">
-                                <a href="[[_getDownloadUrl(endpoint, item.value)]]" download="[[_getDownloadUrl(endpoint, item.name)]]">[[item.name]]</a>
+                                [[item.name]]
                             </div>
                             <div class="size">[[getFileSize(item.value, item.loaded, item.size)]]</div>
                         </div>
                         <div class="tools">
-                            <pl-icon-button hidden="[[!closable]]"  variant="link" iconset="pl-default" size="16" icon="close" on-click="[[onCloseClick]]"></pl-icon-button>
+                            <pl-icon-button hidden="[[!canDelete]]" variant="link" iconset="pl-default" size="16" icon="close"
+                                on-click="[[onCloseClick]]"></pl-icon-button>
+                            <pl-icon-button hidden="[[!item.value]]" variant="link" iconset="pl-default" size="16"
+                                icon="download" on-click="[[onDownloadClick]]"></pl-icon-button>
                         </div>
                     </div>
-                    <progress class="progress" max="100" value="[[item.progress]]"></progress>
+                    <progress hidden="[[item.value]]" class="progress" max="100" value="[[item.progress]]"></progress>
                 </div>
             </template>
         </pl-repeat>
@@ -123,14 +137,30 @@ class PlFilePreview extends PlElement {
         return `${endpoint}/${url}`;
     }
 
+    onDownloadClick(event) {
+        const link = document.createElement("a");
+        link.target = "_blank";
+
+        // Construct the URI
+        link.href = `${this.endpoint}/${event.model.item.value}`;
+        document.body.appendChild(link);
+        link.click();
+
+        // Cleanup the DOM
+        document.body.removeChild(link);
+    }
+
     getFileSize(value, loaded, size) {
-        if(value) {
+        if (value) {
             return `${(loaded / 1024).toFixed(2)} KB`;
         }
         return loaded && size ? `${(loaded / 1024).toFixed(2)} KB / ${(size / 1024).toFixed(2)} KB` : '';
     }
 
     onCloseClick(event) {
+        if(event.model.item._xhr) {
+            event.model.item._xhr.abort();
+        }
         this.splice('files', this.files.findIndex(x => event.model.item), 1);
     }
 }
