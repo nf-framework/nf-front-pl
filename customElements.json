@@ -194,6 +194,10 @@
     },
     {
         "name": "pl-virtual-scroll",
-        "path": "@plcmp/pl-virtual-scroll.js"
+        "path": "@plcmp/pl-virtual-scroll/pl-virtual-scroll.js"
+    },
+    {
+        "name": "pl-dom-if",
+        "path": "@plcmp/pl-dom-if/pl-dom-if.js"
     }
 ]
