@@ -38,15 +38,10 @@ class PlAppSide extends PlElement {
 				transition: all 0.3s ease-in-out;
 			}
 
-			:host([opened]) .logo {
-				align-items: flex-start;
-			}
-
 			.logo {
 				display: flex;
 				flex-direction: column;
 				padding: 8px 16px;
-				align-items: center;
 			}
 
 			.menuItems {

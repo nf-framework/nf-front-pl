@@ -67,20 +67,17 @@ export default class MainView extends PlForm {
             }
 
             .logo {
-                transform: scale(1);
-                transition: .3s;
                 flex-shrink: 0;
             }
 
-            pl-app-side[opened] .logo {
-                transform: scale(1.1);
-                transition: .3s;
-                margin-left: 16px;
+            pl-app-side .icon-open {
+                transition: all 0.3s ease-in 0s;
+                transform: translateX(0);
             }
 
             pl-app-side[opened] .icon-open {
-                transition: all 0.3s ease-in-out 0s;
-                transform: translateX(-41px);
+                transition: all 0.3s ease-in 0s;
+                transform: translateX(-45px);
             }
             
             .logo-wrapper {
@@ -100,15 +97,6 @@ export default class MainView extends PlForm {
 
             pl-app-side[opened] .close-icon {
                 display: inline-flex;
-            }
-
-            @keyframes show{
-                0%{
-                    opacity:0;
-                }
-                100% {
-                    opacity:1;
-                }
             }
 
             .logo{
