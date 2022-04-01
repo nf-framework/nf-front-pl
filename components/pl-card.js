@@ -28,8 +28,8 @@ class PlCard extends PlElement {
             }
 
             :host([fit]) {
-                height: 100% !important;
-                width: 100% !important;
+                height: 100%;
+                width: 100%;
             }
 
             .header {
