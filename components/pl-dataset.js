@@ -103,15 +103,15 @@ class PlDataset extends PlElement {
             if (error) throw error;
 
             if (data.length && this.data.control?.partialData) {
-                if (data[0].r_n_ < chunk_start) {
-                    if (this.data[data[0].r_n_]) {
+                if (data[0]._rn < chunk_start) {
+                    if (this.data[data[0]._rn]) {
                         data.shift();
                     } else {
-                        data[0] = new PlaceHolder({ rn: data[0].r_n_ ?? chunk_start });
+                        data[0] = new PlaceHolder({ rn: data[0]._rn ?? chunk_start });
                     }
                 }
-                if (data[data.length - 1].r_n_ > chunk_end) {
-                    data[data.length - 1] = new PlaceHolder({ rn: data[data.length - 1].r_n_ ?? chunk_end });
+                if (data[data.length - 1]._rn > chunk_end) {
+                    data[data.length - 1] = new PlaceHolder({ rn: data[data.length - 1]._rn ?? chunk_end });
                 }
             }
 
