@@ -150,7 +150,7 @@ class PlAppSide extends PlElement {
 		} else {
 			removeOverlay(this);
 		}
-		addEventListener('click', this._close, { capture: true, once: true });
+		// addEventListener('click', this._close, { capture: true, once: true });
 	}
 
 	_selectedObserver(value) {
