@@ -16,6 +16,13 @@ class PlDataset extends PlElement {
             executeOnArgsChange: {
                 type: Boolean
             },
+            executing: {
+                type: Boolean,
+                value: false
+            },
+            requiredArgs: {
+                type: String
+            },
             data: {
                 observer: '_dataObserver'
             },
@@ -55,7 +62,7 @@ class PlDataset extends PlElement {
     }
     _argsChanged() {
         if (this.executeOnArgsChange) {
-            this.execute(this.args);
+            this.execute(this.args, {executedOnArgsChange: true});
         }
     }
     _dataObserver(val, oldVal, mut) {
@@ -76,10 +83,21 @@ class PlDataset extends PlElement {
     }
 
     async execute(args, opts) {
-        let _args = args || this.args;
-
+        this.executing = true;
         try {
-            let {merge, placeHolder} = opts ?? {};
+            let _args = args || this.args;
+            const { merge, placeHolder, executedOnArgsChange = false } = opts ?? {};
+
+            const reqArgs = this.requiredArgs ? this.requiredArgs.split(';') : [];
+            if (reqArgs.length > 0 && (!_args || reqArgs.find(r => _args[r] === undefined || _args[r] === null))) {
+                if (executedOnArgsChange) {
+                    this.executing = false;
+                    return;
+                }
+                const needArgs = reqArgs.filter(r => !_args || _args[r] === undefined || _args[r] === null).join();
+                throw new Error(`Не переданы обязательные параметры [${needArgs}]`);
+            }
+
             let chunk_start, chunk_end;
             if (this.data?.control?.partialData) {
                 if (!merge) {
@@ -129,13 +147,12 @@ class PlDataset extends PlElement {
             } else {
                 this.data = ControlledArray.from(data);
             }
-
+            this.executing = false;
             return this.data;
-
-        }
-        catch (err) {
-            console.log(err);
-            document.dispatchEvent(new CustomEvent('error', {detail: err}));
+        } catch (e) {
+            this.executing = false;
+            document.dispatchEvent(new CustomEvent('error', {detail: e}));
+            throw e;
         }
     }
 }

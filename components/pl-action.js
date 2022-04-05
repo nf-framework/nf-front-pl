@@ -22,6 +22,9 @@ class PlAction extends PlElement {
                 type: Boolean,
                 value: false
             },
+            requiredArgs: {
+                type: String
+            },
             data: {
                 type: Object
             },
@@ -48,7 +51,7 @@ class PlAction extends PlElement {
 
     _argsChanged(val) {
         if (this.executeOnArgsChange) {
-            this.execute(this.args);
+            this.execute(this.args, { executedOnArgsChange: true });
         }
     }
 
@@ -101,7 +104,7 @@ class PlAction extends PlElement {
         return clonePaths(args, 'root');
     }
 
-    async execute(args) {
+    async execute(args, opts) {
         this.executing = true;
         try {
             let _args = args || this.args;
@@ -111,6 +114,18 @@ class PlAction extends PlElement {
             _args = cloneDeep(_args);
             // Очистка от служебных свойств (начинаются с __)
             clearObj(_args);
+
+            const {executedOnArgsChange = false } = opts ?? {};
+            const reqArgs = this.requiredArgs ? this.requiredArgs.split(';') : [];
+            if (reqArgs.length > 0 && (!_args || reqArgs.find(r => _args[r] === undefined || _args[r] === null))) {
+                if (executedOnArgsChange) {
+                    this.executing = false;
+                    return;
+                }
+                const needArgs = reqArgs.filter(r => !_args || _args[r] === undefined || _args[r] === null).join();
+                throw new Error(`Не переданы обязательные параметры [${needArgs}]`);
+            }
+
             let url = this.endpoint;
             const params = {
                 headers: { 'Content-Type': 'application/json' },
@@ -133,10 +148,10 @@ class PlAction extends PlElement {
             this.executing = false;
             return this.data;
         }
-        catch (err) {
+        catch (e) {
             this.executing = false;
-            console.log(err);
-            document.dispatchEvent(new CustomEvent('error', { detail: err }));
+            document.dispatchEvent(new CustomEvent('error', { detail: e }));
+            throw e;
         }
     }
 }
