@@ -147,7 +147,7 @@ class PlRouter extends PlElement {
             if (history.state?.formId === formInfo.formId) {
                 return;
             } else {
-                history.pushState({
+                history.replaceState({
                     formId: formInfo.formId
                 }, null, formInfo.formId);
             }
@@ -166,7 +166,7 @@ class PlRouter extends PlElement {
 
             this.current = sortedThreads[0];
         } else {
-            history.pushState({}, null, '#');
+            history.replaceState({}, null, '#');
             this.openForm(null);
         }
     }
