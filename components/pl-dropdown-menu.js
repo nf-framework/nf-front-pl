@@ -38,8 +38,8 @@ class PlDropdownMenu extends PlElement {
         `;
     }
 
-    open(target, fitInto) {
-        this.$.dd.open(target, fitInto);
+    open(target, fitInto, opts) {
+        this.$.dd.open(target, fitInto, opts);
     }
 
     close(){
