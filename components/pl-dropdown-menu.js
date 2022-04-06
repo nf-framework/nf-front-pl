@@ -1,5 +1,5 @@
 import { PlElement, html, css } from "polylib";
-import { PlDropdown } from '@plcmp/pl-dropdown';
+import '@plcmp/pl-dropdown';
 
 class PlDropdownMenu extends PlElement {
     static get properties() {
