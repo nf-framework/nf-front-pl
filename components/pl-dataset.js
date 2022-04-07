@@ -117,8 +117,18 @@ class PlDataset extends PlElement {
                 unauthorized: this.unauthorized
             });
             const json = await req.json();
-            const { data, error, stack } = json;
+            let { data, rowMode, metaData, error } = json;
             if (error) throw error;
+            // преобразование в формат [{field1:"value",field2:"value"},...]
+            if (rowMode === 'array' && metaData) {
+                data = data.map(element => {
+                    const newElement = {};
+                    metaData.forEach((currField, i) => {
+                        newElement[currField.name] = element[i];
+                    });
+                    return newElement;
+                });
+            }
 
             if (data.length && this.data.control?.partialData) {
                 if (data[0]._rn < chunk_start) {
