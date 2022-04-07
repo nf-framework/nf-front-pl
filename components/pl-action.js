@@ -87,17 +87,17 @@ class PlAction extends PlElement {
                     }
                     return { add: [], upd: [], del: [] };
                 }
-                // либо отправляем массив с указанием _action в элементах
+                // либо отправляем массив с указанием $action в элементах
                 if (obj._mutations) {
                     Object.keys(obj._mutations).forEach((key) => {
-                        result.push(...obj._mutations[key].map(el => clonePaths(Object.assign({}, el, { _action: key }), path)));
+                        result.push(...obj._mutations[key].map(el => clonePaths(Object.assign({}, el, { $action: key }), path)));
                     });
                     return result;
                 }
                 return [];
             }
             if (getPath(pathTree, path) !== undefined) {
-                if(obj.__changed) result._action = 'upd';
+                if(obj.__changed) result.$action = 'upd';
             }
             return Object.assign(result, ...Object.keys(obj).map(key => ({ [key]: clonePaths(obj[key], `${path}.${key}`) })));
         }
