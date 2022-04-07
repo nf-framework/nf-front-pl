@@ -6,7 +6,8 @@ import { debounce } from "@plcmp/utils";
 class PlCodeEditor extends PlElement {
     static get properties() {
         return {
-            value: { type: String, value: '', observer: 'valueChange' }
+            value: { type: String, value: '', observer: 'valueChange' },
+            mode: { type: String, observer: 'modeChange' }
         }
     }
     static get template() {
@@ -32,9 +33,7 @@ class PlCodeEditor extends PlElement {
     fromEditor = false;
     connectedCallback() {
         super.connectedCallback();
-        this.editor = ace.edit(this.$.editor, {
-            mode: "ace/mode/typescript"
-        });
+        this.editor = ace.edit(this.$.editor);
         this.editor.renderer.attachToShadowRoot();
         this.editor.on('change', e => {
             let debouncer = debounce(() => {
@@ -49,6 +48,9 @@ class PlCodeEditor extends PlElement {
         if (this.fromEditor) return;
         this.editor.session.setValue(value || '');
         this.fromEditor = false;
+    }
+    modeChange(mode) {
+        this.editor.session.setMode(mode);
     }
 }
 
