@@ -64,7 +64,7 @@ class App extends PlElement {
 	}
 
 	showError(e) {
-        this.$.toast.show(e.detail)
+        this.$.toast.show(e.detail.message)
     }
 
     showSuccess(e) {
