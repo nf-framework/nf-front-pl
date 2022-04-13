@@ -4,7 +4,8 @@ class PlTab extends PlElement {
 	static get properties() {
 		return {
 			header: { type: String },
-			active: { type: Boolean, reflectToAttribute: true }
+			active: { type: Boolean, reflectToAttribute: true },
+			hidden: { type: Boolean, reflectToAttribute: true }
 		}
 	}
 
@@ -12,6 +13,14 @@ class PlTab extends PlElement {
 		return html`
 	      <slot></slot>
       	`;
+	}
+
+	static get css() {
+		return css`
+            :host([hidden]) {
+                display: none;
+            }
+        `;
 	}
 }
 
