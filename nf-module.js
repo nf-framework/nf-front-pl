@@ -37,7 +37,7 @@ async function formsHandler(context) {
             { customOptions, contentType, mimeType, minify: false },
             async () => {
                 let form = await fs.readFile(file, 'utf8');
-                const rex = new RegExp('serverEndpoints(.*|\\n|\\r\\n)*\\/\\/serverEndpoints', 'm');
+                const rex = new RegExp('serverEndpoints.*\\/\\/serverEndpoints', 's');
                 const serverEndpointText = form.match(rex);
                 if (serverEndpointText) {
                     await ComponentCache.save(`/pl-form/${context.params.form}.js`, `export const ${serverEndpointText[0]}`);
