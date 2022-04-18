@@ -100,7 +100,7 @@ class PlAppSideList extends PlElement {
     }
 
     onMenuClick(event) {
-        this.dispatchEvent(new CustomEvent('menuClick', { detail: event.model.item, bubbles: true, composed: true }));
+        this.dispatchEvent(new CustomEvent('menuClick', { detail: {...event.model.item, newThread: event.shiftKey }, bubbles: true, composed: true }));
     }
 }
 

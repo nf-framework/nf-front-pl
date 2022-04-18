@@ -199,5 +199,13 @@
     {
         "name": "pl-dom-if",
         "path": "@plcmp/pl-dom-if/pl-dom-if.js"
+    },
+    {
+        "name": "pl-forms-thread",
+        "path": "@nfjs/front-pl/components/pl-forms-thread.js"
+    },
+    {
+        "name": "pl-forms-manager",
+        "path": "@nfjs/front-pl/components/pl-forms-manager.js"
     }
 ]

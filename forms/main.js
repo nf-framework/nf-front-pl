@@ -7,12 +7,8 @@ export default class MainView extends PlForm {
             userProfile: { type: Object, value: () => ({}) },
             menuItems: { type: Array, value: () => ([]) },
             menuOpened: { type: Boolean, value: false },
-            currentForm: {
-                type: Object, 
-                value: () => ({
-                    hideHeader: true
-                })
-            }
+            currentForm: { type: Object },
+            currentThread: { type: Object }
         };
     }
 
@@ -106,6 +102,9 @@ export default class MainView extends PlForm {
                 background-repeat: no-repeat;
                 background-size: contain;
             }
+            #formManager {
+                padding: 0 var(--space-lg) var(--space-lg) var(--space-lg);
+            }
         `;
     }
 
@@ -124,10 +123,11 @@ export default class MainView extends PlForm {
                 </pl-flex-layout>
             </pl-app-side>
             <div class="content">
-                <pl-header hidden$="[[currentForm.hideHeader]]" current-form="[[currentForm]]">
+                <pl-header hidden$="[[isHeaderHidden(currentForm)]]" current-form="[[currentForm]]">
                     [[currentForm.headerTemplate]]
                 </pl-header>
-                <pl-router id="router" current-form="{{currentForm}}"></pl-router>
+                <pl-forms-manager id="formManager" current-form="{{currentForm}}" current-thread="{{currentThread}}"></pl-forms-manager>
+                <pl-router id="router" disable-history current-form="{{currentForm}}" current-thread="[[currentThread]]" form-manager="[[$.formManager]]"></pl-router>
             </div>
             <pl-dropdown id="ddProfile">
                 <pl-flex-layout vertical fit>
@@ -155,7 +155,7 @@ export default class MainView extends PlForm {
 
     onMenuItemSelected(event) {
         if (event.detail.form) {
-            this.$.router.openForm(event.detail.form);
+            this.$.formManager.open(event.detail.form, { newThread: event.detail.newThread, extKey: event.detail.form });
             this.$.menu.close();
         }
     }
@@ -167,5 +167,8 @@ export default class MainView extends PlForm {
     onLogoutClick() {
         this.$.aLogout.execute();
         document.location.reload();
+    }
+    isHeaderHidden(form) {
+        return !form || form.hideHeader;
     }
 }

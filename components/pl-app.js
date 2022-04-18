@@ -1,6 +1,7 @@
 import { PlElement, html, css } from "polylib";
 import '@plcmp/pl-iconset-default';
 import { customLoader } from "../lib/CustomElementsLoader.js";
+import { openForm } from "../lib/FormUtils.js";
 window.customLoader = customLoader;
 
 class App extends PlElement {
@@ -73,22 +74,13 @@ class App extends PlElement {
 
 	async _authObserver(auth) {
 		if (auth) {
-			customLoader('pl-form-main').then(async () => {
-				let form = document.createElement('pl-form-main');
-				await form.ready;
-				this.root.appendChild(form);
-
-				if(this.loginForm) {
-					this.loginForm.remove();
-				}
-			});
-
+			await openForm('main', this.root);
+			if(this.loginForm) {
+				await this.loginForm.close();
+				this.loginForm = null;
+			}
 		} else {
-			await customLoader('pl-form-login').then(async ()  => {
-				this.loginForm = document.createElement('pl-form-login');
-				await this.loginForm.ready;
-				this.root.appendChild(this.loginForm);
-			});
+			this.loginForm = await openForm('login', this.root);
 		}
 	}
 

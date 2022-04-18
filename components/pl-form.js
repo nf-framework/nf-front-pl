@@ -5,7 +5,8 @@ export class PlForm extends PlElement {
     static get properties() {
         return {
             formTitle: { type: String },
-            formSubtitle: { type: String }
+            formSubtitle: { type: String },
+            hidden: { type: Boolean, reflectToAttribute: true }
         }
     }
     constructor() {
@@ -17,7 +18,12 @@ export class PlForm extends PlElement {
         this.constructor.template.usedCEL.forEach(c => {
             let t = customLoader?.(c);
         });
-        this.ready = Promise.all(this.__awaits).then(() => true)
+        let watchDog = setTimeout(() => {
+            console.log(this.constructor.template.usedCE,this.__awaits )
+            throw 'Timeout loading components'
+        },10000 )
+        this.ready = Promise.all(this.__awaits).then(() => { clearTimeout(watchDog); return true; });
+
     }
     connectedCallback() {
         super.connectedCallback()
@@ -83,20 +89,8 @@ export class PlForm extends PlElement {
         return result;
     }
 
-    open(name, params) {
-        return new Promise((resolve, reject) => {
-            this.dispatchEvent(new CustomEvent('open-form', {
-                detail: {
-                    formName: name,
-                    params: params,
-                    options: {
-                        _formPromise: resolve
-                    }
-                },
-                bubbles: true,
-                composed: true
-            }));
-        });
+    open(name, params, opts) {
+        return this._formManager?.open(name, { ...opts, params });
     }
 
     openModal(name, params, options) {
@@ -120,20 +114,12 @@ export class PlForm extends PlElement {
         if (result instanceof Event) {
             result = undefined;
         }
-        let canClose = true;
         if (this.onClose instanceof Function) {
-            canClose = this.onClose(result);
-
-            if (canClose instanceof Promise) {
-                canClose = await canClose;
-            }
+            if (await this.onClose(result) === false) return false;
         }
-        if (canClose === false)
-            return false;
-
-        this._formPromise && this._formPromise(result);
+        this._closeCallback?.(result);
         this.dispatchEvent(new CustomEvent('close-form', { bubbles: true, composed: true }));
-        this.parentElement.removeChild(this);
+        this.parentNode.removeChild(this);
 
         return true;
     }
