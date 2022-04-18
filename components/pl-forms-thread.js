@@ -1,4 +1,4 @@
-import {css, html, PlElement} from "polylib";
+import {css, PlElement} from "polylib";
 import {openForm} from "../lib/FormUtils.js";
 import './pl-modal-form.js';
 
@@ -57,7 +57,7 @@ class FormThreadManager extends PlElement {
                     formManager: this
                 });
                 drawer?.open();
-                this.openedForms.forEach(f => {
+                drawer || this.openedForms.forEach(f => {
                     if (!f.hidden) f.hidden = true;
                 })
                 this.openedForms.push(form);
