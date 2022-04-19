@@ -94,20 +94,11 @@ export class PlForm extends PlElement {
     }
 
     openModal(name, params, options) {
-        return new Promise((resolve, reject) => {
-            this.dispatchEvent(new CustomEvent('open-modal-form', {
-                detail: {
-                    formName: name,
-                    params: params,
-                    options: {
-                        _formPromise: resolve,
-                        size: options?.size ?? 'large'
-                    }
-                },
-                bubbles: true,
-                composed: true
-            }));
-        });
+        options = Object.assign({
+            modal: true
+        }, options);
+        
+        return this.open(name, params, options);
     }
 
     async close(result) {
