@@ -4,7 +4,7 @@ import './pl-forms-thread.js';
 
 class FormManager extends PlElement {
     static properties = {
-        currentForm: { type: Object },
+        currentForm: { type: Object, observer: 'currentFormChange' },
         currentThread: { type: Object },
         container: { type: Object },
         threads: { type: Array, value: ()=>[], observer: 'threadFormChange' }
@@ -91,6 +91,10 @@ class FormManager extends PlElement {
     findLast() {
         //TODO: search most recent thread
         return this.threads.at(-1)?.id;
+    }
+    currentFormChange(form) {
+        window.plCurrentForm = {form};
+        dispatchEvent( new CustomEvent('form-change', { detail: { form } }));
     }
 }
 
