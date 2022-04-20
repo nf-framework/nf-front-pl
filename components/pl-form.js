@@ -94,11 +94,7 @@ export class PlForm extends PlElement {
     }
 
     openModal(name, params, options) {
-        options = Object.assign({
-            modal: true
-        }, options);
-        
-        return this.open(name, params, options);
+        return this.open(name, params, {...options, modal: true});
     }
 
     async close(result) {

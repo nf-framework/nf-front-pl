@@ -22,29 +22,29 @@ class PlTabPanel extends PlElement {
 
             .tab-header {
                 width: 100%;
-                height: 48px;
+                height: 40px;
                 position: relative;
                 display: flex;
                 flex-direction: row;
-                gap: 16px;
+                gap: 8px;
                 box-sizing: border-box;
                 overflow: hidden;
                 flex-shrink:0;
-                background: var(--grey-lightest);
-                border: 1px solid var(--grey-light);
+                background: transparent;
+                margin-bottom: 12px;
+                border-bottom: 1px solid var(--grey-base);
             }
 
             .tab {
                 display: flex;
                 height: 100%;
                 align-items: center;
-                color: var(--black-lightest);
+                color: var(--grey-darkest);
                 cursor: pointer;
-                font: var(--font-md);
-                font-weight: 500;
-                position: relative;
+                font-size: 13px;
+                line-height: 16px;
                 flex-shrink:0;
-                padding:  0 8px;
+                padding:  0 4px;
                 gap: 8px;
                 position: relative;
             }
@@ -53,8 +53,12 @@ class PlTabPanel extends PlElement {
                 display: none;
             }
 
-            .tab[active], .tab:hover {
-                color: var(--black-dark);
+            .tab[active] {
+                color: var(--text-color);
+            }
+            
+            .tab:hover {
+                color: var(--primary-base);
             }
 
             .tab::after {
