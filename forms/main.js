@@ -112,22 +112,26 @@ export default class MainView extends PlForm {
         return html`
             <pl-dataset id="dsMenu" data="{{menuItems}}" endpoint="/front/action/getMenu"></pl-dataset>
             <pl-app-side id="menu" opened={{menuOpened}} items="[[menuItems]]" on-menu-item-selected="[[onMenuItemSelected]]">
-            <div slot="logo" class="logo-wrapper">
+                <div slot="logo" class="logo-wrapper">
                     <div class="logo" slot="logo"></div>
-                    <pl-icon-button variant="primary" class="close-icon" slot="logo" iconset="pl-default" icon="chevron-left" on-click="[[onMenuButtonClick]]"></pl-icon-button>
+                    <pl-icon-button variant="primary" class="close-icon" slot="logo" iconset="pl-default" icon="chevron-left"
+                        on-click="[[onMenuButtonClick]]"></pl-icon-button>
                 </div>
-                <pl-icon-button variant="link"  class="icon-open" slot="logo" iconset="pl-default" icon="menu" on-click="[[onMenuButtonClick]]"></pl-icon-button>
+                <pl-icon-button variant="link" class="icon-open" slot="logo" iconset="pl-default" icon="menu"
+                    on-click="[[onMenuButtonClick]]"></pl-icon-button>
                 <pl-flex-layout vertical slot="bottom">
                     <pl-icon-button variant="link" size="24" id="btnProfile" iconset="pl-default" icon="profile"
                         on-click="[[onProfileClick]]"></pl-icon-button>
                 </pl-flex-layout>
             </pl-app-side>
             <div class="content">
-                <pl-header hidden$="[[isHeaderHidden(currentForm)]]" current-form="[[currentForm]]">
-                    [[currentForm.headerTemplate]]
-                </pl-header>
-                <pl-forms-manager id="formManager" current-form="{{currentForm}}" current-thread="{{currentThread}}"></pl-forms-manager>
-                <pl-router id="router" disable-history current-form="{{currentForm}}" current-thread="[[currentThread]]" form-manager="[[$.formManager]]"></pl-router>
+                <pl-forms-manager id="formManager" current-form="{{currentForm}}" current-thread="{{currentThread}}">
+                    <pl-header hidden$="[[isHeaderHidden(currentForm)]]" current-form="[[currentForm]]">
+                        [[currentForm.headerTemplate]]
+                    </pl-header>
+                </pl-forms-manager>
+                <pl-router id="router" disable-history current-form="{{currentForm}}" current-thread="[[currentThread]]"
+                    form-manager="[[$.formManager]]"></pl-router>
             </div>
             <pl-dropdown id="ddProfile">
                 <pl-flex-layout vertical fit>

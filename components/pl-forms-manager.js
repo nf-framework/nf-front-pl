@@ -11,17 +11,22 @@ class FormManager extends PlElement {
     }
     static css = css`
         :host {
-          display: block;
-          height: 100%;
-          width: 100%;
-          box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
         }
     `;
-    static template = html`<pl-repeat items="{{threads}}">
-        <template>
-            <pl-forms-thread id="[[item.id]]" current-form="{{item.currentForm}}"></pl-forms-thread>
-        </template>
-    </pl-repeat>`;
+    static template = html`
+        <slot></slot>
+        <pl-repeat items="{{threads}}">
+            <template>
+                <pl-forms-thread id="[[item.id]]" current-form="{{item.currentForm}}"></pl-forms-thread>
+            </template>
+        </pl-repeat>`;
 
     connectedCallback() {
         super.connectedCallback();
@@ -57,7 +62,9 @@ class FormManager extends PlElement {
             let path = normalizePath(m.path);
             if (path.at(-1) === 'currentForm') {
                 let thread = this.get(path.slice(0, -1));
-                if (thread.node.hidden === false) this.currentForm = thread.node.currentForm;
+                if (thread.node.hidden === false){
+                     this.currentForm = thread.node.currentForm;
+                }
             }
         }
     }
