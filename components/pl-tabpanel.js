@@ -7,7 +7,7 @@ class PlTabPanel extends PlElement {
     static get properties() {
         return {
             _tabs: { type: Array, value: () => [] },
-            active: { type: Number }
+            active: { type: Number, value: 0 }
         }
     }
     static get css() {
@@ -40,6 +40,7 @@ class PlTabPanel extends PlElement {
                 height: 100%;
                 align-items: center;
                 color: var(--grey-darkest);
+                user-select: none;
                 cursor: pointer;
                 font-size: 13px;
                 line-height: 16px;
@@ -114,23 +115,46 @@ class PlTabPanel extends PlElement {
 		`;
     }
 
-	connectedCallback() {
-		super.connectedCallback();
-        requestAnimationFrame(() => {
-            const tabs = Array.prototype.slice.call(this.root.querySelector('.content slot').assignedElements());
-            tabs.forEach((tab, idx) => {
-                tab.active = idx == 0;
-                this.push('_tabs', { 
-                    header: tab.header, 
-                    active: tab.active,
-                    node: tab
-                });
-            });
-        })
-        
-	}
+    connectedCallback() {
+        super.connectedCallback();
+        this._boundNodeChanged = this._nodeChanged.bind(this);
+        this._observer = new MutationObserver(this._boundNodeChanged);
+        this.addEventListener('pl-tab-change', this._boundNodeChanged);
+        this._observer.observe(this, { childList: true });
+    }
 
-    onTabClick(event){
+    _nodeChanged() {
+        let isHiddenItem = false;
+
+        const tabs = Array.prototype.slice.call(this.querySelectorAll(':scope > pl-tab'))
+            .map((tab, idx) => {
+                if (tab.hidden && tab.active) {
+                    isHiddenItem = true;
+                }
+                tab.active = idx == 0;
+                return {
+                    active: idx == 0,
+                    header: tab.header,
+                    hidden: tab.hidden,
+                    disabled: tab.disabled,
+                    node: tab
+                };
+            });
+
+        tabs.find((item, index) => {
+            if (!item.hidden && isHiddenItem) {
+                item.active = true;
+                this.active = index;
+                return true;
+            }
+        });
+
+
+
+        this.set('_tabs', tabs);
+    }
+
+    onTabClick(event) {
         this._tabs.forEach((el, idx) => {
             el.node.active = el == event.model.item;
             this.set(`_tabs.${idx}.active`, el == event.model.item);

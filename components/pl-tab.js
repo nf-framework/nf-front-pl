@@ -22,6 +22,13 @@ class PlTab extends PlElement {
             }
         `;
 	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		this.dispatchEvent(new CustomEvent('pl-tab-change', {
+			bubbles: true
+		}));
+	}
 }
 
 customElements.define('pl-tab', PlTab);
