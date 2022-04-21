@@ -5,16 +5,12 @@ import url from "url";
 
 import { auth } from "@nfjs/auth";
 import { web, ComponentCache, endpointData, endpointPlAction, endpointPlDataset } from "@nfjs/back";
-import { registerLibDir, prepareResponse, getCacheKey } from "@nfjs/front-server";
+import { registerLibDir, prepareResponse, getCacheKey, registerCustomElementsDir, customElements } from "@nfjs/front-server";
 import { api, extension } from "@nfjs/core";
 
 const __dirname = path.join(path.dirname(decodeURI(new URL(import.meta.url).pathname))).replace(/^\\([A-Z]:\\)/, "$1");
 const menu = await api.loadJSON(`${__dirname}/menu.json`);
-const customElementsJson = await api.loadJSON(`${__dirname}/customElements.json`);
 
-const meta = {
-    customElements: customElementsJson
-};
 
 async function formsHandler(context) {
     try {
@@ -57,20 +53,13 @@ async function formsHandler(context) {
 async function customElementsHandler(context) {
     try {
         const customElementName = context.params.component;
-        const elements = extension.getExtensionsMetaByName('customElements');
+        let found = customElements.find(x => x.name == customElementName);;
 
-        let finded = null;
-        elements.forEach(elementArr => {
-            if(elementArr.find(x => x.name == customElementName)) {
-                finded = elementArr.find(x => x.name == customElementName);
-            }
-        });
-
-        if(!finded) {
+        if (!found) {
             console.error('Not Found', customElementName);
             throw new Error(`${customElementName} not found`);
         }
-        context.send(finded.path);
+        context.send(found.path);
     }
     catch (err) {
         context.code(404);
@@ -92,7 +81,7 @@ async function login(context) {
     let data = {};
     let r = await auth.login(login, password, context.session);
 
-    if(!r.result) {
+    if (!r.result) {
         const err = api.nfError(new Error(r.detail[0].result.detail));
         context.send(err.json());
         context.end();
@@ -114,8 +103,8 @@ async function getUserProfile(context) {
     const data = {
         username: context.session.get('context.user')
     }
-     context.send({ data });
-     context.end();
+    context.send({ data });
+    context.end();
 }
 
 async function init() {
@@ -128,6 +117,8 @@ async function init() {
     registerLibDir('@nfjs/front-pl');
     registerLibDir('@plcmp');
     registerLibDir('@nfjs/core/api/common.js', 'node_modules/@nfjs/core/api/common.js', { singleFile: true });
+    registerCustomElementsDir('@plcmp', null, { recursive: true });
+    registerCustomElementsDir('@nfjs/front-pl/components')
 
 
     web.on('GET', '/forms/:form', formsHandler);
@@ -157,16 +148,17 @@ async function init() {
     web.on('POST', '/front/action/getPackages', async (context) => {
         const root = await api.getRootPackageInfo();
         const exts = extension.getSortedExtensions().map(e => ({ name: e.name, version: e.version }));
-        context.send({ data: {
-            root: root,
-            modules: exts
-        } });
+        context.send({
+            data: {
+                root: root,
+                modules: exts
+            }
+        });
         context.end();
     });
 }
 
 export {
     init,
-    menu,
-    meta
+    menu
 };
