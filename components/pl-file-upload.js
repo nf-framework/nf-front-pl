@@ -99,7 +99,7 @@ class PlFileUpload extends PlElement {
             
                 <span class="hint">Перетащите файлы или нажмите здесь, чтобы загрузить</span>
             </div>
-            <pl-file-preview endpoint="[[downloadEndpoint]]" can-delete="true" files="{{files}}" on-cancel-upload="[[onCancel]]"></pl-file-preview>
+            <pl-file-preview endpoint="[[downloadEndpoint]]" can-delete="true" files="{{files}}"></pl-file-preview>
         `;
     }
 
