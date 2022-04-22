@@ -29,8 +29,8 @@ class PlRouter extends PlElement {
 
     processUrl(hash) {
         const path = hash.replace('#', '');
-        if(path) {
-            let {name, threadId, args} = path.match(/^(?<name>[\w\d\._\-]+)(:(?<threadId>\w+))?\??(?<args>.*)?$/).groups ?? {};
+        if (path) {
+            let { name, threadId, args } = path.match(/^(?<name>[\w\d\._\-]+)(:(?<threadId>\w+))?\??(?<args>.*)?$/).groups ?? {};
             const params = args ? Object.fromEntries(new URLSearchParams(args)) : undefined;
             this.formManager?.open(name, { params });
         }
@@ -38,10 +38,21 @@ class PlRouter extends PlElement {
 
     threadChange() {
         let thread = this.currentThread;
-        if (thread)
-            this.history({}, null,`#${this.currentForm?._formName}${thread.threadId ? ':'+thread.threadId : ''}`);
-        else
-            this.history({}, null,'#');
+        if (thread) {
+            const params = {};
+            this.currentForm?.urlParams.forEach(el => {
+                if (this.currentForm[el]) {
+                    params[el] = this.currentForm[el];
+                }
+            });
+
+            if (Object.keys(params).length === 0) {
+                this.history({ threadId: thread.threadId }, null, `#${this.currentForm?._formName}`);
+            } else {
+                this.history({ threadId: thread.threadId }, null, `#${this.currentForm?._formName}?${new URLSearchParams(params).toString()}`);
+            }
+        } else
+            this.history({}, null, '#');
 
     }
 }

@@ -6,7 +6,8 @@ export class PlForm extends PlElement {
         return {
             formTitle: { type: String },
             formSubtitle: { type: String },
-            hidden: { type: Boolean, reflectToAttribute: true }
+            hidden: { type: Boolean, reflectToAttribute: true },
+            urlParams: { type: Array, value: [] }
         }
     }
     constructor() {
@@ -19,9 +20,9 @@ export class PlForm extends PlElement {
             let t = customLoader?.(c);
         });
         let watchDog = setTimeout(() => {
-            console.log(this.constructor.template.usedCE,this.__awaits )
+            console.log(this.constructor.template.usedCE, this.__awaits)
             throw 'Timeout loading components'
-        },10000 )
+        }, 10000)
         this.ready = Promise.all(this.__awaits).then(() => { clearTimeout(watchDog); return true; });
 
     }
@@ -94,7 +95,7 @@ export class PlForm extends PlElement {
     }
 
     openModal(name, params, options) {
-        return this.open(name, params, {...options, modal: true});
+        return this.open(name, params, { ...options, modal: true });
     }
 
     async close(result) {
@@ -169,5 +170,5 @@ export class PlForm extends PlElement {
                 message: message
             }
         }));
-    } 
+    }
 }
