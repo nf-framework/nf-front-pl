@@ -58,8 +58,8 @@ class PlAppSide extends PlElement {
 			.submenu {
 				display: flex;
 				position: absolute;
-				top: 0;
-				right: 0;
+				inset-block-start: 0;
+				inset-inline-end: 0;
 				width:0;
 				box-sizing: border-box;
 				height:100%;
