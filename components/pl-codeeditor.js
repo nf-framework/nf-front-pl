@@ -39,12 +39,12 @@ class PlCodeEditor extends PlElement {
             let debouncer = debounce(() => {
                 this.fromEditor = true;
                 this.value = this.editor.session.getValue();
+                this.fromEditor = false;
             }, 100)
             debouncer();
         });
     }
     valueChange(value) {
-        console.log('observer')
         if (this.fromEditor) return;
         this.editor.session.setValue(value || '');
         this.fromEditor = false;
