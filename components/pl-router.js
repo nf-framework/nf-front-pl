@@ -38,7 +38,7 @@ class PlRouter extends PlElement {
 
     threadChange() {
         let thread = this.currentThread;
-        if (thread) {
+        if (thread && this.currentForm) {
             const params = {};
             this.currentForm?.urlParams.forEach(el => {
                 if (this.currentForm[el]) {
@@ -47,9 +47,9 @@ class PlRouter extends PlElement {
             });
 
             if (Object.keys(params).length === 0) {
-                this.history({ threadId: thread.threadId }, null, `#${this.currentForm?._formName}`);
+                this.history({ threadId: thread.threadId, formName: this.currentForm?._formName }, null, `#${this.currentForm?._formName}`);
             } else {
-                this.history({ threadId: thread.threadId }, null, `#${this.currentForm?._formName}?${new URLSearchParams(params).toString()}`);
+                this.history({ threadId: thread.threadId, formName: this.currentForm?._formName }, null, `#${this.currentForm?._formName}?${new URLSearchParams(params).toString()}`);
             }
         } else
             this.history({}, null, '#');

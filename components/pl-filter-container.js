@@ -32,9 +32,9 @@ class PlFilterContainer extends PlElement {
 
 
     onFilterChanged(event) {
-        const filter = this._filters.find(x => x.field == event.detail.field);
+        const filter = this._filters.find(x => x.field == event.detail.field && x.operator == event.detail.operator);
         if (filter) {
-            filter.value = event.detail.value;
+            this.set(`_filters.${this._filters.indexOf(filter)}.value`, event.detail.value);
         } else {
             this.push('_filters', {
                 field: event.detail.field,
@@ -56,6 +56,8 @@ class PlFilterContainer extends PlElement {
 
     clearFilters() {
         this.splice('data.filters', 0, this.data.filters.length);
+        this.splice('_filters', 0, this._filters.length);
+
         const items = this.getFilterItems();
         items.forEach((item) => {
             item.clear();
