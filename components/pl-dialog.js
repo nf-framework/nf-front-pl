@@ -14,7 +14,7 @@ class PlAppMenu extends PlElement {
             :host {
                 background: rgba(0, 0, 0, 0.8);
                 height: 100%;
-                position: fixed;
+                position: absolute;
                 top: 0;
                 right: 0;
                 bottom: 0;
@@ -26,7 +26,7 @@ class PlAppMenu extends PlElement {
                 flex-direction: column;
                 align-items: flex-start;
                 padding: var(--space-lg);
-                position: absolute;
+                position: fixed;
                 width: 360px;
                 top: 50%;  
                 left: 50%;

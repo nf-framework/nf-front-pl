@@ -27,13 +27,13 @@ class PlModalForm extends PlElement {
                 position: fixed;
                 background: var(--background-color);
                 will-change: contents;
-                top: 0px;
                 opacity: 0;
                 transform: translateX(30%);
                 box-sizing: border-box;
                 visibility: hidden;
                 display: flex;
-                right: 0;
+                inset-block-start: 0px;
+                inset-inline-end: 0;
                 flex-direction: column;
                 will-change: transform, opacity;
                 transition: all ease 200ms;
