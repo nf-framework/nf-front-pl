@@ -1,6 +1,7 @@
 import { PlElement, html, css } from "polylib";
 import '@plcmp/pl-iconset-default';
 import { customLoader } from "../lib/CustomElementsLoader.js";
+import { requestData } from "../lib/RequestServer.js";
 import { openForm } from "../lib/FormUtils.js";
 window.customLoader = customLoader;
 
@@ -20,12 +21,36 @@ class App extends PlElement {
 			}`
 	}
 
-	connectedCallback() {
+	async connectedCallback() {
 		super.connectedCallback();
 		customLoader('pl-action').then(() => {
 			this.aSessionCheck = this.$.aSessionCheck;
 			this.aSessionCheck.execute()
 		})
+
+		this.config = await requestData('/pl-get-config', { unauthorized: true }).then(r => r.json()).catch(() => { });
+		let { ignoreTimeZone } = this.config || {};
+		Date.prototype.toJSON = function () {
+			var tzo = -this.getTimezoneOffset(),
+				dif = tzo >= 0 ? '+' : '-',
+				pad = function (num) {
+					var norm = Math.floor(Math.abs(num));
+					return (norm < 10 ? '0' : '') + norm;
+				},
+				pad3 = function (num) {
+					var norm = Math.floor(Math.abs(num));
+					return (norm < 10 ? '00' : (norm < 100 ? '0' : '')) + norm;
+				};
+			return this.getFullYear() +
+				'-' + pad(this.getMonth() + 1) +
+				'-' + pad(this.getDate()) +
+				'T' + pad(this.getHours()) +
+				':' + pad(this.getMinutes()) +
+				':' + pad(this.getSeconds()) +
+				'.' + pad3(this.getMilliseconds()) +
+				(!ignoreTimeZone ? (dif + pad(tzo / 60) + ':' + pad(tzo % 60)) : '');
+		}
+
 
 		customLoader('pl-toast');
 
@@ -53,29 +78,29 @@ class App extends PlElement {
 		resizeObserver.observe(document.body);
 		document.querySelector('#preloader').style.display = "none";
 		document.addEventListener('error', this.showError.bind(this));
-        document.addEventListener('success', this.showSuccess.bind(this));
+		document.addEventListener('success', this.showSuccess.bind(this));
 
 	}
 
 	static get template() {
 		return html`
-			<pl-action id="aSessionCheck" data="{{auth}}"  endpoint="/front/action/checkSession"></pl-action>
+			<pl-action id="aSessionCheck" data="{{auth}}" endpoint="/front/action/checkSession"></pl-action>
 			<pl-toast id="toast"></pl-toast>
 		`;
 	}
 
 	showError(e) {
-        this.$.toast.show(e.detail.message)
-    }
+		this.$.toast.show(e.detail.message)
+	}
 
-    showSuccess(e) {
-        this.$.toast.show(e.detail.message)
-    }
+	showSuccess(e) {
+		this.$.toast.show(e.detail.message)
+	}
 
 	async _authObserver(auth) {
 		if (auth) {
 			await openForm('main', this.root);
-			if(this.loginForm) {
+			if (this.loginForm) {
 				await this.loginForm.close();
 				this.loginForm = null;
 			}

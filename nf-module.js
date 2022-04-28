@@ -6,7 +6,7 @@ import url from "url";
 import { auth } from "@nfjs/auth";
 import { web, ComponentCache, endpointData, endpointPlAction, endpointPlDataset } from "@nfjs/back";
 import { registerLibDir, prepareResponse, getCacheKey, registerCustomElementsDir, customElements } from "@nfjs/front-server";
-import { api, extension } from "@nfjs/core";
+import { api, extension, config } from "@nfjs/core";
 
 const __dirname = path.join(path.dirname(decodeURI(new URL(import.meta.url).pathname))).replace(/^\\([A-Z]:\\)/, "$1");
 const menu = await api.loadJSON(`${__dirname}/menu.json`);
@@ -154,6 +154,13 @@ async function init() {
                 modules: exts
             }
         });
+        context.end();
+    });
+
+    web.on('GET', '/pl-get-config', context => {
+        context.code(200);
+        context.type('application/json');
+        context.send(config.client || {});
         context.end();
     });
 }
