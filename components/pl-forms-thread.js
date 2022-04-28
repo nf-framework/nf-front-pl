@@ -18,6 +18,7 @@ class FormThreadManager extends PlElement {
           display: block;
           height: 100%;
           width: 100%;
+          overflow: hidden;
         }
         :host([hidden]) {
           display: none;
