@@ -29,7 +29,7 @@ class App extends PlElement {
 		})
 
 		this.config = await requestData('/pl-get-config', { unauthorized: true }).then(r => r.json()).catch(() => { });
-		let { ignoreTimeZone } = this.config || {};
+		let { includeTimeZone } = this.config || {};
 		Date.prototype.toJSON = function () {
 			var tzo = -this.getTimezoneOffset(),
 				dif = tzo >= 0 ? '+' : '-',
@@ -48,7 +48,7 @@ class App extends PlElement {
 				':' + pad(this.getMinutes()) +
 				':' + pad(this.getSeconds()) +
 				'.' + pad3(this.getMilliseconds()) +
-				(!ignoreTimeZone ? (dif + pad(tzo / 60) + ':' + pad(tzo % 60)) : '');
+				(includeTimeZone ? (dif + pad(tzo / 60) + ':' + pad(tzo % 60)) : '');
 		}
 
 
