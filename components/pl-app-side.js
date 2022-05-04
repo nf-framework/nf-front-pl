@@ -152,7 +152,6 @@ class PlAppSide extends PlElement {
 				removeOverlay(this);
 			}, 300);
 		}
-
 	}
 
 
@@ -169,8 +168,9 @@ class PlAppSide extends PlElement {
 			}
 		}
 		if (!found) {
-			this.splice('_selectedItemsStack', 0, this._selectedItemsStack.length);
-
+			if(this._selectedItemsStack.length > 0) {
+				this.splice('_selectedItemsStack', 0, this._selectedItemsStack.length);
+			}
 		}
 
 		const items = this._computeItems(this.items, value);
