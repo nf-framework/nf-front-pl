@@ -12,7 +12,7 @@ class PlAppSide extends PlElement {
 			opened: { type: Boolean, reflectToAttribute: true, observer: 'openedObserver', value: false },
 			items: { type: Array, value: () => ([]) },
 			selected: { type: Object, value: null, observer: '_selectedObserver' },
-			_selectedItemsStack: { type: Array, value: () => ([]), observer: '_selectedItemsStackObserver' },
+			_selectedItemsStack: { type: Array, value: () => [], observer: '_selectedItemsStackObserver' },
 		};
 	}
 
@@ -92,16 +92,18 @@ class PlAppSide extends PlElement {
 				<slot name="toggle"></slot>
 			</div>
 			<div class="submenu">
-				<pl-repeat items="[[_selectedItemsStack]]" as="subitem" >
+				<pl-repeat items="[[_selectedItemsStack]]" as="subitem">
 					<template>
 						<div class="submenu-item">
-							<pl-app-side-list opened$=[[opened]] parent="[[subitem.parent]]" items="[[subitem.items]]"  on-menu-click="[[onMenuClick]]"></pl-app-side-list>
+							<pl-app-side-list opened$=[[opened]] parent="[[subitem.parent]]" items="[[subitem.items]]"
+								on-menu-click="[[onMenuClick]]"></pl-app-side-list>
 						</div>
 					</template>
 				</pl-repeat>
 			</div>
 			<div class="menuItems">
-				<pl-app-side-list opened$=[[opened]] variant="main" items="[[_computeItems(items, items.0)]]" on-menu-click="[[onMenuClick]]"></pl-app-side-list>
+				<pl-app-side-list opened$=[[opened]] variant="main" items="[[_computeItems(items, items.0)]]"
+					on-menu-click="[[onMenuClick]]"></pl-app-side-list>
 			</div>
 			
 			<div class="logo">
@@ -110,23 +112,23 @@ class PlAppSide extends PlElement {
     	`;
 	}
 
-	constructor(){
+	constructor() {
 		super();
 		this._close = e => {
-            let path = e.composedPath();
-            if (!path.includes(this)) {
-                e.preventDefault();
+			let path = e.composedPath();
+			if (!path.includes(this)) {
+				e.preventDefault();
 				this.close();
-            }
-        }
+			}
+		}
 	}
-	
+
 
 	openedObserver(val) {
 		if (val) {
 			addEventListener('click', this._close, { capture: true, once: true });
 			addOverlay(this);
-		} else if(this._selectedItemsStack.length == 0){
+		} else {
 			setTimeout(() => {
 				removeOverlay(this);
 			}, 300);
@@ -145,43 +147,46 @@ class PlAppSide extends PlElement {
 	}
 
 	_selectedItemsStackObserver(items) {
-		if(items.length > 0) {
-			addOverlay(this);
-		} else {
-			removeOverlay(this);
+		if (items.length == 0) {
+			setTimeout(() => {
+				removeOverlay(this);
+			}, 300);
 		}
-		// addEventListener('click', this._close, { capture: true, once: true });
+
 	}
+
 
 	_selectedObserver(value) {
 		if (!value) {
-            return;
-        }
-        let found = false;
-        for (let i = this._selectedItemsStack.length; i--;) {
-            const item = this._selectedItemsStack[i];
-            if (item.items.some(item => item.id === value.id)) {
-                this.splice('_selectedItemsStack', i + 1);
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            this.splice('_selectedItemsStack', 0, this._selectedItemsStack.length);
-        }
+			return;
+		}
+		let found = false;
+		for (let i = this._selectedItemsStack.length; i--;) {
+			const item = this._selectedItemsStack[i];
+			if (item.items.some(item => item.id === value.id)) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			this.splice('_selectedItemsStack', 0, this._selectedItemsStack.length);
 
-        const items = this._computeItems(this.items, value);
-        if (items && items.length > 0) {
-            this.push('_selectedItemsStack', { 
-				parent: value, 
+		}
+
+		const items = this._computeItems(this.items, value);
+		if (items && items.length > 0) {
+			this.push('_selectedItemsStack', {
+				parent: value,
 				items
 			});
-        }
+			addOverlay(this);
+			addEventListener('click', this._close, { capture: true, once: true });
+		}
 
-        this.dispatchEvent(new CustomEvent('menuItemSelected', { detail: value, bubbles: true, composed: true }));
+		this.dispatchEvent(new CustomEvent('menuItemSelected', { detail: value, bubbles: true, composed: true }));
 	}
 
-	close(){
+	close() {
 		this.splice('_selectedItemsStack', 0, this._selectedItemsStack.length);
 		this.selected = null;
 		this.opened = false;
