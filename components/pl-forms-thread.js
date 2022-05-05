@@ -23,6 +23,9 @@ class FormThreadManager extends PlElement {
         :host([hidden]) {
           display: none;
         }
+        *[hidden] {
+            display: none;
+        }
     `;
     open(name, options) {
         let drawer;
