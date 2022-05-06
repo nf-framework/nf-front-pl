@@ -3,7 +3,8 @@ import { PlElement, html, css } from "polylib";
 class PlHeader extends PlElement {
     static get properties(){
         return {
-            currentForm: { type: Object }
+            currentForm: { type: Object },
+            breadcrumbs: { type: String, value: 'Главная' }
         }
     }
     static get css() {
@@ -58,7 +59,7 @@ class PlHeader extends PlElement {
                 <pl-icon iconset="pl-default" size="16" icon="chevron-left"></pl-icon>
             </div>
             <div class="content-header">
-                <div class="form-breadcrumbs">Главная</div>
+                <div class="form-breadcrumbs">[[breadcrumbs]]</div>
                 <div id="form-label">[[currentForm.formTitle]]</div>
                 <slot name="suffix"></slot>
             </div>

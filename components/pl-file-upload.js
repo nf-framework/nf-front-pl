@@ -33,6 +33,10 @@ class PlFileUpload extends PlElement {
             downloadEndpoint: {
                 type: String,
                 value: 'download'
+            },
+            hint: {
+                type: String,
+                value: 'Перетащите файлы или нажмите здесь, чтобы загрузить'
             }
         }
     }
@@ -97,7 +101,7 @@ class PlFileUpload extends PlElement {
                 <input id="fileInput" accept$="[[accept]]" type="file" multiple$="[[multiple]]" on-change="[[onFileInputChange]]" hidden/>
                 <pl-icon iconset="pl-default" size="32" icon="upload"></pl-icon>
             
-                <span class="hint">Перетащите файлы или нажмите здесь, чтобы загрузить</span>
+                <span class="hint">[[hint]]</span>
             </div>
             <pl-file-preview endpoint="[[downloadEndpoint]]" can-delete="true" files="{{files}}"></pl-file-preview>
         `;
