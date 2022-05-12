@@ -28,7 +28,11 @@ class App extends PlElement {
 			this.aSessionCheck.execute()
 		})
 
+		window.NF = {};
+
 		this.config = await requestData('/pl-get-config', { unauthorized: true }).then(r => r.json()).catch(() => { });
+		NF.config = this.config;
+		
 		let { includeTimeZone } = this.config || {};
 		Date.prototype.toJSON = function () {
 			var tzo = -this.getTimezoneOffset(),
