@@ -4,9 +4,10 @@ import fs from "fs/promises";
 import url from "url";
 
 import { auth } from "@nfjs/auth";
-import { web, ComponentCache, endpointData, endpointPlAction, endpointPlDataset } from "@nfjs/back";
+import { web, ComponentCache, endpointData } from "@nfjs/back";
 import { registerLibDir, prepareResponse, getCacheKey, registerCustomElementsDir, customElements } from "@nfjs/front-server";
 import { api, extension, config } from "@nfjs/core";
+import { endpointHandlers } from './lib/FormServerEndpoints.js';
 
 const __dirname = path.join(path.dirname(decodeURI(new URL(import.meta.url).pathname))).replace(/^\\([A-Z]:\\)/, "$1");
 const menu = await api.loadJSON(`${__dirname}/menu.json`);
@@ -142,7 +143,7 @@ async function init() {
         'POST',
         '/@nfjs/front-pl/fse/:form/:type/:id',
         { middleware: ['session', context => loadFormServerEndpoint(context, context?.params?.type), 'auth', 'json'] },
-        context => endpointData(context, (context?.params?.type === 'dataset') ? endpointPlDataset : endpointPlAction)
+        context => endpointData(context, endpointHandlers[context?.params?.type ?? 'dataset'])
     );
 
     web.on('POST', '/front/action/getPackages', async (context) => {
