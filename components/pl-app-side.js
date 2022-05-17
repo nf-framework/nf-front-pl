@@ -38,12 +38,6 @@ class PlAppSide extends PlElement {
 				transition: all 0.3s ease-in-out;
 			}
 
-			.logo {
-				display: flex;
-				flex-direction: column;
-				padding: 8px 16px;
-			}
-
 			.menuItems {
 				position: relative;
 				height: 100%;
@@ -87,10 +81,7 @@ class PlAppSide extends PlElement {
 
 	static get template() {
 		return html`
-			<div class="logo">
-				<slot name="logo"></slot>
-				<slot name="toggle"></slot>
-			</div>
+			<slot name="top"></slot>
 			<div class="submenu">
 				<pl-repeat items="[[_selectedItemsStack]]" as="subitem">
 					<template>
@@ -105,10 +96,7 @@ class PlAppSide extends PlElement {
 				<pl-app-side-list opened$=[[opened]] variant="main" items="[[_computeItems(items, items.0)]]"
 					on-menu-click="[[onMenuClick]]"></pl-app-side-list>
 			</div>
-			
-			<div class="logo">
-				<slot name="bottom"></slot>
-			</div>
+			<slot name="bottom"></slot>
     	`;
 	}
 
