@@ -1,6 +1,7 @@
 import {html, css, PlElement} from "polylib";
 import {normalizePath} from "polylib/common.js";
 import './pl-forms-thread.js';
+import "@plcmp/pl-repeat";
 
 class FormManager extends PlElement {
     static properties = {
