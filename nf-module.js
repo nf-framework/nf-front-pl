@@ -83,7 +83,7 @@ async function login(context) {
     let r = await auth.login(login, password, context.session);
 
     if (!r.result) {
-        const err = api.nfError(new Error(r.detail[0].result.detail));
+        const err = api.nfError(new Error(r.detail.map(x => x.result.detail).join(';')));
         context.send(err.json());
         context.end();
     } else {
