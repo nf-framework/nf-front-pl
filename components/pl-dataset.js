@@ -62,7 +62,7 @@ class PlDataset extends PlElement {
     }
     _argsChanged() {
         if (this.executeOnArgsChange) {
-            this.execute(this.args, {executedOnArgsChange: true});
+            this.execute(this.args, { executedOnArgsChange: true });
         }
     }
     _dataObserver(val, oldVal, mut) {
@@ -113,12 +113,14 @@ class PlDataset extends PlElement {
             const req = await requestData(this.endpoint, {
                 headers: { 'Content-Type': 'application/json' },
                 method: 'POST',
-                body: JSON.stringify( this.prepareEndpointParams(_args, { range: { chunk_start, chunk_end } }) ),
+                body: JSON.stringify(this.prepareEndpointParams(_args, { range: { chunk_start, chunk_end } })),
                 unauthorized: this.unauthorized
             });
             const json = await req.json();
             let { data, rowMode, metaData, error } = json;
-            if (error) throw error;
+            if (error) {
+                throw new Error(error);
+            }
             // преобразование в формат [{field1:"value",field2:"value"},...]
             if (rowMode === 'array' && metaData) {
                 data = data.map(element => {
@@ -161,7 +163,15 @@ class PlDataset extends PlElement {
             return this.data;
         } catch (e) {
             this.executing = false;
-            document.dispatchEvent(new CustomEvent('error', {detail: e}));
+            let errorMessage = '';
+            if (e instanceof Response) {
+                errorMessage = e.statusText;
+            }
+            if (e instanceof Error) {
+                errorMessage = e.message;
+            }
+
+            document.dispatchEvent(new CustomEvent('error', { detail: { message: errorMessage } }));
             throw e;
         }
     }

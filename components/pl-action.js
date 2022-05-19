@@ -97,7 +97,7 @@ class PlAction extends PlElement {
                 return [];
             }
             if (getPath(pathTree, path) !== undefined) {
-                if(obj.__changed) result.$action = 'upd';
+                if (obj.__changed) result.$action = 'upd';
             }
             return Object.assign(result, ...Object.keys(obj).map(key => ({ [key]: clonePaths(obj[key], `${path}.${key}`) })));
         }
@@ -115,7 +115,7 @@ class PlAction extends PlElement {
             // Очистка от служебных свойств (начинаются с __)
             clearObj(_args);
 
-            const {executedOnArgsChange = false } = opts ?? {};
+            const { executedOnArgsChange = false } = opts ?? {};
             const reqArgs = this.requiredArgs ? this.requiredArgs.split(';') : [];
             if (reqArgs.length > 0 && (!_args || reqArgs.find(r => _args[r] === undefined || _args[r] === null))) {
                 if (executedOnArgsChange) {
@@ -150,7 +150,15 @@ class PlAction extends PlElement {
         }
         catch (e) {
             this.executing = false;
-            document.dispatchEvent(new CustomEvent('error', { detail: e }));
+            let errorMessage = '';
+            if (e instanceof Response) {
+                errorMessage = e.statusText;
+            }
+            if(e instanceof Error) {
+                errorMessage = e.message;
+            }
+
+            document.dispatchEvent(new CustomEvent('error', { detail: { message: errorMessage } }));
             throw e;
         }
     }
