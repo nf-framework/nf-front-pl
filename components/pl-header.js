@@ -1,10 +1,11 @@
 import { PlElement, html, css } from "polylib";
 
 class PlHeader extends PlElement {
-    static get properties(){
+    static get properties() {
         return {
             currentForm: { type: Object },
-            breadcrumbs: { type: String, value: 'Главная' }
+            breadcrumbs: { type: String, value: 'Главная' },
+            hidden: { type: Boolean, reflectToAttribute: true }
         }
     }
     static get css() {
@@ -17,6 +18,10 @@ class PlHeader extends PlElement {
                 gap: 8px;
                 align-items: center;
                 flex-shrink: 0;
+            }
+
+            :host([hidden]) {
+                display: none;
             }
 
             .back {
@@ -66,7 +71,7 @@ class PlHeader extends PlElement {
         `;
     }
 
-    close(){
+    close() {
         this.currentForm?.close();
     }
 }

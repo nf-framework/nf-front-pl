@@ -23,10 +23,6 @@ export default class MainView extends PlForm {
                 overflow: hidden;
             }
 
-            pl-header[hidden] {
-                display: none;
-            }
-
             .username {
                 font-weight: bold;
                 text-transform: uppercase;
@@ -101,16 +97,16 @@ export default class MainView extends PlForm {
                 <div slot="top" class="logo-wrapper">
                     <div class="logo"></div>
                 </div>
-
+            
                 <pl-icon-button variant="link" size="24" class="icon-open" slot="top" iconset="pl-default" icon="menu"
                     on-click="[[onMenuButtonClick]]" id="btnMenu"></pl-icon-button>
-
+            
                 <pl-icon-button slot="bottom" variant="link" size="24" id="btnProfile" iconset="pl-default" icon="profile"
-                        on-click="[[onProfileClick]]"></pl-icon-button>
+                    on-click="[[onProfileClick]]"></pl-icon-button>
             </pl-app-side>
             <div class="content">
                 <pl-forms-manager id="formManager" current-form="{{currentForm}}" current-thread="{{currentThread}}">
-                    <pl-header hidden$="[[isHeaderHidden(currentForm)]]" current-form="[[currentForm]]">
+                    <pl-header hidden="[[isHeaderHidden(currentForm)]]" current-form="[[currentForm]]">
                         [[currentForm.headerTemplate]]
                     </pl-header>
                 </pl-forms-manager>
