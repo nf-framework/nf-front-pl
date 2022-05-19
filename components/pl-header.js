@@ -3,7 +3,8 @@ import { PlElement, html, css } from "polylib";
 class PlHeader extends PlElement {
     static get properties() {
         return {
-            currentForm: { type: Object },
+            currentForm: { type: Object, observer: 'currentFormObserver' },
+            formTitle: { type: String },
             breadcrumbs: { type: String, value: 'Главная' },
             hidden: { type: Boolean, reflectToAttribute: true }
         }
@@ -69,6 +70,14 @@ class PlHeader extends PlElement {
                 <slot name="suffix"></slot>
             </div>
         `;
+    }
+
+    currentFormObserver(form) {
+        this.formTitle = this.currentForm.formTitle;
+
+        form.addEventListener('formTitle-changed', () => {
+            this.formTitle = this.currentForm.formTitle;
+        })
     }
 
     close() {
