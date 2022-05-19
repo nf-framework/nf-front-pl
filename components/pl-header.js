@@ -73,11 +73,15 @@ class PlHeader extends PlElement {
     }
 
     currentFormObserver(form) {
-        this.formTitle = this.currentForm.formTitle;
+        if(form) {
+            this.formTitle = form.formTitle;
 
-        form.addEventListener('formTitle-changed', () => {
-            this.formTitle = this.currentForm.formTitle;
-        })
+            form.addEventListener('formTitle-changed', () => {
+                this.formTitle = this.currentForm.formTitle;
+            })
+        } else {
+            this.formTitle = null;
+        }
     }
 
     close() {
