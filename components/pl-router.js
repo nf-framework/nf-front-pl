@@ -39,21 +39,31 @@ class PlRouter extends PlElement {
     threadChange() {
         let thread = this.currentThread;
         if (thread && this.currentForm) {
-            const params = {};
             this.currentForm?.urlParams.forEach(el => {
-                if (this.currentForm[el]) {
-                    params[el] = this.currentForm[el];
-                }
+                this.currentForm.addEventListener(`${el}-changed`, () => {
+                    this.setUrlParams(thread);
+                })
             });
 
-            if (Object.keys(params).length === 0) {
-                this.history({ threadId: thread.threadId, formName: this.currentForm?._formName }, null, `#${this.currentForm?._formName}`);
-            } else {
-                this.history({ threadId: thread.threadId, formName: this.currentForm?._formName }, null, `#${this.currentForm?._formName}?${new URLSearchParams(params).toString()}`);
-            }
-        } else
+            this.setUrlParams(thread);
+        } else {
             this.history({}, null, '#');
+        }
+    }
 
+    setUrlParams(thread) {
+        const params = {};
+        this.currentForm?.urlParams.forEach(el => {
+            if (this.currentForm[el]) {
+                params[el] = this.currentForm[el];
+            }
+        });
+
+        if (Object.keys(params).length === 0) {
+            this.history({ threadId: thread.threadId, formName: this.currentForm?._formName }, null, `#${this.currentForm?._formName}`);
+        } else {
+            this.history({ threadId: thread.threadId, formName: this.currentForm?._formName }, null, `#${this.currentForm?._formName}?${new URLSearchParams(params).toString()}`);
+        }
     }
 }
 
