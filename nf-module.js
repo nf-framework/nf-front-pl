@@ -109,7 +109,6 @@ async function getUserProfile(context) {
 }
 
 async function init() {
-    registerLibDir('front-pl', __dirname + '/static');
     registerLibDir('polylib');
     registerLibDir('imask');
     registerLibDir('dayjs');

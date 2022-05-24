@@ -79,7 +79,7 @@ export default class MainView extends PlForm {
                 height: 28px;
                 width: 200px;
                 flex-shrink: 0;
-                background: url(/front-pl/menu-logo.svg);
+                background: url(/static/menu-logo.svg);
                 background-repeat: no-repeat;
                 background-size: contain;
             }
@@ -98,7 +98,7 @@ export default class MainView extends PlForm {
                     <div class="logo"></div>
                 </div>
             
-                <pl-icon-button variant="link" size="24" class="icon-open" slot="top" iconset="pl-default" icon="menu"
+                <pl-icon-button variant="link" size="24" class="icon-open" slot="top" iconset="pl-default" icon="[[_getMenuIcon(menuOpened)]]"
                     on-click="[[onMenuButtonClick]]" id="btnMenu"></pl-icon-button>
             
                 <pl-icon-button slot="bottom" variant="link" size="24" id="btnProfile" iconset="pl-default" icon="profile"
@@ -135,6 +135,10 @@ export default class MainView extends PlForm {
 
     onMenuButtonClick() {
         this.menuOpened = !this.menuOpened;
+    }
+
+    _getMenuIcon(opened) {
+        return opened ? 'close-s' : 'menu';
     }
 
     onMenuItemSelected(event) {
