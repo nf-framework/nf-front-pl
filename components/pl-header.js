@@ -66,19 +66,23 @@ class PlHeader extends PlElement {
             </div>
             <div class="content-header">
                 <div class="form-breadcrumbs">[[breadcrumbs]]</div>
-                <div id="form-label">[[currentForm.formTitle]]</div>
+                <div id="form-label">[[formTitle]]</div>
                 <slot name="suffix"></slot>
             </div>
         `;
     }
 
     currentFormObserver(form) {
-        if(form) {
+        if (form) {
             this.formTitle = form.formTitle;
 
-            form.addEventListener('formTitle-changed', () => {
-                this.formTitle = this.currentForm.formTitle;
-            })
+            if (!form._titleChangedEventFlag) {
+                form.addEventListener('formTitle-changed', () => {
+                    this.formTitle = this.currentForm.formTitle;
+                });
+            }
+
+            form._titleChangedEventFlag = true;
         } else {
             this.formTitle = null;
         }
