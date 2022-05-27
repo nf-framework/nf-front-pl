@@ -35,6 +35,7 @@
 		"@plcmp/pl-combobox": "^0.1.0",
 		"@plcmp/pl-data-observer": "^0.1.0",
 		"@plcmp/pl-datetime": "^0.1.0",
+		"@plcmp/pl-dom-if": "^0.1.0",
 		"@plcmp/pl-drawer": "^0.1.0",
 		"@plcmp/pl-dropdown": "^0.1.0",
 		"@plcmp/pl-flex-layout": "^0.1.0",
