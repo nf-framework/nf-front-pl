@@ -1,4 +1,4 @@
-import { PlElement } from "polylib";
+import { PlElement, css } from "polylib";
 
 export class PlForm extends PlElement {
     __awaits = [];
@@ -9,6 +9,15 @@ export class PlForm extends PlElement {
             hidden: { type: Boolean, reflectToAttribute: true },
             urlParams: { type: Array, value: [] }
         }
+    }
+
+    static get css() {
+        return css`
+            :host {
+                width: 100%;
+                height: 100%;
+            }
+        `
     }
     constructor() {
         super();
