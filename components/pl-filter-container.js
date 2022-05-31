@@ -20,7 +20,7 @@ class PlFilterContainer extends PlElement {
     static get css() {
         return css`
             :host {
-                all: inherit;
+                display: contents;
             }
         `
     }
