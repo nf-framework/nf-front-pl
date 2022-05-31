@@ -28,7 +28,7 @@ class PlFilePreview extends PlElement {
             }
 
             .cont {
-                width: 300px;
+                max-width: 300px;
                 height: 64px;
                 display:flex;
                 flex-direction:column;

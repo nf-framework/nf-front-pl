@@ -57,7 +57,7 @@ class PlFileUpload extends PlElement {
                 text-align: center;
                 padding: var(--space-lg);
                 font: var(--subtext-font);
-                width: 300px;
+                max-width: 300px;
                 height: 92px;
                 border: 1px dashed var(--grey-dark);
                 box-sizing: border-box;
@@ -65,6 +65,7 @@ class PlFileUpload extends PlElement {
                 color: var(--grey-dark);
                 position: relative;
                 cursor: pointer;
+                overflow: hidden;
             }
 
             :host([hidden]) .uploader-container{
