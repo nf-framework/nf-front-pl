@@ -79,6 +79,9 @@ class PlAppSideList extends PlElement {
             :host([variant="main"]) .submenu-title {
                 display: none;
             }
+          .icon {
+            width: 16px;
+          }
         `;
     }
 
@@ -90,7 +93,7 @@ class PlAppSideList extends PlElement {
             <pl-repeat items="[[items]]">
                 <template>
                     <div class="items-flex" on-click="[[onMenuClick]]">
-                        <pl-icon iconset="pl-default" icon="[[item.icon]]"></pl-icon>
+                        <pl-icon class="icon" iconset="pl-default" icon="[[item.icon]]"></pl-icon>
                         <span class="submenu-caption">[[item.caption]]</span>
                         <pl-icon iconset="pl-default" hidden="[[!item.hasChildren]]" icon="chevron-right"></pl-icon>   
                     </div> 

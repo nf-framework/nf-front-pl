@@ -13,6 +13,7 @@ class PlAppSide extends PlElement {
 			items: { type: Array, value: () => ([]) },
 			selected: { type: Object, value: null, observer: '_selectedObserver' },
 			_selectedItemsStack: { type: Array, value: () => [], observer: '_selectedItemsStackObserver' },
+			manualHide: { type: Boolean, value: false }
 		};
 	}
 
@@ -23,7 +24,6 @@ class PlAppSide extends PlElement {
 				flex-direction: column;
 				box-sizing: border-box;
 				width: var(--menu-width);
-				position: absolute;
 				user-select: none;
 				height: 100%;
 				background: var(--menu-background-color);
@@ -31,6 +31,7 @@ class PlAppSide extends PlElement {
 				--menu-width: 64px;
 				--menu-opened-width: 280px;
 				will-change: width;
+				position: relative;
 			}
 
 			:host([opened]) {
@@ -64,12 +65,12 @@ class PlAppSide extends PlElement {
 				height: 100%; 
 				background: #fff; 
 				min-width: var(--menu-opened-width);
-				animation: slide 0.3s;
+				animation: fade 0.3s;
 			}
 
-			@keyframes slide { 
-				0% { transform: translateX(-100%); opacity: 0;} 
-				100% { transform: translateX(0); opacity: 1;}   
+			@keyframes fade { 
+				0% { opacity: 0;} 
+				100% { opacity: 1;}   
 			}
 
 			:host .submenu-item:nth-child(odd) {
@@ -175,8 +176,10 @@ class PlAppSide extends PlElement {
 	}
 
 	close() {
+		console.log('close')
 		this.splice('_selectedItemsStack', 0, this._selectedItemsStack.length);
 		this.selected = null;
+		if (this.manualHide) return;
 		this.opened = false;
 	}
 }
