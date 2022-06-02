@@ -8,7 +8,8 @@ export default class MainView extends PlForm {
             menuItems: { type: Array, value: () => ([]) },
             menuOpened: { type: Boolean, value: false },
             currentForm: { type: Object },
-            currentThread: { type: Object }
+            currentThread: { type: Object },
+            breadcrumbs: { type: Array }
         };
     }
 
@@ -106,7 +107,7 @@ export default class MainView extends PlForm {
             </pl-app-side>
             <div class="content">
                 <pl-forms-manager id="formManager" current-form="{{currentForm}}" current-thread="{{currentThread}}">
-                    <pl-header hidden="[[isHeaderHidden(currentForm)]]" current-form="[[currentForm]]">
+                    <pl-header hidden="[[isHeaderHidden(currentForm)]]" current-form="[[currentForm]]" breadcrumbs="[[breadcrumbs]]" on-breadcrumb-click="[[onBreadCrumbsClick]]">
                         [[currentForm.headerTemplate]]
                     </pl-header>
                 </pl-forms-manager>
@@ -158,5 +159,14 @@ export default class MainView extends PlForm {
     }
     isHeaderHidden(form) {
         return !form || form.hideHeader;
+    }
+    onFormChange() {
+        this.breadcrumbs = this.currentThread.node.openedForms.map( i => ({ title: i.formTitle, form: i }));
+    }
+    async onBreadCrumbsClick(e) {
+        while (this.currentForm != e.detail.form) {
+            let r = await this.currentForm.close();
+            if (r === false) break;
+        }
     }
 }
