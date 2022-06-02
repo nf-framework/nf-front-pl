@@ -8,7 +8,7 @@ class PlMenuForm extends PlElement {
         return {
             items: { type: Array, value: () => [] },
             selected: { type: String, value: '', observer: '_selectedChange' },
-            scrollable: { type: Boolean }
+            scrollable: { type: Boolean, reflectToAttribute: true }
         }
     }
     static get css() {
@@ -88,10 +88,14 @@ class PlMenuForm extends PlElement {
                 width: 100%;
                 overflow-y: auto;
                 box-sizing: border-box;
-                padding-right: 16px;
                 padding-top: 16px;
                 gap: 16px;
             }
+
+            :host([scrollable]) .content{
+                padding-right: 16px;
+            }
+
             .mark {
                 display: flex;
                 width: 8px;
