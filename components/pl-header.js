@@ -5,7 +5,7 @@ class PlHeader extends PlElement {
         return {
             currentForm: { type: Object, observer: 'currentFormObserver' },
             formTitle: { type: String },
-            breadcrumbs: { type: String, value: 'Главная' },
+            breadcrumbs: { type: Array, value: ['Главная'] },
             hidden: { type: Boolean, reflectToAttribute: true }
         }
     }
@@ -45,16 +45,21 @@ class PlHeader extends PlElement {
                 flex-direction: column;
                 user-select: none;
             }
-            .form-breadcrumbs {
+            .form-breadcrumbs a {
                 font: var(--header-font);
                 color: var(--grey-darkest);
                 font-weight: 400;
             }
-
+            .form-breadcrumbs a:hover {
+                color: var(--text-color);
+            }
             #form-label {
                 font: var(--font-h2);
                 color: var(--text-color);
             }
+          .form-breadcrumbs .item:not(:first-child)::before {
+            content: ' - ';
+          }
         `;
     }
 
@@ -65,7 +70,13 @@ class PlHeader extends PlElement {
                 <pl-icon iconset="pl-default" size="16" icon="chevron-left"></pl-icon>
             </div>
             <div class="content-header">
-                <div class="form-breadcrumbs">[[breadcrumbs]]</div>
+                <div class="form-breadcrumbs">
+                    <pl-repeat items="[[breadcrumbs]]">
+                        <template>
+                            <span class="item"><a href="javascript:void(0)" on-click="[[onBreadCrumbsClick]]">[[item.title]]</a></span>    
+                        </template>
+                    </pl-repeat>
+                </div>
                 <div id="form-label">[[formTitle]]</div>
                 <slot name="suffix"></slot>
             </div>
@@ -90,6 +101,9 @@ class PlHeader extends PlElement {
 
     close() {
         this.currentForm?.close();
+    }
+    onBreadCrumbsClick(e) {
+        this.dispatchEvent(new CustomEvent('breadcrumbClick', { detail: e.model.item }))
     }
 }
 
