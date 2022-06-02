@@ -132,6 +132,7 @@ export default class MainView extends PlForm {
     onConnect() {
         this.$.dsMenu.execute();
         this.$.aGetUserProfile.execute();
+        addEventListener('form-change', e => this.onFormChange());
     }
 
     onMenuButtonClick() {
