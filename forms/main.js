@@ -6,7 +6,7 @@ export default class MainView extends PlForm {
         return {
             userProfile: { type: Object, value: () => ({}) },
             menuItems: { type: Array, value: () => ([]) },
-            menuOpened: { type: Boolean, value: false },
+            menuOpened: { type: Boolean, value: true },
             currentForm: { type: Object },
             currentThread: { type: Object },
             breadcrumbs: { type: Array }
@@ -32,7 +32,6 @@ export default class MainView extends PlForm {
             
             .content {
                 background: var(--background-color);
-                margin-inline-start: 64px;
                 display: flex;
                 flex-direction: column;
                 flex: 1;
@@ -70,8 +69,8 @@ export default class MainView extends PlForm {
             }
 
             #btnMenu {
-                margin: 8px 0 8px 0;
-                align-self: flex-start;
+                margin: 8px 0;
+                align-self: flex-end;
                 width: 64px;
             }
 
@@ -94,12 +93,12 @@ export default class MainView extends PlForm {
     static get template() {
         return html`
             <pl-dataset id="dsMenu" data="{{menuItems}}" endpoint="/front/action/getMenu"></pl-dataset>
-            <pl-app-side id="menu" opened={{menuOpened}} items="[[menuItems]]" on-menu-item-selected="[[onMenuItemSelected]]">
+            <pl-app-side id="menu" opened={{menuOpened}} items="[[menuItems]]" on-menu-item-selected="[[onMenuItemSelected]]" manual-hide>
                 <div slot="top" class="logo-wrapper">
                     <div class="logo"></div>
                 </div>
             
-                <pl-icon-button variant="link" size="24" class="icon-open" slot="top" iconset="pl-default" icon="[[_getMenuIcon(menuOpened)]]"
+                <pl-icon-button variant="link" size="24" class="icon-open" slot="top" iconset="pl-default" icon="[[menuIcon(menuOpened)]]"
                     on-click="[[onMenuButtonClick]]" id="btnMenu"></pl-icon-button>
             
                 <pl-icon-button slot="bottom" variant="link" size="24" id="btnProfile" iconset="pl-default" icon="profile"
@@ -139,10 +138,6 @@ export default class MainView extends PlForm {
         this.menuOpened = !this.menuOpened;
     }
 
-    _getMenuIcon(opened) {
-        return opened ? 'close-s' : 'menu';
-    }
-
     onMenuItemSelected(event) {
         if (event.detail.form) {
             this.$.formManager.open(event.detail.form, { newThread: event.detail.newThread, extKey: event.detail.form });
@@ -169,5 +164,8 @@ export default class MainView extends PlForm {
             let r = await this.currentForm.close();
             if (r === false) break;
         }
+    }
+    menuIcon(x) {
+        return x ? 'chevron-left' : 'chevron-right';
     }
 }
