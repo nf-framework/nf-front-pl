@@ -36,7 +36,19 @@ export class PlForm extends PlElement {
 
     }
     connectedCallback() {
-        super.connectedCallback()
+        super.connectedCallback();
+        // lookup for formManager if it's not assigned, usually for sub forms
+        // search the closest element with _formManager
+        if (!this._formManager) {
+            let node = this;
+            while (node) {
+                if (node._formManager) {
+                    this._formManager = node._formManager;
+                    break;
+                } else
+                    node = node.parentNode ?? node.host;
+            }
+        }
         this.onConnect?.();
 
         // Повышаем z-index всех родительских элементов до формы при показе дропдауна,
