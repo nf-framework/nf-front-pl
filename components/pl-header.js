@@ -48,6 +48,7 @@ class PlHeader extends PlElement {
             .form-breadcrumbs {
               display: flex;
               align-items: center;
+              height: 16px;
             }
             .form-breadcrumbs a {
                 font: var(--header-font);
