@@ -176,7 +176,6 @@ class PlAppSide extends PlElement {
 	}
 
 	close() {
-		console.log('close')
 		this.splice('_selectedItemsStack', 0, this._selectedItemsStack.length);
 		this.selected = null;
 		if (this.manualHide) return;
