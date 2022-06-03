@@ -162,10 +162,10 @@ export default class MainView extends PlForm {
         return !form || form.hideHeader;
     }
     onFormChange() {
-        this.breadcrumbs = this.currentThread.node.openedForms.map( i => ({ title: i.formTitle, form: i }));
+        this.breadcrumbs = this.currentThread.node.openedForms.map( i => ({ title: i.formTitle, form: i })).slice(0,-1);
     }
     async onBreadCrumbsClick(e) {
-        while (this.currentForm != e.detail.form) {
+        while (this.currentForm != e.detail?.form) {
             let r = await this.currentForm.close();
             if (r === false) break;
         }

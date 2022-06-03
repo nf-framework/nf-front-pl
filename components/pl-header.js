@@ -49,17 +49,24 @@ class PlHeader extends PlElement {
                 font: var(--header-font);
                 color: var(--grey-darkest);
                 font-weight: 400;
+                text-decoration: none;
             }
-            .form-breadcrumbs a:hover {
+            .form-breadcrumbs pl-icon {
+                color: var(--grey-darkest);
+            }
+            .form-breadcrumbs a:hover, .form-breadcrumbs pl-icon:hover {
                 color: var(--text-color);
             }
             #form-label {
                 font: var(--font-h2);
                 color: var(--text-color);
             }
-          .form-breadcrumbs .item:not(:first-child)::before {
-            content: ' - ';
-          }
+            .form-breadcrumbs .item:not(:first-child)::before {
+                content: ' / ';
+            }
+            .homeIcon {
+                display: inline-flex;
+            }
         `;
     }
 
@@ -71,6 +78,7 @@ class PlHeader extends PlElement {
             </div>
             <div class="content-header">
                 <div class="form-breadcrumbs">
+                    <pl-icon class="homeIcon" iconset="pl-default" icon="home" size="12" on-click="[[onBreadCrumbsClick]]"></pl-icon>
                     <pl-repeat items="[[breadcrumbs]]">
                         <template>
                             <span class="item"><a href="javascript:void(0)" on-click="[[onBreadCrumbsClick]]">[[item.title]]</a></span>    
@@ -103,7 +111,7 @@ class PlHeader extends PlElement {
         this.currentForm?.close();
     }
     onBreadCrumbsClick(e) {
-        this.dispatchEvent(new CustomEvent('breadcrumbClick', { detail: e.model.item }))
+        this.dispatchEvent(new CustomEvent('breadcrumbClick', { detail: e.model?.item }))
     }
 }
 
