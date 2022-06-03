@@ -78,6 +78,13 @@ class FormThreadManager extends PlElement {
     notifyEmpty() {
         this.dispatchEvent( new CustomEvent('pl-form-thread-empty', { bubbles: true, detail: { thread: this.getAttribute('id') } }));
     }
+    async closeAll() {
+        while (this.openedForms.length > 0) {
+            let r = await this.currentForm.close();
+            if (r===false) return false;
+        }
+        return true;
+    }
 }
 
 customElements.define('pl-forms-thread', FormThreadManager);

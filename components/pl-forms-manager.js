@@ -8,7 +8,8 @@ class FormManager extends PlElement {
         currentForm: { type: Object, observer: 'currentFormChange' },
         currentThread: { type: Object },
         container: { type: Object },
-        threads: { type: Array, value: ()=>[], observer: 'threadFormChange' }
+        threads: { type: Array, value: ()=>[], observer: 'threadFormChange' },
+        singleThread: { type: Boolean, value: false }
     }
     static css = css`
         :host {
@@ -47,6 +48,9 @@ class FormManager extends PlElement {
             if (thread) showOnly = true;
         }
         if (!thread || newThread) {
+            if (this.singleThread) {
+                if (this.currentThread?.node.closeAll() === false) return;
+            }
             //Create new thread
             let id = threadId ?? 'trd'+(Math.random() + 1).toString(36).substring(2);
             thread = { id, name, node: null };

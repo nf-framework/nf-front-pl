@@ -6,10 +6,12 @@ export default class MainView extends PlForm {
         return {
             userProfile: { type: Object, value: () => ({}) },
             menuItems: { type: Array, value: () => ([]) },
-            menuOpened: { type: Boolean, value: true },
+            menuOpened: { type: Boolean, value: false },
             currentForm: { type: Object },
             currentThread: { type: Object },
-            breadcrumbs: { type: Array }
+            breadcrumbs: { type: Array },
+            singleThread: { type: Boolean },
+            menuManualHide: { type: Boolean }
         };
     }
 
@@ -93,7 +95,7 @@ export default class MainView extends PlForm {
     static get template() {
         return html`
             <pl-dataset id="dsMenu" data="{{menuItems}}" endpoint="/front/action/getMenu"></pl-dataset>
-            <pl-app-side id="menu" opened={{menuOpened}} items="[[menuItems]]" on-menu-item-selected="[[onMenuItemSelected]]" manual-hide>
+            <pl-app-side id="menu" opened={{menuOpened}} items="[[menuItems]]" on-menu-item-selected="[[onMenuItemSelected]]" manual-hide="[[menuManualHide]]">
                 <div slot="top" class="logo-wrapper">
                     <div class="logo"></div>
                 </div>
@@ -105,7 +107,7 @@ export default class MainView extends PlForm {
                     on-click="[[onProfileClick]]"></pl-icon-button>
             </pl-app-side>
             <div class="content">
-                <pl-forms-manager id="formManager" current-form="{{currentForm}}" current-thread="{{currentThread}}">
+                <pl-forms-manager id="formManager" current-form="{{currentForm}}" current-thread="{{currentThread}}" single-thread="[[singleThread]]">
                     <pl-header hidden="[[isHeaderHidden(currentForm)]]" current-form="[[currentForm]]" breadcrumbs="[[breadcrumbs]]" on-breadcrumb-click="[[onBreadCrumbsClick]]">
                         [[currentForm.headerTemplate]]
                     </pl-header>
@@ -129,13 +131,23 @@ export default class MainView extends PlForm {
     }
 
     onConnect() {
+        this.singleThread = NF?.config?.front?.formManager?.singleThread === true;
+        this.menuManualHide = NF?.config?.front?.mainMenu?.manualHide === true;
         this.$.dsMenu.execute();
         this.$.aGetUserProfile.execute();
         addEventListener('form-change', e => this.onFormChange());
+        if (this.menuManualHide) {
+            //save state to localstorage
+            this.menuOpened = localStorage.getItem('mainMenuOpened') === 'true';
+        }
     }
 
     onMenuButtonClick() {
         this.menuOpened = !this.menuOpened;
+        if (this.menuManualHide) {
+            //save state to localstorage
+            localStorage.setItem('mainMenuOpened', this.menuOpened);
+        }
     }
 
     onMenuItemSelected(event) {
