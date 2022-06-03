@@ -45,6 +45,10 @@ class PlHeader extends PlElement {
                 flex-direction: column;
                 user-select: none;
             }
+            .form-breadcrumbs {
+              display: flex;
+              align-items: center;
+            }
             .form-breadcrumbs a {
                 font: var(--header-font);
                 color: var(--grey-darkest);
@@ -53,6 +57,7 @@ class PlHeader extends PlElement {
             }
             .form-breadcrumbs pl-icon {
                 color: var(--grey-darkest);
+              cursor: pointer;
             }
             .form-breadcrumbs a:hover, .form-breadcrumbs pl-icon:hover {
                 color: var(--text-color);
@@ -62,7 +67,9 @@ class PlHeader extends PlElement {
                 color: var(--text-color);
             }
             .form-breadcrumbs .item:not(:first-child)::before {
-                content: ' / ';
+                content: '>';
+                margin: 0 4px;
+                color: var(--grey-darkest);
             }
             .homeIcon {
                 display: inline-flex;
