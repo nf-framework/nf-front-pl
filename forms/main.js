@@ -138,7 +138,11 @@ export default class MainView extends PlForm {
         addEventListener('form-change', e => this.onFormChange());
         if (this.menuManualHide) {
             //save state to localstorage
-            this.menuOpened = localStorage.getItem('mainMenuOpened') === 'true';
+            let m = localStorage.getItem('mainMenuOpened');
+            if (m)
+                this.menuOpened = m === 'true';
+            else
+                this.menuOpened = NF?.config?.front?.mainMenu?.defaultOpened === true;
         }
     }
 
