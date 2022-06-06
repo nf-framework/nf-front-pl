@@ -35,7 +35,9 @@ class PlHeader extends PlElement {
                 border-radius: 4px;
                 cursor: pointer;
             }
-
+            .back[hidden] {
+                display: none;
+            }
             .back:hover {
                 border: 1px solid var(--grey-base);
             }
@@ -75,18 +77,21 @@ class PlHeader extends PlElement {
             .homeIcon {
                 display: inline-flex;
             }
+            .homeIcon[hidden] {
+                display: none;
+            }
         `;
     }
 
     static get template() {
         return html`
             <slot></slot>
-            <div class="back" on-click="[[close]]">
+            <div class="back" on-click="[[close]]" hidden="[[currentForm._dashboard]]">
                 <pl-icon iconset="pl-default" size="16" icon="chevron-left"></pl-icon>
             </div>
             <div class="content-header">
                 <div class="form-breadcrumbs">
-                    <pl-icon class="homeIcon" iconset="pl-default" icon="home" size="12" on-click="[[onBreadCrumbsClick]]"></pl-icon>
+                    <pl-icon class="homeIcon" iconset="pl-default" icon="home" size="12" on-click="[[onBreadCrumbsClick]]" hidden="[[currentForm._dashboard]]"></pl-icon>
                     <pl-repeat items="[[breadcrumbs]]">
                         <template>
                             <span class="item"><a href="javascript:void(0)" on-click="[[onBreadCrumbsClick]]">[[item.title]]</a></span>    

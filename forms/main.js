@@ -11,7 +11,8 @@ export default class MainView extends PlForm {
             currentThread: { type: Object },
             breadcrumbs: { type: Array },
             singleThread: { type: Boolean },
-            menuManualHide: { type: Boolean }
+            menuManualHide: { type: Boolean },
+            dashboard: { type: String }
         };
     }
 
@@ -107,7 +108,7 @@ export default class MainView extends PlForm {
                     on-click="[[onProfileClick]]"></pl-icon-button>
             </pl-app-side>
             <div class="content">
-                <pl-forms-manager id="formManager" current-form="{{currentForm}}" current-thread="{{currentThread}}" single-thread="[[singleThread]]">
+                <pl-forms-manager id="formManager" current-form="{{currentForm}}" current-thread="{{currentThread}}" single-thread="[[singleThread]]" dashboard="[[dashboard]]">
                     <pl-header hidden="[[isHeaderHidden(currentForm)]]" current-form="[[currentForm]]" breadcrumbs="[[breadcrumbs]]" on-breadcrumb-click="[[onBreadCrumbsClick]]">
                         [[currentForm.headerTemplate]]
                     </pl-header>
@@ -131,7 +132,8 @@ export default class MainView extends PlForm {
     }
 
     onConnect() {
-        this.singleThread = NF?.config?.front?.formManager?.singleThread === true;
+        this.singleThred = NF?.config?.front?.formManager?.singleThread === true;
+        this.dashboard = NF?.config?.front?.formManager?.dashboard;
         this.menuManualHide = NF?.config?.front?.mainMenu?.manualHide === true;
         this.$.dsMenu.execute();
         this.$.aGetUserProfile.execute();
@@ -176,7 +178,7 @@ export default class MainView extends PlForm {
         this.breadcrumbs = this.currentThread.node.openedForms.map( i => ({ title: i.formTitle, form: i })).slice(0,-1);
     }
     async onBreadCrumbsClick(e) {
-        while (this.currentForm != e.detail?.form) {
+        while (this.currentForm != e.detail?.form && !this.currentForm._dashboard) {
             let r = await this.currentForm.close();
             if (r === false) break;
         }

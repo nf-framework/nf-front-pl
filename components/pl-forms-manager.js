@@ -9,7 +9,8 @@ class FormManager extends PlElement {
         currentThread: { type: Object },
         container: { type: Object },
         threads: { type: Array, value: ()=>[], observer: 'threadFormChange' },
-        singleThread: { type: Boolean, value: false }
+        singleThread: { type: Boolean, value: false },
+        dashboard: { type: String, observer: 'dashBoardChange' }
     }
     static css = css`
         :host {
@@ -33,11 +34,15 @@ class FormManager extends PlElement {
     connectedCallback() {
         super.connectedCallback();
         this.container = this.container ?? this.root;
-        this.container.addEventListener('pl-form-thread-empty', (e)=>this.onThreadEmpty(e))
+        this.container.addEventListener('pl-form-thread-empty', (e)=>this.onThreadEmpty(e));
     }
 
     open(name, options = {} ) {
-        let {threadId, newThread, extKey} = options;
+        let {threadId, newThread, extKey, dashboard} = options;
+        if (name === this.dashboard) {
+            console.log('name',name)
+            dashboard = true;
+        }
         let thread, showOnly = false;
         if (threadId) {
             thread = this.threads.find( i => i.id === threadId );
@@ -48,18 +53,19 @@ class FormManager extends PlElement {
             if (thread) showOnly = true;
         }
         if (!thread || newThread) {
-            if (this.singleThread) {
+            if (this.singleThread && !this.currentThread?.dashboard) {
                 if (this.currentThread?.node.closeAll() === false) return;
             }
             //Create new thread
             let id = threadId ?? 'trd'+(Math.random() + 1).toString(36).substring(2);
-            thread = { id, name, node: null };
+            thread = { id, name, node: null, dashboard };
             let ind = this.push('threads', thread);
             this.set(['threads',ind-1,'node'], this.$[id]);
         }
         let result = showOnly || thread.node.open(name, options);
         //Make thread visible, and hide others
-        this.switchTo(thread.id);
+        if (!(dashboard && this.currentThread))
+            this.switchTo(thread.id);
         return result;
     }
     threadFormChange(v,o,m) {
@@ -99,7 +105,19 @@ class FormManager extends PlElement {
     }
     currentFormChange(form) {
         window.plCurrentForm = {form};
+        if (form?._formName === this.dashboard) {
+            form._dashboard = true;
+        }
         dispatchEvent( new CustomEvent('form-change', { detail: { form } }));
+    }
+    async dashBoardChange(db) {
+        if (this.currentThread?.name == db) {
+            console.log('match')
+            this.set('currentThread.dashboard', db);
+        }
+        if (db) {
+            this._dbForm = await this.open(db, { dashboard: true });
+        }
     }
 }
 

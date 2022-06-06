@@ -60,6 +60,7 @@ class FormThreadManager extends PlElement {
                     _closeCallback: closeForm,
                     formManager: this
                 });
+                form._dashboard = options.dashboard;
                 drawer?.open();
                 drawer || this.openedForms.forEach(f => {
                     if (!f.hidden) f.hidden = true;
