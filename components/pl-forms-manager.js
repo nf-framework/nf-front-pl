@@ -105,7 +105,7 @@ class FormManager extends PlElement {
     }
     currentFormChange(form) {
         window.plCurrentForm = {form};
-        if (form?._formName === this.dashboard) {
+        if (form && form?._formName === this.dashboard) {
             form._dashboard = true;
         }
         dispatchEvent( new CustomEvent('form-change', { detail: { form } }));
