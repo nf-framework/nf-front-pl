@@ -63,7 +63,10 @@ class FormManager extends PlElement {
         }
         let result = showOnly || thread.node.open(name, options);
         //Make thread visible, and hide others
-        if (!(options?.dashboard && this.currentThread))
+        if (options?.dashboard && this.currentThread)
+            // When dashboard auto-open on already opened form, hide any thread except current
+            this.switchTo(this.currentThread.id);
+         else
             this.switchTo(thread.id);
         return result;
     }
