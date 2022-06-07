@@ -132,7 +132,7 @@ export default class MainView extends PlForm {
     }
 
     onConnect() {
-        this.singleThred = NF?.config?.front?.formManager?.singleThread === true;
+        this.singleThread = NF?.config?.front?.formManager?.singleThread === true;
         this.dashboard = NF?.config?.front?.formManager?.dashboard;
         this.menuManualHide = NF?.config?.front?.mainMenu?.manualHide === true;
         this.$.dsMenu.execute();

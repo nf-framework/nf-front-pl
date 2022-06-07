@@ -40,7 +40,6 @@ class FormManager extends PlElement {
     open(name, options = {} ) {
         let {threadId, newThread, extKey, dashboard} = options;
         if (name === this.dashboard) {
-            console.log('name',name)
             dashboard = true;
         }
         let thread, showOnly = false;
@@ -64,8 +63,7 @@ class FormManager extends PlElement {
         }
         let result = showOnly || thread.node.open(name, options);
         //Make thread visible, and hide others
-        if (!(dashboard && this.currentThread))
-            this.switchTo(thread.id);
+        this.switchTo(thread.id);
         return result;
     }
     threadFormChange(v,o,m) {
@@ -112,7 +110,6 @@ class FormManager extends PlElement {
     }
     async dashBoardChange(db) {
         if (this.currentThread?.name == db) {
-            console.log('match')
             this.set('currentThread.dashboard', db);
         }
         if (db) {
