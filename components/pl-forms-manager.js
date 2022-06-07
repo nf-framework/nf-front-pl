@@ -51,10 +51,10 @@ class FormManager extends PlElement {
             thread = this.threads.find( i => i.name === name);
             if (thread) showOnly = true;
         }
+        if (this.singleThread && !this.currentThread?.dashboard) {
+            if (this.currentThread?.node.closeAll() === false) return;
+        }
         if (!thread || newThread) {
-            if (this.singleThread && !this.currentThread?.dashboard) {
-                if (this.currentThread?.node.closeAll() === false) return;
-            }
             //Create new thread
             let id = threadId ?? 'trd'+(Math.random() + 1).toString(36).substring(2);
             thread = { id, name, node: null, dashboard };
@@ -63,7 +63,8 @@ class FormManager extends PlElement {
         }
         let result = showOnly || thread.node.open(name, options);
         //Make thread visible, and hide others
-        this.switchTo(thread.id);
+        if (!(options?.dashboard && this.currentThread))
+            this.switchTo(thread.id);
         return result;
     }
     threadFormChange(v,o,m) {
