@@ -7,8 +7,8 @@ class PlMenuForm extends PlElement {
     static get properties() {
         return {
             items: { type: Array, value: () => [] },
-            selected: { type: String, value: '', observer: '_selectedChange' },
-            scrollable: { type: Boolean, reflectToAttribute: true }
+            selected: { type: String, value: undefined, observer: '_selectedChange' },
+            scrollable: { type: Boolean, reflectToAttribute: true, value: false }
         }
     }
     static get css() {
@@ -27,7 +27,6 @@ class PlMenuForm extends PlElement {
                 background-color: #F2F2F2;
                 padding: 16px;
             }
-            
            
             #menu {
                 display: flex;
@@ -55,20 +54,15 @@ class PlMenuForm extends PlElement {
                 cursor: pointer;
                 gap: 8px;
             }
+            
+            .menu-item[hidden] {
+                display: none;
+            }
 
-            .menu-item:hover, .menu-item[active] {
+            .menu-item:hover, .menu-item[selected] {
                 background: var(--primary-base);
                 color: var(--primary-lightest);
                 font-weight: 500;
-            }
-
-            .bottom {
-                position: absolute;
-                bottom: 0px;
-                padding-right: 16px;
-                width: 100%;
-                display: flex;
-                box-sizing: border-box;
             }
 
             .main-container {
@@ -86,7 +80,6 @@ class PlMenuForm extends PlElement {
                 flex-direction: column;
                 height: 100%;
                 width: 100%;
-                overflow-y: auto;
                 box-sizing: border-box;
                 padding-top: 16px;
                 gap: 16px;
@@ -94,6 +87,7 @@ class PlMenuForm extends PlElement {
 
             :host([scrollable]) .content{
                 padding-right: 16px;
+                overflow-y: auto;
             }
 
             .mark {
@@ -116,15 +110,13 @@ class PlMenuForm extends PlElement {
                 <div id="menu">
                     <pl-repeat items="[[items]]">
                         <template>
-                            <div class="menu-item" active$="[[item.active]]" name$="[[item.name]]" on-click="[[onMenuClick]]">
+                            <div class="menu-item" hidden$="[[item.menuHidden]]" selected$="[[item.selected]]" name$="[[item.name]]"
+                                on-click="[[onMenuClick]]">
                                 [[item.title]]
                                 <div class="mark" hidden$="[[!item.invalid]]"></div>
                             </div>
                         </template>
                     </pl-repeat>
-                    <div class="bottom">
-                        <slot name="buttons"></slot>
-                    </div>
                 </div>
                 <div class="content" on-scroll="[[onScroll]]">
                     <slot></slot>
@@ -142,7 +134,7 @@ class PlMenuForm extends PlElement {
     }
 
     onMenuClick(event) {
-        if(this.scrollable) {
+        if (this.scrollable) {
             this.selected = null;
         }
         this.selected = event.model.item.name;
@@ -175,6 +167,7 @@ class PlMenuForm extends PlElement {
                 invalid: item.invalid,
                 name: item.getAttribute('name'),
                 title: item.label,
+                menuHidden: item.menuHidden,
                 hidden: item.hasAttribute('hidden'),
                 dom: item
             }
@@ -184,7 +177,7 @@ class PlMenuForm extends PlElement {
         }
         this.items = prepared_items;
         if (this.selected) {
-            if(this.scrollable) {
+            if (this.scrollable) {
                 let tDom = this.querySelector(`[name=${this.selected}]`);
                 this.lastTop = null;
                 this.setActiveScroll(tDom);
@@ -222,10 +215,10 @@ class PlMenuForm extends PlElement {
     setActiveScroll(top) {
         if (top && top != this.lastTop) {
             if (this.lastTop) {
-                this.set(`${this.lastTop._descriptor.path}.active`, false)
+                this.set(`${this.lastTop._descriptor.path}.selected`, false)
             }
             if (top._descriptor) {
-                this.set(`${top._descriptor.path}.active`, true);
+                this.set(`${top._descriptor.path}.selected`, true);
 
                 this.lastTop = top;
             }
@@ -238,11 +231,11 @@ class PlMenuForm extends PlElement {
         else {
             this.items.forEach((item) => {
                 if (item.name == selected) {
-                    this.set(`items.${this.items.findIndex(x => x.name == selected)}.active`, true);
+                    this.set(`items.${this.items.findIndex(x => x.name == selected)}.selected`, true);
                     item.dom.removeAttribute('hidden');
                 } else {
-                    this.set(`items.${this.items.indexOf(item)}.active`, false);
-                    item.dom.setAttribute('hidden', 'hidden');
+                    this.set(`items.${this.items.indexOf(item)}.selected`, false);
+                    item.dom.setAttribute('hidden', '');
                 }
             });
         }

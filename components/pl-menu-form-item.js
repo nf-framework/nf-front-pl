@@ -12,9 +12,14 @@ class PlMenuFormItem extends PlElement {
             },
             hidden: {
                 type: Boolean,
-                reflectToAttribute: true
+                reflectToAttribute: true,
+                value: false
             },
-            active: {
+            menuHidden: {
+                type: Boolean,
+                observer: 'propertyChanged'
+            },
+            selected: {
                 type: Boolean,
                 reflectToAttribute: true
             },
@@ -25,7 +30,6 @@ class PlMenuFormItem extends PlElement {
             fit: {
                 type: Boolean,
                 reflectToAttribute: true,
-                observer: 'propertyChanged'
             }
         };
     }
