@@ -92,11 +92,9 @@ class PlHeader extends PlElement {
             <div class="content-header">
                 <div class="form-breadcrumbs">
                     <pl-icon class="homeIcon" iconset="pl-default" icon="home" size="12" on-click="[[onBreadCrumbsClick]]" hidden="[[currentForm._dashboard]]"></pl-icon>
-                    <pl-repeat items="[[breadcrumbs]]">
-                        <template>
-                            <span class="item"><a href="javascript:void(0)" on-click="[[onBreadCrumbsClick]]">[[item.title]]</a></span>    
-                        </template>
-                    </pl-repeat>
+                    <template d:repeat="[[breadcrumbs]]">
+                        <span class="item"><a href="javascript:void(0)" on-click="[[onBreadCrumbsClick]]">[[item.title]]</a></span>    
+                    </template>
                 </div>
                 <div id="form-label">[[formTitle]]</div>
                 <slot name="suffix"></slot>

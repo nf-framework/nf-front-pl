@@ -25,11 +25,10 @@ class FormManager extends PlElement {
     `;
     static template = html`
         <slot></slot>
-        <pl-repeat items="{{threads}}">
-            <template>
-                <pl-forms-thread id="[[item.id]]" current-form="{{item.currentForm}}"></pl-forms-thread>
-            </template>
-        </pl-repeat>`;
+        <template d:repeat="{{threads}}" d:as="item">
+            <pl-forms-thread id="[[item.id]]" current-form="{{item.currentForm}}"></pl-forms-thread>
+        </template>
+        `;
 
     connectedCallback() {
         super.connectedCallback();
@@ -40,7 +39,6 @@ class FormManager extends PlElement {
     open(name, options = {} ) {
         let {threadId, newThread, extKey, dashboard} = options;
         if (name === this.dashboard) {
-            console.log('name',name)
             dashboard = true;
         }
         let thread, showOnly = false;
@@ -73,7 +71,7 @@ class FormManager extends PlElement {
             let path = normalizePath(m.path);
             if (path.at(-1) === 'currentForm') {
                 let thread = this.get(path.slice(0, -1));
-                if (thread.node.hidden === false){
+                if (thread && thread.node.hidden === false){
                      this.currentForm = thread.node.currentForm;
                 }
             }
@@ -112,7 +110,6 @@ class FormManager extends PlElement {
     }
     async dashBoardChange(db) {
         if (this.currentThread?.name == db) {
-            console.log('match')
             this.set('currentThread.dashboard', db);
         }
         if (db) {
