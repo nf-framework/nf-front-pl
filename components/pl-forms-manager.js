@@ -62,8 +62,7 @@ class FormManager extends PlElement {
         }
         let result = showOnly || thread.node.open(name, options);
         //Make thread visible, and hide others
-        if (!(dashboard && this.currentThread))
-            this.switchTo(thread.id);
+        this.switchTo(dashboard && this.currentThread ? this.currentThread.id : thread.id);
         return result;
     }
     threadFormChange(v,o,m) {
