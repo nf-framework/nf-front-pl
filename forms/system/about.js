@@ -28,7 +28,7 @@ export default class GroupList extends PlForm {
                     </pl-grid>
                 </pl-flex-layout>
             </pl-flex-layout>
-            <pl-action id="aData" data="{{data}}" endpoint="/front/action/getPackages"></pl-action>
+            <pl-action id="aData" endpoint="/front/action/getPackages"></pl-action>
 		`;
     }
     onConnect() {
