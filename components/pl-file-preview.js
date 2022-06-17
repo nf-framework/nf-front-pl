@@ -79,15 +79,19 @@ class PlFilePreview extends PlElement {
             .data-container {
                 display: flex;
                 flex-direction: column;
-                flex: 1 1 0%;
+                flex: 1 1 0;
                 margin-right: 16px;
                 justify-content: center;
                 gap: 4px;
+                overflow: hidden;
+                white-space: nowrap;
             }
 
             .name {
                 font: var(--text-font);
                 color: var(--text-color);
+                text-overflow: ellipsis;
+                overflow: hidden;
             }
 
             .size {
@@ -109,7 +113,7 @@ class PlFilePreview extends PlElement {
         <pl-repeat items="[[files]]">
             <template>
                 <div class="cont">
-                    <div class="file-info-container">
+                    <div class="file-info-container" title="[[item.name]]">
                         <div class="img">
                             <pl-icon iconset="pl-default" size="16" icon="file"></pl-icon>
                         </div>
@@ -161,7 +165,8 @@ class PlFilePreview extends PlElement {
         if(event.model.item._xhr) {
             event.model.item._xhr.abort();
         }
-        this.splice('files', this.files.findIndex(x => event.model.item), 1);
+        //TODO: remove already uploaded files from server
+        this.splice('files', this.files.findIndex( x => x === event.model.item), 1);
     }
 }
 

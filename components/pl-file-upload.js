@@ -37,7 +37,9 @@ class PlFileUpload extends PlElement {
             hint: {
                 type: String,
                 value: 'Перетащите файлы или нажмите здесь, чтобы загрузить'
-            }
+            },
+            maxFileSize: { type: Number },
+            maxFileCount: { type: Number }
         }
     }
 
@@ -47,6 +49,7 @@ class PlFileUpload extends PlElement {
                 display:flex;
                 flex-direction: column;
                 gap: var(--space-sm);
+                max-height: 100%;
             }
 
             .uploader-container{
@@ -93,6 +96,9 @@ class PlFileUpload extends PlElement {
 				border-bottom: calc(var(--space-md) / 2) solid transparent;
 				border-right: calc(var(--space-md) / 2) solid transparent;
             }
+          .files {
+            overflow: auto;
+          }
         `;
     }
 
@@ -104,7 +110,9 @@ class PlFileUpload extends PlElement {
             
                 <span class="hint">[[hint]]</span>
             </div>
-            <pl-file-preview endpoint="[[downloadEndpoint]]" can-delete="true" files="{{files}}"></pl-file-preview>
+            <div class="files">
+                <pl-file-preview endpoint="[[downloadEndpoint]]" can-delete="true" files="{{files}}"></pl-file-preview>
+            </div>
         `;
     }
 
@@ -117,7 +125,7 @@ class PlFileUpload extends PlElement {
         this.$.uploader.addEventListener("drop", this.drop.bind(this), false);
     }
 
-    onFileClick(event) {
+    onFileClick() {
         this.$.fileInput.click()
     }
 
@@ -144,32 +152,31 @@ class PlFileUpload extends PlElement {
         this.dragActive = false;
         e.stopPropagation();
         e.preventDefault();
-        var dt = e.dataTransfer;
-        var files = dt.files;
+        let dt = e.dataTransfer;
+        let files = dt.files;
 
-        for (var i = 0; i < dt.files.length; i++) {
+        for (let i = 0; i < dt.files.length; i++) {
             const file = dt.files[i];
             if (!this.acceptFile(file, this.accept)) {
                 return false;
             }
-        };
-
+        }
         this.handleFiles(files);
     }
 
     onFileInputChange(e) {
-        var files = e.target.files;
+        let files = e.target.files;
         this.handleFiles(files);
     }
 
     acceptFile(file, acceptedFiles) {
         if (file && acceptedFiles) {
-            var acceptedFilesArray = Array.isArray(acceptedFiles) ? acceptedFiles : acceptedFiles.split(',');
-            var fileName = file.name || '';
-            var mimeType = (file.type || '').toLowerCase();
-            var baseMimeType = mimeType.replace(/\/.*$/, '');
+            let acceptedFilesArray = Array.isArray(acceptedFiles) ? acceptedFiles : acceptedFiles.split(',');
+            let fileName = file.name || '';
+            let mimeType = (file.type || '').toLowerCase();
+            let baseMimeType = mimeType.replace(/\/.*$/, '');
             return acceptedFilesArray.some(function (type) {
-                var validType = type.trim().toLowerCase();
+                let validType = type.trim().toLowerCase();
 
                 if (validType.charAt(0) === '.') {
                     return fileName.toLowerCase().endsWith(validType);
@@ -185,24 +192,32 @@ class PlFileUpload extends PlElement {
     }
 
     handleFiles(uploadedFiles) {
-        if (this.multiple) {
-            for (var i = 0; i < uploadedFiles.length; i++) {
-                const file = uploadedFiles[i];
-                file.loaded = 0;
-                file.progress = 0;
-                file.value = '';
-                this.push('files', file);
-                this.uploadFile(file, i);
-            };
-        }
-        else {
-            this.set('files', []);
-            const file = uploadedFiles[0];
+        //TODO: remove already uploaded files from server
+        if (!this.multiple) this.set('files', []);
+        let skipped = 0;
+        for (let i = 0; i < uploadedFiles.length; i++) {
+            const file = uploadedFiles[i];
+            if (file.size > this.maxFileSize) {
+                document.dispatchEvent(new CustomEvent('error', { detail: {
+                    message: `Размер файла "${file.name}" превышает максимальный размер.`
+                } }));
+                console.log(i,file)
+                continue;
+            }
+            if (this.files.length > this.maxFileCount) {
+                skipped++;
+                continue;
+            }
             file.loaded = 0;
             file.progress = 0;
             file.value = '';
             this.push('files', file);
-            this.uploadFile(file, i);
+            this.uploadFile(file);
+        }
+        if (skipped) {
+            document.dispatchEvent(new CustomEvent('error', { detail: {
+                    message: `Превышено максимальное количество файлов (${this.maxFileCount}). Часть файлов не загружена (${skipped}).`
+                } }));
         }
     }
 
@@ -223,14 +238,15 @@ class PlFileUpload extends PlElement {
 
         xhr.open('POST', url, true);
         xhr.onload = (event) => {
-            if (event.target.status == 200) {
+            delete file._xhr;
+            if (event.target.status === 200) {
                 const resp = JSON.parse(event.target.response);
                 if (resp.id) {
                     this.set(`files.${idx}.value`, resp.id);
                 } else {
                     if(resp.error) {
                         this.splice('files', idx, 1);
-                        document.dispatchEvent(new CustomEvent('error', { detail: resp.error }));
+                        document.dispatchEvent(new CustomEvent('error', { detail: { message: resp.error } }));
                     }
                 }
             }
