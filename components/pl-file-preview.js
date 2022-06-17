@@ -22,9 +22,9 @@ class PlFilePreview extends PlElement {
     static get css() {
         return css`
             :host{
-                display: flex;
-                flex-direction: column;
+                max-height: 100%;
                 gap: 8px;
+              display: block;
             }
 
             .cont {

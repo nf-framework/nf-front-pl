@@ -46,10 +46,13 @@ class PlFileUpload extends PlElement {
     static get css() {
         return css`
             :host {
-                display:flex;
-                flex-direction: column;
                 gap: var(--space-sm);
                 max-height: 100%;
+                display:flex;
+                flex-direction: column;
+                flex: 1 1 auto;
+                overflow-y: auto;
+                min-height: 0px;
             }
 
             .uploader-container{
