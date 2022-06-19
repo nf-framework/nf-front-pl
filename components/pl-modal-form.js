@@ -8,7 +8,8 @@ class PlModalForm extends PlElement {
             opened: { type: Boolean, reflectToAttribute: true },
             position: { type: String, value: 'right', reflectToAttribute: true },
             size: { type: String, value: 'large', reflectToAttribute: true },
-            formTitle: { type: String, value: '' }
+            formTitle: { type: String, value: '' },
+            ignoreOutsideClick: { type: Boolean, value: false }
         }
     }
 
@@ -91,7 +92,8 @@ class PlModalForm extends PlElement {
             <div class="modal">
                 <div class="content-header">
                     <span id="form-label">[[formTitle]]</span>
-                    <pl-icon-button on-click="[[close]]" variant="link" iconset="pl-default" size="16" icon="close"></pl-icon-button>
+                    <pl-icon-button on-click="[[close]]" variant="link" iconset="pl-default" size="16" icon="close">
+                    </pl-icon-button>
                 </div>
                 <slot></slot>
             </div>
@@ -101,6 +103,9 @@ class PlModalForm extends PlElement {
     constructor() {
         super();
         this._close = e => {
+            if (this.ignoreOutsideClick) {
+                return;
+            }
             let path = e.composedPath();
             if (path.includes(this) && !path.includes(this.firstChild)) {
                 e.preventDefault();

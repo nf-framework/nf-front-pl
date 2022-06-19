@@ -34,6 +34,9 @@ class FormThreadManager extends PlElement {
             if (options.size) {
                 drawer.size = options.size;
             }
+            if (options.ignoreOutsideClick) {
+                drawer.ignoreOutsideClick = options.ignoreOutsideClick;
+            }
             this.root.append(drawer);
         }
         return new Promise( async (resolve,reject) => {
