@@ -1,12 +1,14 @@
 import { PlElement, html, css } from "polylib";
 import { addOverlay, removeOverlay } from "@plcmp/utils";
+import '@plcmp/pl-icon-button';
 
 class PlModalForm extends PlElement {
     static get properties() {
         return {
             opened: { type: Boolean, reflectToAttribute: true },
             position: { type: String, value: 'right', reflectToAttribute: true },
-            size: { type: String, value: 'large', reflectToAttribute: true }
+            size: { type: String, value: 'large', reflectToAttribute: true },
+            formTitle: { type: String, value: '' }
         }
     }
 
@@ -40,6 +42,22 @@ class PlModalForm extends PlElement {
                 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
             }
 
+            .content-header {
+                padding: 16px;
+                display: flex;
+                height: 48px;
+                box-sizing: border-box;
+                gap: 8px;
+                align-items: center;
+                flex-shrink: 0;
+                justify-content: space-between;
+            }
+
+            #form-label {
+                font: var(--font-h2);
+                color: var(--text-color);
+            }
+
             :host([size=small]) .modal{
                 width: 320px;
             }
@@ -59,7 +77,7 @@ class PlModalForm extends PlElement {
             }
 
             :host ::slotted(*) {
-                padding: 16px;
+                padding: 0 16px 16px 16px;
                 flex: 1;
                 display: flex;
                 flex-direction: column;
@@ -71,6 +89,10 @@ class PlModalForm extends PlElement {
     static get template() {
         return html`
             <div class="modal">
+                <div class="content-header">
+                    <span id="form-label">[[formTitle]]</span>
+                    <pl-icon-button on-click="[[close]]" variant="link" iconset="pl-default" size="16" icon="close"></pl-icon-button>
+                </div>
                 <slot></slot>
             </div>
 		`;
@@ -105,6 +127,7 @@ class PlModalForm extends PlElement {
     open() {
         this.opened = true;
         addOverlay(this);
+        this.formTitle = this.firstChild.formTitle;
     }
 
     async close(result) {
@@ -121,7 +144,7 @@ class PlModalForm extends PlElement {
      * @return {Object} - сформированный объект со значениями для соответствующих свойств
      * @private
      */
-     _compose(str, ...args) {
+    _compose(str, ...args) {
         let result = {};
         let desc = str.split(';');
         desc.forEach((name, index) => {
