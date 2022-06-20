@@ -34,7 +34,9 @@ class PlMenuForm extends PlElement {
                 width: 200px;
                 height: 100%;
                 border-right: 1px solid var(--grey-light);
-                padding-top: 16px;
+                border-top: 1px solid var(--grey-light);
+                border-radius: 0px 4px 0px 4px;
+                margin-top: 16px;
                 box-sizing: border-box;
                 gap: 4px;
                 position: relative;
@@ -42,7 +44,7 @@ class PlMenuForm extends PlElement {
             }
 
             .menu-item {
-                height: 28px;
+                min-height: 38px;
                 border-radius: 4px 0 0 4px;
                 padding: 6px 12px;
                 box-sizing: border-box;
@@ -64,6 +66,10 @@ class PlMenuForm extends PlElement {
                 color: var(--primary-lightest);
                 font-weight: 500;
             }
+          
+           .menu-item:first-child {
+                border-radius: 0px 4px 0px 4px;
+           }
 
             .main-container {
                 display: flex;
