@@ -38,9 +38,6 @@ class FormManager extends PlElement {
 
     open(name, options = {} ) {
         let {threadId, newThread, extKey, dashboard} = options;
-        if (name === this.dashboard) {
-            dashboard = true;
-        }
         let thread, showOnly = false;
         if (threadId) {
             thread = this.threads.find( i => i.id === threadId );
