@@ -207,7 +207,7 @@ class PlFileUpload extends PlElement {
                 console.log(i,file)
                 continue;
             }
-            if (this.files.length > this.maxFileCount) {
+            if (this.files.length >= this.maxFileCount) {
                 skipped++;
                 continue;
             }
