@@ -90,7 +90,7 @@ class PlModalForm extends PlElement {
     static get template() {
         return html`
             <div class="modal">
-                <div class="content-header">
+                <div id="header" class="content-header">
                     <span id="form-label">[[formTitle]]</span>
                     <pl-icon-button on-click="[[close]]" variant="link" iconset="pl-default" size="16" icon="close">
                     </pl-icon-button>
@@ -107,7 +107,7 @@ class PlModalForm extends PlElement {
                 return;
             }
             let path = e.composedPath();
-            if (path.includes(this) && !path.includes(this.firstChild)) {
+            if (path.includes(this) && !path.includes(this.firstChild) && !path.includes(this.$.header)) {
                 e.preventDefault();
                 this.close();
             }
@@ -120,13 +120,19 @@ class PlModalForm extends PlElement {
             event.stopPropagation();
             this.opened = false;
             setTimeout(() => {
-                removeEventListener('click', this._close, { capture: true });
+                removeEventListener('click', this._close);
                 removeOverlay(this);
                 this.parentNode.removeChild(this);
             }, 200);
         });
 
-        addEventListener('click', this._close, { capture: true })
+        addEventListener('click', this._close );
+        // stop all click events to prevent actions under modal window
+        this.addEventListener('click',  e => {
+            this._close(e);
+            e.preventDefault();
+            e.stopPropagation();
+        });
     }
 
     open() {
