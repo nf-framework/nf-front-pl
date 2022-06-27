@@ -51,7 +51,7 @@ class FormManager extends PlElement {
             thread = this.threads.find( i => i.name === name);
             if (thread) showOnly = true;
         }
-        if (this.singleThread && !this.currentThread?.dashboard) {
+        if (this.singleThread && !this.currentThread?.dashboard && this.currentThread !== thread) {
             if (this.currentThread?.node.closeAll() === false) return;
         }
         if (!thread || newThread) {
