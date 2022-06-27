@@ -24,7 +24,8 @@ class PlFilePreview extends PlElement {
             :host{
                 max-height: 100%;
                 gap: 8px;
-              display: block;
+                display: block;
+                overflow: auto;
             }
 
             .cont {
