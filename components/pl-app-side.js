@@ -1,5 +1,4 @@
 import { PlElement, html, css } from "polylib";
-import '@plcmp/pl-repeat';
 import '@plcmp/pl-icon';
 
 import { addOverlay, removeOverlay } from "@plcmp/utils";
@@ -84,14 +83,12 @@ class PlAppSide extends PlElement {
 		return html`
 			<slot name="top"></slot>
 			<div class="submenu">
-				<pl-repeat items="[[_selectedItemsStack]]" as="subitem">
-					<template>
-						<div class="submenu-item">
-							<pl-app-side-list opened$=[[opened]] parent="[[subitem.parent]]" items="[[subitem.items]]"
-								on-menu-click="[[onMenuClick]]"></pl-app-side-list>
-						</div>
-					</template>
-				</pl-repeat>
+				<template d:repeat="[[_selectedItemsStack]]" d:as="subitem">
+					<div class="submenu-item">
+						<pl-app-side-list opened$=[[opened]] parent="[[subitem.parent]]" items="[[subitem.items]]"
+							on-menu-click="[[onMenuClick]]"></pl-app-side-list>
+					</div>
+				</template>
 			</div>
 			<div class="menuItems">
 				<pl-app-side-list opened$=[[opened]] variant="main" items="[[_computeItems(items, items.0)]]"

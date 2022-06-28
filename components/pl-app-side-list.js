@@ -1,5 +1,4 @@
 import { PlElement, html, css } from "polylib";
-import '@plcmp/pl-repeat';
 import '@plcmp/pl-icon';
 
 class PlAppSideList extends PlElement {
@@ -90,15 +89,13 @@ class PlAppSideList extends PlElement {
             <div class="submenu-title">
                 [[parent.caption]]
             </div>
-            <pl-repeat items="[[items]]">
-                <template>
-                    <div class="items-flex" on-click="[[onMenuClick]]">
-                        <pl-icon class="icon" iconset="pl-default" icon="[[item.icon]]"></pl-icon>
-                        <span class="submenu-caption">[[item.caption]]</span>
-                        <pl-icon iconset="pl-default" hidden="[[!item.hasChildren]]" icon="chevron-right"></pl-icon>   
-                    </div> 
-                </template>
-            </pl-repeat>
+            <template d:repeat="{{items}}">
+                <div class="items-flex" on-click="[[onMenuClick]]">
+                    <pl-icon class="icon" iconset="pl-default" icon="[[item.icon]]"></pl-icon>
+                    <span class="submenu-caption">[[item.caption]]</span>
+                    <pl-icon iconset="pl-default" hidden="[[!item.hasChildren]]" icon="chevron-right"></pl-icon>   
+                </div> 
+            </template>
         `;
     }
 

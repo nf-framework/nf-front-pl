@@ -1,7 +1,6 @@
 import {html, css, PlElement} from "polylib";
 import {normalizePath} from "polylib/common.js";
 import './pl-forms-thread.js';
-import "@plcmp/pl-repeat";
 
 class FormManager extends PlElement {
     static properties = {
@@ -25,11 +24,10 @@ class FormManager extends PlElement {
     `;
     static template = html`
         <slot></slot>
-        <pl-repeat items="{{threads}}">
-            <template>
-                <pl-forms-thread id="[[item.id]]" current-form="{{item.currentForm}}"></pl-forms-thread>
-            </template>
-        </pl-repeat>`;
+        <template d:repeat="{{threads}}">
+            <pl-forms-thread id="[[item.id]]" current-form="{{item.currentForm}}"></pl-forms-thread>
+        </template>
+    `;
 
     connectedCallback() {
         super.connectedCallback();
