@@ -4,7 +4,7 @@ import { PlForm } from "@nfjs/front-pl/components/pl-form.js";
 export default class GroupList extends PlForm {
     static get properties() {
         return {
-            root: { value: () => ({}) },
+            rootData: { value: () => ({}) },
             modules: { value: () => ([]) },
             formTitle: {
                 type: String,
@@ -17,9 +17,9 @@ export default class GroupList extends PlForm {
         return html`
             <pl-flex-layout fit vertical>
                 <pl-flex-layout vertical>
-                    <span><b>Наименование:</b> [[root.name]]</span>
-                    <span><b>Версия</b>: [[root.version]]</span>
-                    <span><b>Описание</b>: [[root.description]]</span>
+                    <span><b>Наименование:</b> [[rootData.name]]</span>
+                    <span><b>Версия</b>: [[rootData.version]]</span>
+                    <span><b>Описание</b>: [[rootData.description]]</span>
                 </pl-flex-layout>
                 <pl-flex-layout fit>
                     <pl-grid data="{{modules}}">
@@ -35,7 +35,7 @@ export default class GroupList extends PlForm {
         this.$.aData.execute()
             .then((res) => {
                 this.modules = res.modules;
-                this.root = res.root;
+                this.rootData = res.root;
             });
 
     }
