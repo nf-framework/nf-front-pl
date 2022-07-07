@@ -136,7 +136,7 @@ export default class MainView extends PlForm {
         this.dashboard = NF?.config?.front?.formManager?.dashboard;
         this.menuManualHide = NF?.config?.front?.mainMenu?.manualHide === true;
         this.$.dsMenu.execute();
-        this.$.aGetUserProfile.execute();
+        this.$.aGetUserProfile.execute().then(res => NF.user = {...res});
         addEventListener('form-change', e => this.onFormChange());
         if (this.menuManualHide) {
             //save state to localstorage
