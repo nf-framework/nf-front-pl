@@ -83,6 +83,7 @@ class PlModalForm extends PlElement {
                 display: flex;
                 flex-direction: column;
                 overflow: auto;
+                box-sizing: border-box;
             }
         `
     }
