@@ -105,6 +105,8 @@ class PlAppSide extends PlElement {
 			if (!path.includes(this)) {
 				e.preventDefault();
 				this.close();
+			} else {
+				addEventListener('click', this._close, { capture: true, once: true });
 			}
 		}
 	}
@@ -151,11 +153,8 @@ class PlAppSide extends PlElement {
 			if (item.items.some(item => item.id === value.id)) {
 				found = true;
 				break;
-			}
-		}
-		if (!found) {
-			if(this._selectedItemsStack.length > 0) {
-				this.splice('_selectedItemsStack', 0, this._selectedItemsStack.length);
+			} else {
+				this.splice('_selectedItemsStack', i, 1)
 			}
 		}
 
