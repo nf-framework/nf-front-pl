@@ -91,7 +91,7 @@ class PlAppSideList extends PlElement {
             </div>
             <template d:repeat="{{items}}">
                 <div class="items-flex" on-click="[[onMenuClick]]">
-                    <pl-icon class="icon" iconset="pl-default" icon="[[item.icon]]"></pl-icon>
+                    <pl-icon class="icon" iconset="[[_iconset(item.iconset)]]" icon="[[item.icon]]"></pl-icon>
                     <span class="submenu-caption">[[item.caption]]</span>
                     <pl-icon iconset="pl-default" hidden="[[!item.hasChildren]]" icon="chevron-right"></pl-icon>   
                 </div> 
@@ -101,6 +101,10 @@ class PlAppSideList extends PlElement {
 
     onMenuClick(event) {
         this.dispatchEvent(new CustomEvent('menuClick', { detail: {...event.model.item, newThread: event.shiftKey }, bubbles: true, composed: true }));
+    }
+
+    _iconset(iconset) {
+        return iconset || 'pl-default';
     }
 }
 
