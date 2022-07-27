@@ -1,6 +1,6 @@
 {
 	"name": "@nfjs/front-pl",
-	"version": "1.0.9",
+	"version": "1.0.10",
 	"description": "Front",
 	"license": "MIT",
 	"type": "module",
@@ -23,7 +23,7 @@
 		}
 	],
 	"dependencies": {
-		"polylib": "^1.0.0",
+		"polylib": "^1.1.4",
 		"dayjs": "^1.10.4",
 		"imask": "^6.1.0",
 		"mime": "^2.5.2",
