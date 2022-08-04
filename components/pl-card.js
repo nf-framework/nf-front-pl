@@ -8,7 +8,8 @@ class PlCard extends PlElement {
                 type: Boolean,
                 reflectToAttribute: true
             },
-            hidden: { type: Boolean, reflectToAttribute: true }
+            hidden: { type: Boolean, reflectToAttribute: true },
+            border: { type: Boolean, reflectToAttribute: true }
         }
     }
 
@@ -21,6 +22,13 @@ class PlCard extends PlElement {
                 height: fit-content;
                 box-sizing: border-box;
                 gap: 8px;
+                max-width: 100%;
+            }
+
+            :host([border]) {
+                border: 1px solid var(--grey-base);
+                border-radius: var(--border-radius);
+                padding: 8px 8px 8px 8px;
             }
 
             :host([hidden]) {
@@ -32,13 +40,16 @@ class PlCard extends PlElement {
                 width: 100%;
             }
 
+            .header[hidden] {
+                display: none;
+            }
+
             .header {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
                 box-sizing: border-box;
                 justify-content: space-between;
-                min-height: 32px;
             }
 
             .header-text-container {
@@ -49,8 +60,9 @@ class PlCard extends PlElement {
                 justify-content: space-between;
                 gap: 8px;
                 overflow:hidden;
+                min-height: 32px;
             }
-            
+
             .header-text {
                 font: var(--font-h1);
                 color: var(--black-base);
@@ -62,25 +74,29 @@ class PlCard extends PlElement {
                 height: 100%;
                 width: 100%;
             }
+
+            .tools ::slotted(*) {
+                margin-left: 8px;
+            }
         `
     }
 
     static get template() {
         return html`
-            <div class="header">
+            <div class="header" hidden$=[[!header]]>
                 <div class="header-text-container">
                     <slot name="header-prefix"></slot>
                     <span class="header-text">[[header]]</span>
                     <slot name="header-suffix"></slot>
                 </div>
-                <slot name="tools"></slot>
+                <span class="tools">
+                    <slot name="tools"></slot>
+                </span>
             </div>
             <div class="content">
                 <slot></slot>
             </div>
-            <div class="footer">
-                <slot name="footer"></slot>
-            </div>
+            <slot name="footer"></slot>
 		`;
     }
 }
