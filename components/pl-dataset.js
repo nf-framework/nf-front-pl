@@ -20,6 +20,9 @@ class PlDataset extends PlElement {
                 type: Boolean,
                 value: false
             },
+            partialData: {
+                type: Boolean
+            },
             requiredArgs: {
                 type: String
             },
@@ -49,6 +52,7 @@ class PlDataset extends PlElement {
         }
         if (data instanceof ControlledArray) {
             data.load = (x) => this.loadByPlaceHolder(x);
+            data.control.partialData = this.partialData
         }
         this.data = data;
     }
@@ -75,7 +79,7 @@ class PlDataset extends PlElement {
             args: args || this.args || {},
             sqlPath: this.innerText,
             control: {
-                partialData: this.data?.control?.partialData,
+                partialData: this.partialData,
                 sorts: this.data?.sorts,
                 filters: this.data?.filters
             }
@@ -99,7 +103,7 @@ class PlDataset extends PlElement {
             }
 
             let chunk_start, chunk_end;
-            if (this.data?.control?.partialData) {
+            if (this.partialData) {
                 if (!merge) {
                     this.data.control.range.chunk_start = 0;
                     this.data.control.range.chunk_end = 99;
@@ -132,7 +136,7 @@ class PlDataset extends PlElement {
                 });
             }
 
-            if (data.length && this.data.control?.partialData) {
+            if (data.length && this.partialData) {
                 if (data[0]._rn < chunk_start) {
                     if (this.data[data[0]._rn]) {
                         data.shift();
