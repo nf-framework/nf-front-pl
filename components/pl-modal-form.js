@@ -131,8 +131,6 @@ class PlModalForm extends PlElement {
         // stop all click events to prevent actions under modal window
         this.addEventListener('click',  e => {
             this._close(e);
-            e.preventDefault();
-            e.stopPropagation();
         });
     }
 
