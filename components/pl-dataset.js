@@ -87,97 +87,110 @@ class PlDataset extends PlElement {
     }
 
     async execute(args, opts) {
+        this._args = args || this.args;
+        this.opts = opts
         this.executing = true;
-        try {
-            let _args = args || this.args;
-            const { merge, placeHolder, executedOnArgsChange = false } = opts ?? {};
-
-            const reqArgs = this.requiredArgs ? this.requiredArgs.split(';') : [];
-            if (reqArgs.length > 0 && (!_args || reqArgs.find(r => _args[r] === undefined || _args[r] === null))) {
-                if (executedOnArgsChange) {
-                    this.executing = false;
-                    return;
-                }
-                const needArgs = reqArgs.filter(r => !_args || _args[r] === undefined || _args[r] === null).join();
-                throw new Error(`Не переданы обязательные параметры [${needArgs}]`);
-            }
-
-            let chunk_start, chunk_end;
-            if (this.partialData) {
-                if (!merge) {
-                    this.data.control.range.chunk_start = 0;
-                    this.data.control.range.chunk_end = 99;
-                }
-                chunk_start = this.data?.control?.range?.chunk_start ?? 0;
-                chunk_end = this.data?.control?.range?.chunk_end ?? 99;
-                if (this.data?.control?.treeMode && !merge) {
-                    this.data.control.treeMode.hidValue = null;
-                }
-            }
-            const req = await requestData(this.endpoint, {
-                headers: { 'Content-Type': 'application/json' },
-                method: 'POST',
-                body: JSON.stringify(this.prepareEndpointParams(_args, { range: { chunk_start, chunk_end } })),
-                unauthorized: this.unauthorized
-            });
-            const json = await req.json();
-            let { data, rowMode, metaData, error } = json;
-            if (error) {
-                throw new Error(error);
-            }
-            // преобразование в формат [{field1:"value",field2:"value"},...]
-            if (rowMode === 'array' && metaData) {
-                data = data.map(element => {
-                    const newElement = {};
-                    metaData.forEach((currField, i) => {
-                        newElement[currField.name] = element[i];
-                    });
-                    return newElement;
-                });
-            }
-
-            if (data.length && this.partialData) {
-                if (data[0]._rn < chunk_start) {
-                    if (this.data[data[0]._rn]) {
-                        data.shift();
-                    } else {
-                        data[0] = new PlaceHolder({ rn: data[0]._rn ?? chunk_start });
-                    }
-                }
-                if (data[data.length - 1]._rn > chunk_end) {
-                    data[data.length - 1] = new PlaceHolder({ rn: data[data.length - 1]._rn ?? chunk_end });
-                }
-            }
-
-            if (this.data instanceof ControlledArray) {
-                let phIndex = this.data.indexOf(placeHolder);
-                if (phIndex >= 0) {
-                    this.splice('data', phIndex, 1, ...data);
-                } else {
-                    if (merge) {
-                        this.splice('data', this.data.length, 0, ...data);
-                    } else {
-                        this.splice('data', 0, this.data.length, ...data);
-                    }
-                }
-            } else {
-                this.data = ControlledArray.from(data);
-            }
-            this.executing = false;
-            return this.data;
-        } catch (e) {
-            this.executing = false;
-            let errorMessage = '';
-            if (e instanceof Response) {
-                errorMessage = e.statusText;
-            }
-            if (e instanceof Error) {
-                errorMessage = e.message;
-            }
-
-            document.dispatchEvent(new CustomEvent('error', { detail: { message: errorMessage } }));
-            throw e;
+        if (!this.pending) {
+            this.pending = new Promise(resolve => setTimeout(resolve, 0));
         }
+        if (this.result) return this.result;
+        this.result = new Promise(async (resolve, reject) => {
+            try {
+                await this.pending;
+                let _args = this._args;
+                const {merge, placeHolder, executedOnArgsChange = false} = this.opts ?? {};
+
+                const reqArgs = this.requiredArgs ? this.requiredArgs.split(';') : [];
+                if (reqArgs.length > 0 && (!_args || reqArgs.find(r => _args[r] === undefined || _args[r] === null))) {
+                    if (executedOnArgsChange) {
+                        this.executing = false;
+                        return;
+                    }
+                    const needArgs = reqArgs.filter(r => !_args || _args[r] === undefined || _args[r] === null).join();
+                    reject(new Error(`Не переданы обязательные параметры [${needArgs}]`));
+                }
+
+                let chunk_start, chunk_end;
+                if (this.partialData) {
+                    if (!merge) {
+                        this.data.control.range.chunk_start = 0;
+                        this.data.control.range.chunk_end = 99;
+                    }
+                    chunk_start = this.data?.control?.range?.chunk_start ?? 0;
+                    chunk_end = this.data?.control?.range?.chunk_end ?? 99;
+                    if (this.data?.control?.treeMode && !merge) {
+                        this.data.control.treeMode.hidValue = null;
+                    }
+                }
+                const req = await requestData(this.endpoint, {
+                    headers: {'Content-Type': 'application/json'},
+                    method: 'POST',
+                    body: JSON.stringify(this.prepareEndpointParams(_args, {range: {chunk_start, chunk_end}})),
+                    unauthorized: this.unauthorized
+                });
+                const json = await req.json();
+                let {data, rowMode, metaData, error} = json;
+                if (error) {
+                    reject(new Error(error));
+                }
+                // преобразование в формат [{field1:"value",field2:"value"},...]
+                if (rowMode === 'array' && metaData) {
+                    data = data.map(element => {
+                        const newElement = {};
+                        metaData.forEach((currField, i) => {
+                            newElement[currField.name] = element[i];
+                        });
+                        return newElement;
+                    });
+                }
+
+                if (data.length && this.partialData) {
+                    if (data[0]._rn < chunk_start) {
+                        if (this.data[data[0]._rn]) {
+                            data.shift();
+                        } else {
+                            data[0] = new PlaceHolder({rn: data[0]._rn ?? chunk_start});
+                        }
+                    }
+                    if (data[data.length - 1]._rn > chunk_end) {
+                        data[data.length - 1] = new PlaceHolder({rn: data[data.length - 1]._rn ?? chunk_end});
+                    }
+                }
+
+                if (this.data instanceof ControlledArray) {
+                    let phIndex = this.data.indexOf(placeHolder);
+                    if (phIndex >= 0) {
+                        this.splice('data', phIndex, 1, ...data);
+                    } else {
+                        if (merge) {
+                            this.splice('data', this.data.length, 0, ...data);
+                        } else {
+                            this.splice('data', 0, this.data.length, ...data);
+                        }
+                    }
+                } else {
+                    this.data = ControlledArray.from(data);
+                }
+                resolve(this.data);
+            } catch (e) {
+
+                let errorMessage = '';
+                if (e instanceof Response) {
+                    errorMessage = e.statusText;
+                }
+                if (e instanceof Error) {
+                    errorMessage = e.message;
+                }
+
+                document.dispatchEvent(new CustomEvent('error', {detail: {message: errorMessage}}));
+                reject(e);
+            } finally {
+                this.pending = null;
+                this.executing = false;
+                this.result = null;
+            }
+        });
+        return this.result;
     }
 }
 
