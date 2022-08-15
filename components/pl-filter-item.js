@@ -19,8 +19,10 @@ class PlFilterItem extends PlElement {
 
     connectedCallback() {
         super.connectedCallback();
-        
-        this.root.querySelector('slot').assignedElements()[0].addEventListener('value-changed', (event) => {
+        let el = this.root.querySelector('slot').assignedElements()[0];
+        this.value = el.value;
+        this.notifyChanged();
+        el.addEventListener('value-changed', (event) => {
             this.value = event.detail.value;
             this.notifyChanged();
         });
