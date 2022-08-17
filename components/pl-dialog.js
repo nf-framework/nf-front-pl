@@ -1,4 +1,5 @@
 import { PlElement, html, css } from "polylib";
+import { addOverlay, removeOverlay } from "@plcmp/utils";
 
 class PlAppMenu extends PlElement {
     static get properties() {
@@ -84,7 +85,13 @@ class PlAppMenu extends PlElement {
 		`;
     }
 
+    connectedCallback(){
+        super.connectedCallback();
+        addOverlay(this);
+    }
+
     close(event) {
+        removeOverlay(this);
         this.remove();
         this.dispatchEvent(new CustomEvent('pl-dialog-closed', { bubbles: true, detail: { action: event.target.action } }));
     }
