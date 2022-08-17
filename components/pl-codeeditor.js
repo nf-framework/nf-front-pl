@@ -4,32 +4,28 @@ ace.config.set('basePath', '/ace-builds/');
 import { debounce } from "@plcmp/utils";
 
 class PlCodeEditor extends PlElement {
-    static get properties() {
-        return {
-            value: { type: String, value: '', observer: 'valueChange' },
-            mode: { type: String, observer: 'modeChange' }
-        }
-    }
-    static get template() {
-        return html`
-           <div id="editor"></div>
-		`;
+    static properties = {
+        value: { type: String, value: '', observer: 'valueChange' },
+        mode: { type: String, observer: 'modeChange' }
     }
 
-    static get css() {
-        return css`
-            :host {
-                display: block;
-                width: 100%;
-                height: 100%;
-            }
-            #editor{
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-            }
-        `;
-    }
+    static css = css`
+        :host {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        #editor{
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+    `;
+
+    static template = html`
+        <div id="editor"></div>
+    `;
+
     fromEditor = false;
     connectedCallback() {
         super.connectedCallback();

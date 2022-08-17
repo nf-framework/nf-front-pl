@@ -4,126 +4,119 @@ import '@plcmp/pl-repeat';
 import './pl-menu-form-item.js';
 
 class PlMenuForm extends PlElement {
-    static get properties() {
-        return {
-            items: { type: Array, value: () => [] },
-            selected: { type: String, value: undefined, observer: '_selectedChange' },
-            scrollable: { type: Boolean, reflectToAttribute: true, value: false }
+    static properties = {
+        items: { type: Array, value: () => [] },
+        selected: { type: String, value: undefined, observer: '_selectedChange' },
+        scrollable: { type: Boolean, reflectToAttribute: true, value: false }
+    }
+    
+    static css = css`
+        :host {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
         }
-    }
-    static get css() {
-        return css`
-            :host {
-                display: flex;
-                height: 100%;
-                width: 100%;
-                box-sizing: border-box;
-            }
-            
-            .left-nav {
-                width: 250px;
-                height: 100%;
-                box-sizing: border-box;
-                background-color: #F2F2F2;
-                padding: 16px;
-            }
-           
-            #menu {
-                display: flex;
-                flex-direction: column;
-                width: 200px;
-                height: 100%;
-                border-right: 1px solid var(--grey-light);
-                padding-top: 16px;
-                box-sizing: border-box;
-                gap: 4px;
-                position: relative;
-                flex-shrink: 0;
-            }
+        
+        .left-nav {
+            width: 250px;
+            height: 100%;
+            box-sizing: border-box;
+            background-color: #F2F2F2;
+            padding: 16px;
+        }
+        
+        #menu {
+            display: flex;
+            flex-direction: column;
+            width: 200px;
+            height: 100%;
+            border-right: 1px solid var(--grey-light);
+            padding-top: 16px;
+            box-sizing: border-box;
+            gap: 4px;
+            position: relative;
+            flex-shrink: 0;
+        }
 
-            .menu-item {
-                height: 28px;
-                border-radius: 4px 0 0 4px;
-                padding: 6px 12px;
-                box-sizing: border-box;
-                font-size: 13px;
-                line-height: 16px;
-                display: flex;
-                align-items: center;
-                color: #464B52;
-                cursor: pointer;
-                gap: 8px;
-            }
-            
-            .menu-item[hidden] {
-                display: none;
-            }
+        .menu-item {
+            height: 28px;
+            border-radius: 4px 0 0 4px;
+            padding: 6px 12px;
+            box-sizing: border-box;
+            font-size: 13px;
+            line-height: 16px;
+            display: flex;
+            align-items: center;
+            color: #464B52;
+            cursor: pointer;
+            gap: 8px;
+        }
+        
+        .menu-item[hidden] {
+            display: none;
+        }
 
-            .menu-item:hover, .menu-item[selected] {
-                background: var(--primary-base);
-                color: var(--primary-lightest);
-                font-weight: 500;
-            }
+        .menu-item:hover, .menu-item[selected] {
+            background: var(--primary-base);
+            color: var(--primary-lightest);
+            font-weight: 500;
+        }
 
-            .main-container {
-                display: flex;
-                flex-direction: row;
-                border-top: 1px solid var(--grey-base);
-                width: 100%;
-                height: 100%;
-                box-sizing: border-box;
-                gap: 16px;
-            }
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            border-top: 1px solid var(--grey-base);
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            gap: 16px;
+        }
 
-            .content {
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-                width: 100%;
-                box-sizing: border-box;
-                padding-top: 16px;
-                gap: 16px;
-            }
+        .content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+            padding-top: 16px;
+            gap: 16px;
+        }
 
-            :host([scrollable]) .content{
-                padding-right: 16px;
-                overflow-y: auto;
-            }
+        :host([scrollable]) .content{
+            padding-right: 16px;
+            overflow-y: auto;
+        }
 
-            .mark {
-                display: flex;
-                width: 8px;
-                height: 8px;
-                background: var(--attention);
-                border-radius: 8px;
-            }
+        .mark {
+            display: flex;
+            width: 8px;
+            height: 8px;
+            background: var(--attention);
+            border-radius: 8px;
+        }
 
-            .mark[hidden] {
-                display: none;
-            }
-      `;
-    }
+        .mark[hidden] {
+            display: none;
+        }
+    `;
 
-    static get template() {
-        return html`
-            <div class="main-container">
-                <div id="menu">
-                    <pl-repeat items="[[items]]">
-                        <template>
-                            <div class="menu-item" hidden$="[[item.menuHidden]]" selected$="[[item.selected]]" name$="[[item.name]]"
-                                on-click="[[onMenuClick]]">
-                                [[item.title]]
-                                <div class="mark" hidden$="[[!item.invalid]]"></div>
-                            </div>
-                        </template>
-                    </pl-repeat>
-                </div>
-                <div class="content" on-scroll="[[onScroll]]">
-                    <slot></slot>
-                </div>
+    static template = html`
+        <div class="main-container">
+            <div id="menu">
+                <template d:repeat="[[items]]">
+                    <div class="menu-item" hidden$="[[item.menuHidden]]" selected$="[[item.selected]]" name$="[[item.name]]"
+                        on-click="[[onMenuClick]]">
+                        [[item.title]]
+                        <div class="mark" hidden$="[[!item.invalid]]"></div>
+                    </div>
+                </template>
             </div>
-		`;
-    }
+            <div class="content" on-scroll="[[onScroll]]">
+                <slot></slot>
+            </div>
+        </div>
+    `;
 
     connectedCallback() {
         super.connectedCallback();

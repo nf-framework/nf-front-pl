@@ -4,45 +4,41 @@ import { requestData } from "../lib/RequestServer.js";
 import assignDeep from "deep-object-assign-with-reduce";
 
 class PlDataset extends PlElement {
-    static get properties() {
-        return {
-            endpoint: {
-                type: String
-            },
-            args: {
-                type: Object,
-                observer: '_argsChanged'
-            },
-            executeOnArgsChange: {
-                type: Boolean
-            },
-            executing: {
-                type: Boolean,
-                value: false
-            },
-            partialData: {
-                type: Boolean
-            },
-            requiredArgs: {
-                type: String
-            },
-            data: {
-                observer: '_dataObserver'
-            },
-            unauthorized: {
-                type: Boolean,
-                value: false
-            }
+    static properties = {
+        endpoint: {
+            type: String
+        },
+        args: {
+            type: Object,
+            observer: '_argsChanged'
+        },
+        executeOnArgsChange: {
+            type: Boolean
+        },
+        executing: {
+            type: Boolean,
+            value: false
+        },
+        partialData: {
+            type: Boolean
+        },
+        requiredArgs: {
+            type: String
+        },
+        data: {
+            observer: '_dataObserver'
+        },
+        unauthorized: {
+            type: Boolean,
+            value: false
         }
     }
 
-    static get css() {
-        return css`
-            :host {
-                display: none;
-            }
-		`;
-    }
+    static css = css`
+        :host {
+            display: none;
+        }
+    `;
 
     connectedCallback() {
         super.connectedCallback();

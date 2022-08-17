@@ -6,20 +6,21 @@ import { openForm } from "../lib/FormUtils.js";
 window.customLoader = customLoader;
 
 class App extends PlElement {
-	static get properties() {
-		return {
-			auth: { type: Boolean, value: undefined, observer: '_authObserver' }
-		};
-	}
+	static properties = {
+		auth: { type: Boolean, value: undefined, observer: '_authObserver' }
+	};
 
-	static get css() {
-		return css`
-			:host{
-				display: block;
-				width: 100%;
-				height: 100%;
-			}`
-	}
+	static css = css`
+		:host{
+			display: block;
+			width: 100%;
+			height: 100%;
+		}`;
+
+	static template = html`
+		<pl-action id="aSessionCheck" data="{{auth}}" endpoint="/front/action/checkSession"></pl-action>
+		<pl-toast id="toast"></pl-toast>
+	`;
 
 	async connectedCallback() {
 		super.connectedCallback();
@@ -32,7 +33,7 @@ class App extends PlElement {
 
 		this.config = await requestData('/pl-get-config', { unauthorized: true }).then(r => r.json()).catch(() => { });
 		NF.config = this.config;
-		
+
 		let { includeTimeZone } = this.config || {};
 		Date.prototype.toJSON = function () {
 			var tzo = -this.getTimezoneOffset(),
@@ -86,12 +87,6 @@ class App extends PlElement {
 
 	}
 
-	static get template() {
-		return html`
-			<pl-action id="aSessionCheck" data="{{auth}}" endpoint="/front/action/checkSession"></pl-action>
-			<pl-toast id="toast"></pl-toast>
-		`;
-	}
 
 	showError(e) {
 		this.$.toast.show(e.detail.message)

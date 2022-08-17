@@ -9,10 +9,6 @@ class FormThreadManager extends PlElement {
         container: { type: Object },
         hidden: { type: Boolean, reflectToAttribute: true }
     }
-    connectedCallback() {
-        super.connectedCallback();
-        this.container = this.container ?? this.root;
-    }
     static css = css`
         :host {
           display: block;
@@ -27,6 +23,11 @@ class FormThreadManager extends PlElement {
             display: none;
         }
     `;
+    connectedCallback() {
+        super.connectedCallback();
+        this.container = this.container ?? this.root;
+    }
+
     open(name, options) {
         let drawer;
         if (options?.modal) {

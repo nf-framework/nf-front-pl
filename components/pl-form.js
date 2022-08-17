@@ -2,23 +2,13 @@ import { PlElement, css } from "polylib";
 
 export class PlForm extends PlElement {
     __awaits = [];
-    static get properties() {
-        return {
-            formTitle: { type: String },
-            formSubtitle: { type: String },
-            hidden: { type: Boolean, reflectToAttribute: true },
-            urlParams: { type: Array, value: [] }
-        }
+    static properties = {
+        formTitle: { type: String },
+        formSubtitle: { type: String },
+        hidden: { type: Boolean, reflectToAttribute: true },
+        urlParams: { type: Array, value: [] }
     }
 
-    static get css() {
-        return css`
-            :host {
-                width: 100%;
-                height: 100%;
-            }
-        `
-    }
     constructor() {
         super();
         this.constructor.template.usedCE.forEach(c => {

@@ -1,14 +1,12 @@
-import { PlElement, html, css } from "polylib";
+import { PlElement } from "polylib";
 
 class PlRouter extends PlElement {
-    static get properties() {
-        return {
-            currentForm: { type: Object, observer: 'threadChange' },
-            currentThread: { type: Object, observer: 'threadChange' },
-            formManager: { type: Object },
-            //TODO: make history
-            disableHistory: { type: Boolean, value: true }
-        }
+    static properties = {
+        currentForm: { type: Object, observer: 'threadChange' },
+        currentThread: { type: Object, observer: 'threadChange' },
+        formManager: { type: Object },
+        //TODO: make history
+        disableHistory: { type: Boolean, value: true }
     }
 
     connectedCallback() {

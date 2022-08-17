@@ -3,121 +3,115 @@ import "@plcmp/pl-icon";
 import "./pl-file-preview.js";
 
 class PlFileUpload extends PlElement {
-    static get properties() {
-        return {
-            dragActive: {
-                type: Boolean,
-                reflectToAttribute: true,
-                value: false
-            },
-            multiple: {
-                type: Boolean,
-                value: false
-            },
-            files: {
-                type: Array,
-                value: []
-            },
-            required: {
-                type: Boolean,
-                reflectToAttribute: true,
-                value: false
-            },
-            accept: {
-                type: String
-            },
-            endpoint: {
-                type: String,
-                value: 'upload'
-            },
-            downloadEndpoint: {
-                type: String,
-                value: 'download'
-            },
-            hint: {
-                type: String,
-                value: 'Перетащите файлы или нажмите здесь, чтобы загрузить'
-            },
-            maxFileSize: { type: Number },
-            maxFileCount: { type: Number }
+    static properties = {
+        dragActive: {
+            type: Boolean,
+            reflectToAttribute: true,
+            value: false
+        },
+        multiple: {
+            type: Boolean,
+            value: false
+        },
+        files: {
+            type: Array,
+            value: []
+        },
+        required: {
+            type: Boolean,
+            reflectToAttribute: true,
+            value: false
+        },
+        accept: {
+            type: String
+        },
+        endpoint: {
+            type: String,
+            value: 'upload'
+        },
+        downloadEndpoint: {
+            type: String,
+            value: 'download'
+        },
+        hint: {
+            type: String,
+            value: 'Перетащите файлы или нажмите здесь, чтобы загрузить'
+        },
+        maxFileSize: { type: Number },
+        maxFileCount: { type: Number }
+    }
+
+    static css = css`
+        :host {
+            gap: var(--space-sm);
+            max-height: 100%;
+            display:flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            overflow-y: auto;
+            min-height: 0px;
         }
-    }
 
-    static get css() {
-        return css`
-            :host {
-                gap: var(--space-sm);
-                max-height: 100%;
-                display:flex;
-                flex-direction: column;
-                flex: 1 1 auto;
-                overflow-y: auto;
-                min-height: 0px;
-            }
+        .uploader-container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--space-lg);
+            font: var(--subtext-font);
+            max-width: 300px;
+            height: 92px;
+            border: 1px dashed var(--grey-dark);
+            box-sizing: border-box;
+            border-radius: var(--border-radius);
+            color: var(--grey-dark);
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+        }
 
-            .uploader-container{
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                text-align: center;
-                padding: var(--space-lg);
-                font: var(--subtext-font);
-                max-width: 300px;
-                height: 92px;
-                border: 1px dashed var(--grey-dark);
-                box-sizing: border-box;
-                border-radius: var(--border-radius);
-                color: var(--grey-dark);
-                position: relative;
-                cursor: pointer;
-                overflow: hidden;
-            }
+        :host([hidden]) .uploader-container{
+            display: none !important;
+        }
 
-            :host([hidden]) .uploader-container{
-                display: none !important;
-            }
+        .uploader-container:hover, :host([drag-active]) .uploader-container{
+            background: var(--primary-lightest);
+            border: 1px dashed  var(--primary-base);
+            color: var(--primary-base);
+        }
 
-            .uploader-container:hover, :host([drag-active]) .uploader-container{
-                background: var(--primary-lightest);
-                border: 1px dashed  var(--primary-base);
-                color: var(--primary-base);
-            }
+        .uploader-container::before {
+            content: '';
+            display: block;
+            position: absolute;
+            box-sizing: border-box;
+            top: 0;
+            left: 0;
+        }
 
-            .uploader-container::before {
-                content: '';
-                display: block;
-                position: absolute;
-                box-sizing: border-box;
-                top: 0;
-                left: 0;
-            }
+        :host([required]) .uploader-container::before {
+            border-top: calc(var(--space-md) / 2) solid var(--attention);
+            border-left: calc(var(--space-md) / 2)  solid var(--attention);
+            border-bottom: calc(var(--space-md) / 2) solid transparent;
+            border-right: calc(var(--space-md) / 2) solid transparent;
+        }
+        .files {
+        overflow: auto;
+        }
+    `;
 
-            :host([required]) .uploader-container::before {
-				border-top: calc(var(--space-md) / 2) solid var(--attention);
-				border-left: calc(var(--space-md) / 2)  solid var(--attention);
-				border-bottom: calc(var(--space-md) / 2) solid transparent;
-				border-right: calc(var(--space-md) / 2) solid transparent;
-            }
-          .files {
-            overflow: auto;
-          }
-        `;
-    }
-
-    static get template() {
-        return html`
-            <div id="uploader" class="uploader-container">
-                <input id="fileInput" accept$="[[accept]]" type="file" multiple$="[[multiple]]" on-change="[[onFileInputChange]]" hidden/>
-                <pl-icon iconset="pl-default" size="32" icon="upload"></pl-icon>
-            
-                <span class="hint">[[hint]]</span>
-            </div>
-            <div class="files">
-                <pl-file-preview endpoint="[[downloadEndpoint]]" can-delete="true" files="{{files}}"></pl-file-preview>
-            </div>
-        `;
-    }
+    static template = html`
+        <div id="uploader" class="uploader-container">
+            <input id="fileInput" accept$="[[accept]]" type="file" multiple$="[[multiple]]" on-change="[[onFileInputChange]]" hidden/>
+            <pl-icon iconset="pl-default" size="32" icon="upload"></pl-icon>
+        
+            <span class="hint">[[hint]]</span>
+        </div>
+        <div class="files">
+            <pl-file-preview endpoint="[[downloadEndpoint]]" can-delete="true" files="{{files}}"></pl-file-preview>
+        </div>
+    `;
 
     connectedCallback() {
         super.connectedCallback();

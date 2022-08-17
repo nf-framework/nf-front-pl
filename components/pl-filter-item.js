@@ -1,21 +1,17 @@
 import { PlElement, html, css } from "polylib";
 
 class PlFilterItem extends PlElement {
-    static get properties() {
-        return {
-            field: { type: String },
-            fieldtype: { type: String },
-            value: { type: Object },
-            operator: { type: String },
-            cast: { type: String }
-        }
+    static properties = {
+        field: { type: String },
+        fieldtype: { type: String },
+        value: { type: Object },
+        operator: { type: String },
+        cast: { type: String }
     }
 
-    static get template() {
-        return html`
-            <slot></slot>
-        `;
-    }
+    static template = html`
+        <slot></slot>
+    `;
 
     connectedCallback() {
         super.connectedCallback();

@@ -3,103 +3,97 @@ import { addOverlay, removeOverlay } from "@plcmp/utils";
 import '@plcmp/pl-icon-button';
 
 class PlModalForm extends PlElement {
-    static get properties() {
-        return {
-            opened: { type: Boolean, reflectToAttribute: true },
-            position: { type: String, value: 'right', reflectToAttribute: true },
-            size: { type: String, value: 'large', reflectToAttribute: true },
-            formTitle: { type: String, value: '' },
-            ignoreOutsideClick: { type: Boolean, value: false }
+    static properties = {
+        opened: { type: Boolean, reflectToAttribute: true },
+        position: { type: String, value: 'right', reflectToAttribute: true },
+        size: { type: String, value: 'large', reflectToAttribute: true },
+        formTitle: { type: String, value: '' },
+        ignoreOutsideClick: { type: Boolean, value: false }
+    }
+
+    static css = css`
+        :host {
+            background: rgba(0, 0, 0, 0.8);
+            height: 100%;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
         }
-    }
+        :host .modal{
+            height: 100%;
+            position: fixed;
+            background: var(--background-color);
+            will-change: contents;
+            opacity: 0;
+            transform: translateX(30%);
+            box-sizing: border-box;
+            visibility: hidden;
+            display: flex;
+            inset-block-start: 0px;
+            inset-inline-end: 0;
+            flex-direction: column;
+            will-change: transform, opacity;
+            transition: all ease 200ms;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
 
-    static get css() {
-        return css`
-            :host {
-                background: rgba(0, 0, 0, 0.8);
-                height: 100%;
-                position: absolute;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-            }
-            :host .modal{
-                height: 100%;
-                position: fixed;
-                background: var(--background-color);
-                will-change: contents;
-                opacity: 0;
-                transform: translateX(30%);
-                box-sizing: border-box;
-                visibility: hidden;
-                display: flex;
-                inset-block-start: 0px;
-                inset-inline-end: 0;
-                flex-direction: column;
-                will-change: transform, opacity;
-                transition: all ease 200ms;
-                box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            }
+        .content-header {
+            padding: 16px;
+            display: flex;
+            height: 48px;
+            box-sizing: border-box;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+            justify-content: space-between;
+        }
 
-            .content-header {
-                padding: 16px;
-                display: flex;
-                height: 48px;
-                box-sizing: border-box;
-                gap: 8px;
-                align-items: center;
-                flex-shrink: 0;
-                justify-content: space-between;
-            }
+        #form-label {
+            font: var(--font-h2);
+            color: var(--text-color);
+        }
 
-            #form-label {
-                font: var(--font-h2);
-                color: var(--text-color);
-            }
+        :host([size=small]) .modal{
+            width: 320px;
+        }
 
-            :host([size=small]) .modal{
-                width: 320px;
-            }
+        :host([size=medium]) .modal{
+            width: 560px;
+        }
 
-            :host([size=medium]) .modal{
-                width: 560px;
-            }
+        :host([size=large]) .modal{
+            width: 920px;
+        }
 
-            :host([size=large]) .modal{
-                width: 920px;
-            }
+        :host([opened]) .modal{
+            opacity: 1;
+            transform: translateX(0);
+            visibility: visible;
+        }
 
-            :host([opened]) .modal{
-                opacity: 1;
-                transform: translateX(0);
-                visibility: visible;
-            }
+        :host ::slotted(*) {
+            padding: 0 16px 16px 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+            box-sizing: border-box;
+        }
+    `;
 
-            :host ::slotted(*) {
-                padding: 0 16px 16px 16px;
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                overflow: auto;
-                box-sizing: border-box;
-            }
-        `
-    }
-
-    static get template() {
-        return html`
-            <div class="modal">
-                <div id="header" class="content-header">
-                    <span id="form-label">[[formTitle]]</span>
-                    <pl-icon-button on-click="[[close]]" variant="link" iconset="pl-default" size="16" icon="close">
-                    </pl-icon-button>
-                </div>
-                <slot></slot>
+    static template = html`
+        <div class="modal">
+            <div id="header" class="content-header">
+                <span id="form-label">[[formTitle]]</span>
+                <pl-icon-button on-click="[[close]]" variant="link" iconset="pl-default" size="16" icon="close">
+                </pl-icon-button>
             </div>
-		`;
-    }
+            <slot></slot>
+        </div>
+    `;
 
     constructor() {
         super();

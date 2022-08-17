@@ -1,32 +1,21 @@
-import { html, css } from "polylib";
+import { html } from "polylib";
 import { PlForm } from "@nfjs/front-pl/components/pl-form.js";
 
 export default class Login extends PlForm {
-    static get properties() {
-        return {
-            login: { type: String },
-            password: { type: String },
-            auth: { type: Boolean, value: false }
-        };
-    }
+    static properties = {
+        login: { type: String },
+        password: { type: String },
+        auth: { type: Boolean, value: false }
+    };
 
-    static get css() {
-        return css`{
-            :host([hidden]) {
-                display: none;
-            }
-        }`
-    }
-    static get template() {
-        return html`
-            <pl-action data="{{auth}}" endpoint="/front/action/login" unauthorized></pl-action>
-		    <pl-flex-layout vertical fit stretch align="center" justify="center" slot="top-toolbar">
-                <pl-input label="Логин" value="{{login}}"></pl-input>
-                <pl-input label="Пароль" value="{{password}}" type="password"></pl-input>
-                <pl-button variant="primary" label="Войти" on-click="[[onLoginClick]]"></pl-button>
-            </pl-flex-layout>
-		`;
-    }
+    static template = html`
+        <pl-action data="{{auth}}" endpoint="/front/action/login" unauthorized></pl-action>
+        <pl-flex-layout vertical fit align="center" justify="center" slot="top-toolbar">
+            <pl-input label="Логин" value="{{login}}"></pl-input>
+            <pl-input label="Пароль" value="{{password}}" type="password"></pl-input>
+            <pl-button variant="primary" label="Войти" on-click="[[onLoginClick]]"></pl-button>
+        </pl-flex-layout>
+    `;
 
     connectedCallback() {
         super.connectedCallback();

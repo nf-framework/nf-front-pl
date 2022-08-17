@@ -3,51 +3,47 @@ import { requestData } from "../lib/RequestServer.js";
 import { setPath, getPath, cloneDeep, clearObj } from "@nfjs/core/api/common";
 
 class PlAction extends PlElement {
-    static get properties() {
-        return {
-            endpoint: {
-                type: String
-            },
-            method: {
-                type: String
-            },
-            args: {
-                type: Object,
-                observer: '_argsChanged'
-            },
-            executeOnArgsChange: {
-                type: Boolean
-            },
-            executing: {
-                type: Boolean,
-                value: false
-            },
-            requiredArgs: {
-                type: String
-            },
-            data: {
-                type: Object
-            },
-            unauthorized: {
-                type: Boolean,
-                value: false
-            },
-            success: {
-                type: String
-            },
-            paths: {
-                type: String
-            }
+    static properties = {
+        endpoint: {
+            type: String
+        },
+        method: {
+            type: String
+        },
+        args: {
+            type: Object,
+            observer: '_argsChanged'
+        },
+        executeOnArgsChange: {
+            type: Boolean
+        },
+        executing: {
+            type: Boolean,
+            value: false
+        },
+        requiredArgs: {
+            type: String
+        },
+        data: {
+            type: Object
+        },
+        unauthorized: {
+            type: Boolean,
+            value: false
+        },
+        success: {
+            type: String
+        },
+        paths: {
+            type: String
         }
     }
 
-    static get css() {
-        return css`
-            :host {
-                display: none;
-            }
-		`;
-    }
+    static css = css`
+        :host {
+            display: none;
+        }
+    `;
 
     _argsChanged(val) {
         if (this.executeOnArgsChange) {

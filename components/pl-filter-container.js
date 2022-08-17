@@ -1,29 +1,23 @@
 import { PlElement, html, css } from "polylib";
 
 class PlFilterContainer extends PlElement {
-    static get properties() {
-        return {
-            data: { type: Array },
-            _filters: {
-                type: Array,
-                value: () => ([])
-            }
+    static properties = {
+        data: { type: Array },
+        _filters: {
+            type: Array,
+            value: () => ([])
         }
     }
 
-    static get template() {
-        return html`
-            <slot></slot>
-        `;
-    }
+    static css = css`
+        :host {
+            display: contents;
+        }
+    `;
 
-    static get css() {
-        return css`
-            :host {
-                display: contents;
-            }
-        `
-    }
+    static template = html`
+        <slot></slot>
+    `;
 
     connectedCallback() {
         super.connectedCallback();
