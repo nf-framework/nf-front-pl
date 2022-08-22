@@ -1,7 +1,7 @@
 import { PlElement, css } from "polylib";
+import {loadTemplateComponents} from "../lib/FormUtils.js";
 
 export class PlForm extends PlElement {
-    __awaits = [];
     static properties = {
         formTitle: { type: String },
         formSubtitle: { type: String },
@@ -11,19 +11,7 @@ export class PlForm extends PlElement {
 
     constructor() {
         super();
-        this.constructor.template.usedCE.forEach(c => {
-            let t = customLoader?.(c);
-            this.__awaits.push(t);
-        });
-        this.constructor.template.usedCEL.forEach(c => {
-            let t = customLoader?.(c);
-        });
-        let watchDog = setTimeout(() => {
-            console.log(this.constructor.template.usedCE, this.__awaits)
-            throw 'Timeout loading components'
-        }, 10000)
-        this.ready = Promise.all(this.__awaits).then(() => { clearTimeout(watchDog); return true; });
-
+        this.ready = loadTemplateComponents(this.constructor.template.tpl.content);
     }
     connectedCallback() {
         super.connectedCallback();
