@@ -11,7 +11,7 @@ export class PlForm extends PlElement {
 
     constructor() {
         super();
-        this.ready = loadTemplateComponents(this.constructor.template.tpl.content);
+        this.ready = loadTemplateComponents(this.constructor.template);
     }
     connectedCallback() {
         super.connectedCallback();
