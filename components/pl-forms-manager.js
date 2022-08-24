@@ -108,7 +108,7 @@ class FormManager extends PlElement {
         if (form && form?._formName === this.dashboard) {
             form._dashboard = true;
         }
-        dispatchEvent( new CustomEvent('form-change', { detail: { form } }));
+        dispatchEvent( new CustomEvent('form-change', { detail: { form }, bubbles: true }));
     }
     async dashBoardChange(db) {
         if (this.currentThread?.name == db) {
