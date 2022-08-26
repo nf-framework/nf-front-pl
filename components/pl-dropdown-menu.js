@@ -2,17 +2,6 @@ import { PlElement, html, css } from "polylib";
 import '@plcmp/pl-dropdown';
 
 class PlDropdownMenu extends PlElement {
-    static properties =  {
-        /**
-         * Является ли этот компонент элементом подменю.
-         * @memberOf NfDropdownMenu
-         * @private
-         */
-        _isSubMenu: {
-            type: Boolean
-        }
-    }
-
     static css = css`
         pl-dropdown[opened] {
             display: flex;
