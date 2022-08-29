@@ -118,6 +118,12 @@ class FormManager extends PlElement {
             this._dbForm = await this.open(db, { dashboard: true });
         }
     }
-}
+
+    async closeAllThreads() {
+        let formThreadsLength = this.threads.length;
+        while (formThreadsLength--) {
+            await this.threads[formThreadsLength].node.closeAll();
+        }
+    }}
 
 customElements.define('pl-forms-manager', FormManager);
