@@ -99,7 +99,7 @@ class PlDropdownMenuItem extends PlElement {
                 if (!menu) {
                     return;
                 }
-                menu.opened = false;
+                menu.$.dd.close();;
                 if (menu.parentNode.localName === 'pl-dropdown-menu-item') {
                     closeMenu(menu.parentNode);
                 }
@@ -112,9 +112,7 @@ class PlDropdownMenuItem extends PlElement {
         let submenu = this.querySelector('pl-dropdown-menu');
         if (submenu && !submenu.$.dd.opened) {
             submenu.$.dd.direction = 'right';
-            const parent = e.composedPath()[e.composedPath().length - 1];
-
-            submenu.open(this, parent.host);
+            submenu.open(this);
            
             return true;
         }
