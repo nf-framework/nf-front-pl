@@ -117,7 +117,11 @@ export class PlForm extends PlElement {
         dialog.header = header;
         dialog.content = content;
         dialog.buttons = buttons;
-        this._formManager.root.appendChild(dialog);
+        if(this._formManager) {
+            this._formManager.root.appendChild(dialog);
+        } else {
+            document.body.appendChild(dialog);
+        }
         return new Promise((resolve) => {
             dialog.addEventListener('pl-dialog-closed', (event) => {
                 resolve(event.detail.action);
