@@ -103,7 +103,7 @@ class PlDataset extends PlElement {
                         return;
                     }
                     const needArgs = reqArgs.filter(r => !_args || _args[r] === undefined || _args[r] === null).join();
-                    reject(new Error(`Не переданы обязательные параметры [${needArgs}]`));
+                    throw new Error(`Не переданы обязательные параметры [${needArgs}]`)
                 }
 
                 let chunk_start, chunk_end;
@@ -127,7 +127,7 @@ class PlDataset extends PlElement {
                 const json = await req.json();
                 let {data, rowMode, metaData, error} = json;
                 if (error) {
-                    reject(new Error(error));
+                    throw new Error(error);
                 }
                 // преобразование в формат [{field1:"value",field2:"value"},...]
                 if (rowMode === 'array' && metaData) {
@@ -169,7 +169,6 @@ class PlDataset extends PlElement {
                 }
                 resolve(this.data);
             } catch (e) {
-
                 let errorMessage = '';
                 if (e instanceof Response) {
                     errorMessage = e.statusText;
