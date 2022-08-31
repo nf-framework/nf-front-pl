@@ -1,5 +1,6 @@
 import { PlElement, html, css } from "polylib";
 import { addOverlay, removeOverlay } from "@plcmp/utils";
+import '@plcmp/pl-button';
 
 class PlAppMenu extends PlElement {
     static properties = {
