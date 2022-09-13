@@ -8,6 +8,7 @@ import { web, ComponentCache, endpointData } from "@nfjs/back";
 import { registerLibDir, prepareResponse, getCacheKey, registerCustomElementsDir, customElements } from "@nfjs/front-server";
 import { api, extension, config } from "@nfjs/core";
 import { endpointHandlers } from './lib/FormServerEndpoints.js';
+import { NodeVM, VMScript } from "vm2";
 
 const __dirname = path.join(path.dirname(decodeURI(new URL(import.meta.url).pathname))).replace(/^\\([A-Z]:\\)/, "$1");
 const menu = await api.loadJSON(`${__dirname}/menu.json`);
@@ -135,7 +136,29 @@ async function init() {
     async function loadFormServerEndpoint(context, type) {
         const path = ComponentCache.getPath(context, 'pl-form', `${context?.params?.form}.js`);
         const urlFile = url.pathToFileURL(path).toString();
-        const formCache = await import(urlFile);
+        //const formCache = await import(urlFile);
+        let formCache;
+        if(config?.debug?.need){
+            try {
+                await fs.access(path, fs.F_OK);
+            } catch (err) {
+                await api.processHooks('component-cache-miss', undefined, context);
+            }
+            const data = await fs.readFile(path, 'utf8');
+            const rex = new RegExp('serverEndpoints[^{]+(.*)\\/\\/serverEndpoints', 's');
+            const serverEndpointText = data.match(rex);
+            try {
+                const vm = new NodeVM({wrapper: 'none'});
+                const script = new VMScript(`return {serverEndpoints:${serverEndpointText[1]}}`);
+                formCache = vm.run(script);
+            } catch (err) {
+                console.error('component-cache-syntax-error');
+                return false;
+            }
+
+        }else{
+            formCache = await import(urlFile);
+        }
         context.cachedObj = formCache?.serverEndpoints?.[type]?.[context?.params?.id];
     }
     web.on(
