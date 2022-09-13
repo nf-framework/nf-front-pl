@@ -1,14 +1,15 @@
 import path from 'path';
 import mime from 'mime';
-import fs from "fs/promises";
-import url from "url";
-
-import { auth } from "@nfjs/auth";
-import { web, ComponentCache, endpointData } from "@nfjs/back";
-import { registerLibDir, prepareResponse, getCacheKey, registerCustomElementsDir, customElements } from "@nfjs/front-server";
-import { api, extension, config } from "@nfjs/core";
-import { endpointHandlers } from './lib/FormServerEndpoints.js';
+import fs from 'fs/promises';
+import url from 'url';
 import { NodeVM, VMScript } from "vm2";
+
+import { auth } from '@nfjs/auth';
+import { web, ComponentCache, endpointData } from '@nfjs/back';
+import { registerLibDir, prepareResponse, getCacheKey, registerCustomElementsDir, customElements } from '@nfjs/front-server';
+import { api, extension, config } from '@nfjs/core';
+
+import { endpointHandlers } from './lib/FormServerEndpoints.js';
 
 const __dirname = path.join(path.dirname(decodeURI(new URL(import.meta.url).pathname))).replace(/^\\([A-Z]:\\)/, "$1");
 const menu = await api.loadJSON(`${__dirname}/menu.json`);
@@ -55,7 +56,7 @@ async function formsHandler(context) {
 async function customElementsHandler(context) {
     try {
         const customElementName = context.params.component;
-        let found = customElements.find(x => x.name == customElementName);;
+        let found = customElements.find(x => x.name == customElementName);
 
         if (!found) {
             console.error('Not Found', customElementName);
@@ -136,9 +137,8 @@ async function init() {
     async function loadFormServerEndpoint(context, type) {
         const path = ComponentCache.getPath(context, 'pl-form', `${context?.params?.form}.js`);
         const urlFile = url.pathToFileURL(path).toString();
-        //const formCache = await import(urlFile);
         let formCache;
-        if(config?.debug?.need){
+        if (config?.debug?.need) {
             try {
                 await fs.access(path, fs.F_OK);
             } catch (err) {
@@ -155,12 +155,12 @@ async function init() {
                 console.error('component-cache-syntax-error');
                 return false;
             }
-
-        }else{
+        } else {
             formCache = await import(urlFile);
         }
         context.cachedObj = formCache?.serverEndpoints?.[type]?.[context?.params?.id];
     }
+
     web.on(
         'POST',
         '/@nfjs/front-pl/fse/:form/:type/:id',
