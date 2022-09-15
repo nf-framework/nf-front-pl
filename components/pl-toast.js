@@ -1,106 +1,143 @@
 
 import { PlElement, html, css } from "polylib";
-import { addOverlay, removeOverlay } from "@plcmp/utils";
+import '@plcmp/pl-button';
+import '@plcmp/pl-icon';
 
 class PlToast extends PlElement {
 	static properties = {
-		text: { type: String }
+		header: { type: String },
+		text: { type: String },
+		type: { type: String, reflectToAttribute: true, value: 'success' },
+		buttons: { type: Array, value: [] }
 	};
 
 	static css = css`
+		:host([type=success]) {
+			--pl-toast-background: var(--primary-lightest);
+			--pl-toast-icon-color: var(--primary-base);
+		}
+		:host([type=error]) {
+			--pl-toast-background: var(--negative-lightest);
+			--pl-toast-icon-color: var(--negative-base);
+		}
+		:host([type=inform]) {
+			
+		}
+
         :host {
-			display: flex;
+			padding-bottom: 8px;
 			position: fixed;
-			right: 0;
-			transform: translateX(-5%) translateY(-100%);
-			top: 0;
-			background-color: var(--menu-background-color);
-			color: white;
-			text-align: center;
-			border-radius: 4px;
-			padding: 16px;
+			top: var(--toast-position-top);
+			right: var(--toast-position-right);
+			bottom: var(--toast-position-bottom);
+			left: var(--toast-position-left);
+			transition: transform 0.15s ease-out;
+			transform: var(--toast-translate);
+			--transDur: 0.15s;
+		}
+
+		.toast-content {
+			padding: 8px;
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			animation: flyIn 0.3s ease-out;
+			border-radius: 0.75em;
+			background: var(--pl-toast-background);
+			box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);
+			transition: background-color var(--transDur), color var(--transDur);
 			width: 320px;
+			height: 116px;
+			box-sizing: border-box;
 		}
-		:host(.show) {
-			top: 32px;
-			transform: translateX(-5%) translateY(0);
-			-webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-			animation: fadein 0.5s, fadeout 0.5s 2.5s;
+
+		:host(.out) > .toast-content{
+			animation: flyOut 0.3s ease-out;
 		}
-		@-webkit-keyframes fadein {
+
+		.header {
+			display: flex;
+			width: 100%;
+			font: var(--header-font);
+			color: var(--header-color);
+			font-weight: 700;
+			font-size: 14px;
+			line-height: 16px;
+			justify-content: space-between;
+		}
+
+		.content {
+			padding: 8px 16px 8px 24px;
+			overflow: hidden;
+			display: -webkit-box;
+			-webkit-line-clamp: 3;
+			-webkit-box-orient: vertical;
+			font: var(--text-font);
+			color: var(--text-color);		
+		}
+
+		.header-block {
+			display: flex;
+			gap: 8px;
+			--pl-icon-fill-color: var(--pl-toast-icon-color);
+		}
+
+		#close {
+			cursor: pointer;
+		}
+
+		.button {
+            display: flex;
+            gap: var(--space-sm);
+            width: 100%;
+            justify-content: flex-end;
+        }
+
+
+		@keyframes flyIn {
 			from {
-				top: 0;
-				transform: translateX(-5%) translateY(-100%);
+				transform: var(--toast-fly-in)
 			}
 			to {
-				top: 32px;
-				transform: translateX(-5%) translateY(0);
+				transform: translateX(0);
 			}
 		}
-		@keyframes fadein {
+
+		@keyframes flyOut {
 			from {
-				top: 0;
-				transform: translateX(-5%) translateY(-100%);
+				transform: translateX(0);
 			}
 			to {
-				top: 32px;
-				transform: translateX(-5%) translateY(0);
+				transform: var(--toast-fly-in)
 			}
 		}
-		@-webkit-keyframes fadeout {
-			from {
-				top: 32px;
-				transform: translateX(-5%) translateY(0);
-			}
-			to {
-				top: 0;
-				transform: translateX(-5%) translateY(-100%);
-			}
-		}
-		@keyframes fadeout {
-			from {
-				top: 32px;
-				opacity: 1;
-				transform: translateX(-5%) translateY(0);
-			}
-			to {
-				top: 0;
-				opacity: 0;
-				transform: translateX(-5%) translateY(-100%);
-			}
-		}
+		
+		
 	`;
 
 	static template = html`
-		[[text]]
+		<div class="toast-content">
+			<div class="header">
+				<div class="header-block">
+					<pl-icon iconset="pl-default" size="16" icon="check-circle"></pl-icon>
+					[[header]]
+				</div>
+				<pl-icon id="close" iconset="pl-default" size="16" icon="close" on-click="[[onClose]]"></pl-icon>
+			</div>
+			<div class="content">
+				[[text]]
+			</div>
+			<div class="button">
+				<pl-button d:repeat="[[buttons]]" negative="[[item.negative]]" variant="[[item.variant]]" label="[[item.label]]"
+					action="[[item.action]]"></pl-button>
+			</div>
+		</div>
 	`;
-	
-	show(text = '', duration = 4000) {
-		return new Promise((resolve, reject) => {
-			if (this.className === 'show') {
-				// Do nothing, prevent spamming
-			} else {
-				// 1000ms to not overlap fadein and fadeout animations
-				if (duration >= 1000) {
-					this.style.animation = `fadein 0.5s, fadeout 0.5s ${duration -
-						500}ms`;
-				}
-				this.text = text;
-				addOverlay(this);
-				this.className = 'show';
-				setTimeout(
-					() => {
-						this.text = '';
-						this.style.animation = '';
-						this.className = this.className.replace('show', '');
-						removeOverlay(this);
-						resolve();
-					},
-					duration >= 1000 ? duration : 3000
-				);
-			}
-		});
+
+	onClose(){
+        this.dispatchEvent(new CustomEvent('close', { composed: true }));
 	}
+
 }
 
 customElements.define('pl-toast', PlToast);

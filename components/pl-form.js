@@ -160,16 +160,20 @@ export class PlForm extends PlElement {
         return this.showDialog(options.header, content, options.buttons)
     }
 
-    notify(message, options) {
+    notify(message,  options) {
         options = Object.assign({
             type: 'success',
+            header: 'Успех',
+            icon: '',
+            buttons: []
         }, options);
 
-        document.dispatchEvent(new CustomEvent(options.type, {
+        document.dispatchEvent(new CustomEvent('toast', {
             bubbles: true,
             composed: true,
             detail: {
-                message: message
+                message: message,
+                options: options
             }
         }));
     }

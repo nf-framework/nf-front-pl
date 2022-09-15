@@ -19,7 +19,7 @@ class App extends PlElement {
 
 	static template = html`
 		<pl-action id="aSessionCheck" data="{{auth}}" endpoint="/front/action/checkSession"></pl-action>
-		<pl-toast id="toast"></pl-toast>
+		<pl-toast-manager id="toast"></pl-toast-manager>
 	`;
 
 	async connectedCallback() {
@@ -57,7 +57,7 @@ class App extends PlElement {
 		}
 
 
-		customLoader('pl-toast');
+		customLoader('pl-toast-manager');
 
 		this.resizers = [];
 
@@ -82,18 +82,11 @@ class App extends PlElement {
 
 		resizeObserver.observe(document.body);
 		document.querySelector('#preloader').style.display = "none";
-		document.addEventListener('error', this.showError.bind(this));
-		document.addEventListener('success', this.showSuccess.bind(this));
-
+		document.addEventListener('toast', this.showToast.bind(this));
 	}
 
-
-	showError(e) {
-		this.$.toast.show(e.detail.message)
-	}
-
-	showSuccess(e) {
-		this.$.toast.show(e.detail.message)
+	showToast(e) {
+		this.$.toast.pushToast(e.detail.message, e.detail.options)
 	}
 
 	async _authObserver(auth) {
