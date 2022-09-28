@@ -20,12 +20,8 @@ class PlToast extends PlElement {
 			--pl-toast-background: var(--negative-lightest);
 			--pl-toast-icon-color: var(--negative-base);
 		}
-		:host([type=inform]) {
-			
-		}
 
         :host {
-			padding-bottom: 8px;
 			position: fixed;
 			top: var(--toast-position-top);
 			right: var(--toast-position-right);
@@ -33,7 +29,7 @@ class PlToast extends PlElement {
 			left: var(--toast-position-left);
 			transition: transform 0.15s ease-out;
 			transform: var(--toast-translate);
-			--transDur: 0.15s;
+			padding-bottom: 8px;
 		}
 
 		.toast-content {
@@ -45,9 +41,7 @@ class PlToast extends PlElement {
 			border-radius: 0.75em;
 			background: var(--pl-toast-background);
 			box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);
-			transition: background-color var(--transDur), color var(--transDur);
 			width: 320px;
-			height: 116px;
 			box-sizing: border-box;
 		}
 
@@ -57,6 +51,7 @@ class PlToast extends PlElement {
 
 		.header {
 			display: flex;
+			align-items: center;
 			width: 100%;
 			font: var(--header-font);
 			color: var(--header-color);
@@ -67,13 +62,32 @@ class PlToast extends PlElement {
 		}
 
 		.content {
-			padding: 8px 16px 8px 24px;
+			padding: 0 0 8px 24px;
 			overflow: hidden;
 			display: -webkit-box;
 			-webkit-line-clamp: 3;
 			-webkit-box-orient: vertical;
 			font: var(--text-font);
-			color: var(--text-color);		
+			color: var(--text-color);
+			max-height: 42px;
+		}
+
+		:host([type=success]) .full{
+			color: var(--primary-dark);
+		}
+		:host([type=error]) .full{
+			color: var(--negative-dark);
+		}
+
+		
+		.full {
+			padding: 0 0 8px 24px;
+			font: var(--header-font);
+			cursor: pointer;
+		}
+
+		.full[hidden] {
+			display: none;
 		}
 
 		.header-block {
@@ -82,17 +96,12 @@ class PlToast extends PlElement {
 			--pl-icon-fill-color: var(--pl-toast-icon-color);
 		}
 
-		#close {
-			cursor: pointer;
-		}
-
 		.button {
             display: flex;
             gap: var(--space-sm);
             width: 100%;
             justify-content: flex-end;
         }
-
 
 		@keyframes flyIn {
 			from {
@@ -122,20 +131,48 @@ class PlToast extends PlElement {
 					<pl-icon iconset="pl-default" size="16" icon="check-circle"></pl-icon>
 					[[header]]
 				</div>
-				<pl-icon id="close" iconset="pl-default" size="16" icon="close" on-click="[[onClose]]"></pl-icon>
+				<pl-icon-button variant="link" iconset="pl-default" size="16" icon="close" on-click="[[onClose]]"></pl-icon-button>
 			</div>
 			<div class="content">
 				[[text]]
 			</div>
+			<div class="full" hidden$="[[isShowFullHidden(text)]]" on-click="[[onFullClick]]">Показать полностью...</div>
 			<div class="button">
 				<pl-button d:repeat="[[buttons]]" negative="[[item.negative]]" variant="[[item.variant]]" label="[[item.label]]"
-					action="[[item.action]]"></pl-button>
+					on-click="[[onClick]]"></pl-button>
 			</div>
 		</div>
 	`;
 
-	onClose(){
-        this.dispatchEvent(new CustomEvent('close', { composed: true }));
+	onClose() {
+		this.dispatchEvent(new CustomEvent('close', { composed: true }));
+	}
+
+	onClick(e) {
+		this.onClose();
+		e.model.item.onClick();
+	}
+
+	isShowFullHidden(text){
+		return text.length < 130;
+	}
+
+	onFullClick() {
+		const dialog = document.createElement('pl-dialog');
+		customLoader('pl-dialog');
+		dialog.header = 'Внимание';
+		dialog.content = this.text;
+		dialog.buttons =  [{
+			label: 'Ок',
+			variant: 'primary',
+			action: true
+		}];
+		document.body.appendChild(dialog);
+		return new Promise((resolve) => {
+			dialog.addEventListener('pl-dialog-closed', (event) => {
+				resolve(event.detail.action);
+			});
+		});
 	}
 
 }

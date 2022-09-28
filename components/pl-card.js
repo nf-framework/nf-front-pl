@@ -18,6 +18,8 @@ class PlCard extends PlElement {
             width: fit-content;
             height: fit-content;
             box-sizing: border-box;
+            flex-shrink: 0;
+            overflow: hidden;
             gap: 8px;
             max-width: 100%;
         }
@@ -35,6 +37,7 @@ class PlCard extends PlElement {
         :host([fit]) {
             height: 100%;
             width: 100%;
+            flex: 1;
         }
 
         .header[hidden] {

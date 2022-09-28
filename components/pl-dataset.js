@@ -177,7 +177,7 @@ class PlDataset extends PlElement {
                     errorMessage = e.message;
                 }
 
-                document.dispatchEvent(new CustomEvent('error', {detail: {message: errorMessage}}));
+                document.dispatchEvent(new CustomEvent('toast', { detail: { message: errorMessage, options: { type: 'error', header: 'Ошибка', timeout: 0 } } }));
                 reject(e);
             } finally {
                 this.pending = null;

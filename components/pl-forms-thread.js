@@ -73,7 +73,7 @@ class FormThreadManager extends PlElement {
                 if(!drawer) this.currentForm = form;
             } catch (e){
                 reject(e);
-                document.dispatchEvent(new CustomEvent('error', { detail: { message: `Ошибка загрузки формы ${name}\n ${e}` } }));
+                document.dispatchEvent(new CustomEvent('toast', { detail: { message: `Ошибка загрузки формы ${name}\n ${e}`, options: { type: 'error', header: 'Ошибка' } } }));
                 if (this.openedForms.length === 0) {
                     this.notifyEmpty();
                 }

@@ -19,7 +19,7 @@ class App extends PlElement {
 
 	static template = html`
 		<pl-action id="aSessionCheck" data="{{auth}}" endpoint="/front/action/checkSession"></pl-action>
-		<pl-toast-manager id="toast"></pl-toast-manager>
+		<pl-toast-manager id="toastManager"></pl-toast-manager>
 	`;
 
 	async connectedCallback() {
@@ -57,7 +57,11 @@ class App extends PlElement {
 		}
 
 
-		customLoader('pl-toast-manager');
+		customLoader('pl-toast-manager').then((res) => {
+			if(NF?.config?.front?.toastPosition)  {
+				this.$.toastManager.position = NF?.config?.front?.toastPosition;
+			}
+		});
 
 		this.resizers = [];
 
@@ -74,19 +78,12 @@ class App extends PlElement {
 			this.resizers.push(ev.detail)
 		});
 
-		const resizeObserver = new ResizeObserver(() => {
-			window.requestAnimationFrame(() => {
-				this.resizers.forEach(el => el.cb());
-			});
-		});
-
-		resizeObserver.observe(document.body);
 		document.querySelector('#preloader').style.display = "none";
 		document.addEventListener('toast', this.showToast.bind(this));
 	}
 
 	showToast(e) {
-		this.$.toast.pushToast(e.detail.message, e.detail.options)
+		this.$.toastManager.pushToast(e.detail.message, e.detail.options)
 	}
 
 	async _authObserver(auth) {
