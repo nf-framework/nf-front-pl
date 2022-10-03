@@ -1,7 +1,7 @@
 
 import { PlElement, html, css } from "polylib";
 import '@plcmp/pl-button';
-import '@plcmp/pl-icon';
+import '@plcmp/pl-icon-button';
 
 class PlToast extends PlElement {
 	static properties = {
