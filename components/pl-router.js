@@ -16,7 +16,7 @@ class PlRouter extends PlElement {
         if (hash) {
             this.processUrl(hash);
         } else {
-            history.replaceState({}, null, '#');
+            history.replaceState({}, null, '');
         }
 
         onhashchange = (e) => {
@@ -45,7 +45,7 @@ class PlRouter extends PlElement {
 
             this.setUrlParams(thread);
         } else {
-            this.history({}, null, '#');
+            this.history({}, null, '');
         }
     }
 
@@ -58,9 +58,9 @@ class PlRouter extends PlElement {
         });
 
         if (Object.keys(params).length === 0) {
-            this.history({ threadId: thread.threadId, formName: this.currentForm?._formName }, null, `#${this.currentForm?._formName}`);
+            this.history({ threadId: thread.threadId, formName: this.currentForm?._formName }, null, `${this.currentForm?._formName}`);
         } else {
-            this.history({ threadId: thread.threadId, formName: this.currentForm?._formName }, null, `#${this.currentForm?._formName}?${new URLSearchParams(params).toString()}`);
+            this.history({ threadId: thread.threadId, formName: this.currentForm?._formName }, null, `${this.currentForm?._formName}?${new URLSearchParams(params).toString()}`);
         }
     }
 }
