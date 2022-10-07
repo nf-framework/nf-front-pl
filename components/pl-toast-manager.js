@@ -14,6 +14,7 @@ class PlToastManager extends PlElement {
 	pushToast(text, options) {
 		const toast = document.createElement(`pl-toast`);
 		toast.type = options?.type || 'success';
+		toast.icon = options?.icon || 'check-circle';
 		toast.buttons = options?.buttons;
 		toast.header = options?.header;
 		toast.timeout = options?.timeout;

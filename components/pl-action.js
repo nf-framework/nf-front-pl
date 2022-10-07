@@ -154,7 +154,7 @@ class PlAction extends PlElement {
                 errorMessage = e.message;
             }
 
-            document.dispatchEvent(new CustomEvent('toast', { detail: { message: errorMessage, options: { type: 'error', header: 'Ошибка', timeout: 0 } } }));
+            document.dispatchEvent(new CustomEvent('toast', { detail: { message: errorMessage, options: { type: 'error', header: 'Ошибка', timeout: 0, icon: 'close-circle' } } }));
             throw e;
         }
     }

@@ -6,6 +6,7 @@ import '@plcmp/pl-icon-button';
 class PlToast extends PlElement {
 	static properties = {
 		header: { type: String },
+		icon: { type: String },
 		text: { type: String },
 		type: { type: String, reflectToAttribute: true, value: 'success' },
 		buttons: { type: Array, value: [] }
@@ -128,7 +129,7 @@ class PlToast extends PlElement {
 		<div class="toast-content">
 			<div class="header">
 				<div class="header-block">
-					<pl-icon iconset="pl-default" size="16" icon="check-circle"></pl-icon>
+					<pl-icon iconset="pl-default" size="16" icon="[[icon]]"></pl-icon>
 					[[header]]
 				</div>
 				<pl-icon-button variant="link" iconset="pl-default" size="16" icon="close" on-click="[[onClose]]"></pl-icon-button>
