@@ -78,7 +78,7 @@ class App extends PlElement {
 						(includeTimeZone ? (dif + pad(tzo / 60) + ':' + pad(tzo % 60)) : '');
 				}
 
-				this.$.toastManager.position = NF?.config?.front?.toastPosition;
+				this.$.toastManager.position = NF?.config?.front?.toastPosition || 'top-right';
 				this.$.aSessionCheck.execute();
 				document.querySelector('#preloader').style.display = "none";
 			});
