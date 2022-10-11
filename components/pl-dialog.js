@@ -13,7 +13,7 @@ class PlAppMenu extends PlElement {
         :host {
             background: rgba(0, 0, 0, 0.8);
             height: 100%;
-            position: absolute;
+            position: fixed;
             top: 0;
             right: 0;
             bottom: 0;

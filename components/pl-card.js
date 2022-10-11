@@ -3,10 +3,8 @@ import { PlElement, html, css } from "polylib";
 class PlCard extends PlElement {
     static properties = {
         header: { type: String },
-        fit: {
-            type: Boolean,
-            reflectToAttribute: true
-        },
+        fit: { type: Boolean, reflectToAttribute: true },
+        stretch: { type: Boolean, reflectToAttribute: true },
         hidden: { type: Boolean, reflectToAttribute: true },
         border: { type: Boolean, reflectToAttribute: true }
     }
@@ -32,6 +30,12 @@ class PlCard extends PlElement {
 
         :host([hidden]) {
             display: none;
+        }
+
+        :host([stretch]) {
+            width: 100%;
+            flex-shrink: 1;
+            overflow: visible;
         }
 
         :host([fit]) {
