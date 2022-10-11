@@ -1,6 +1,7 @@
 
 import { PlElement, html, css } from "polylib";
 import './pl-toast.js';
+import { addOverlay, removeOverlay } from "@plcmp/utils";
 
 class PlToastManager extends PlElement {
 	static properties = {
@@ -58,7 +59,7 @@ class PlToastManager extends PlElement {
 				break;
 			}
 		}
-
+		addOverlay(toast);
 		document.body.append(toast);
 		toast.addEventListener("close", this.killNote.bind(this, toast));
 		this.toasts.push(toast);
@@ -97,6 +98,7 @@ class PlToastManager extends PlElement {
 
 		this.killTimeout = setTimeout(() => {
 			this.toastToKill.forEach(itemToKill => {
+				removeOverlay(itemToKill);
 				itemToKill.remove();
 
 				const left = this.toasts.filter(item => item !== itemToKill);
