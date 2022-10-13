@@ -18,6 +18,7 @@ class PlCard extends PlElement {
             box-sizing: border-box;
             flex-shrink: 0;
             gap: 8px;
+            min-width: 0;
             max-width: 100%;
         }
 
@@ -72,11 +73,6 @@ class PlCard extends PlElement {
             flex: 1 1 0%;
         }
 
-        .content {
-            height: 100%;
-            width: 100%;
-        }
-
         .tools ::slotted(*) {
             margin-left: 8px;
         }
@@ -93,9 +89,7 @@ class PlCard extends PlElement {
                 <slot name="tools"></slot>
             </span>
         </div>
-        <div class="content">
-            <slot></slot>
-        </div>
+        <slot></slot>
         <slot name="footer"></slot>
     `;
 }
