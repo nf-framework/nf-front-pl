@@ -62,7 +62,6 @@ class PlCard extends PlElement {
             box-sizing: border-box;
             justify-content: space-between;
             gap: 8px;
-            overflow:hidden;
             min-height: 32px;
         }
 
