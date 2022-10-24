@@ -69,7 +69,7 @@ class PlAppSide extends PlElement {
 			100% { opacity: 1;}   
 		}
 
-		:host .submenu-item:nth-child(odd) {
+		:host .submenu-item:last {
 			border-left: 1px solid #E9EDF0;
 			filter: drop-shadow(0px 8px 32px rgba(0, 0, 0, 0.12));
 		}
