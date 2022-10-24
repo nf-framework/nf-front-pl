@@ -12,10 +12,18 @@ class PlAppSideList extends PlElement {
             height: 100%;
             transition: 0.3s;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
 
         :host([variant=main]) {
             color: var(--menu-text-color);
+        }
+
+        .items {
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         :host([variant="main"]) .items-flex:hover {
@@ -84,13 +92,15 @@ class PlAppSideList extends PlElement {
         <div class="submenu-title">
             [[parent.caption]]
         </div>
-        <template d:repeat="{{items}}">
-            <div class="items-flex" on-click="[[onMenuClick]]">
-                <pl-icon class="icon" iconset="[[_iconset(item.iconset)]]" icon="[[item.icon]]"></pl-icon>
-                <span class="submenu-caption">[[item.caption]]</span>
-                <pl-icon iconset="pl-default" hidden="[[!item.hasChildren]]" icon="chevron-right"></pl-icon>   
-            </div> 
-        </template>
+        <div class="items">
+            <template d:repeat="{{items}}">
+                <div class="items-flex" on-click="[[onMenuClick]]">
+                    <pl-icon class="icon" iconset="[[_iconset(item.iconset)]]" icon="[[item.icon]]"></pl-icon>
+                    <span class="submenu-caption">[[item.caption]]</span>
+                    <pl-icon iconset="pl-default" hidden="[[!item.hasChildren]]" icon="chevron-right"></pl-icon>   
+                </div> 
+            </template>
+        </div>
     `;
 
     onMenuClick(event) {
