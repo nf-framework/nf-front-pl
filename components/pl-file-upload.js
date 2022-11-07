@@ -239,7 +239,8 @@ class PlFileUpload extends PlElement {
             if (event.target.status === 200) {
                 const resp = JSON.parse(event.target.response);
                 if (resp.id) {
-                    this.set(`files.${idx}.value`, resp.id);
+                    this.set(`files.${idx}.value`, resp.filename);
+                    this.set(`files.${idx}.id`, resp.id);
                 } else {
                     if(resp.error) {
                         this.splice('files', idx, 1);
