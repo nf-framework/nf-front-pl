@@ -94,8 +94,12 @@ class PlDataset extends PlElement {
             try {
                 await this.pending;
                 let _args = this._args;
-                const {merge, placeHolder, executedOnArgsChange = false} = this.opts ?? {};
+                let partial = this.partialData;
 
+                const {merge, placeHolder, executedOnArgsChange = false, returnOnly, partialData} = this.opts ?? {};
+                if(partialData != null) {
+                    partial = partialData;
+                }
                 const reqArgs = this.requiredArgs ? this.requiredArgs.split(';') : [];
                 if (reqArgs.length > 0 && (!_args || reqArgs.find(r => _args[r] === undefined || _args[r] === null))) {
                     if (executedOnArgsChange) {
@@ -107,7 +111,7 @@ class PlDataset extends PlElement {
                 }
 
                 let chunk_start, chunk_end;
-                if (this.partialData) {
+                if (partial) {
                     if (!merge) {
                         this.data.control.range.chunk_start = 0;
                         this.data.control.range.chunk_end = 99;
@@ -151,6 +155,11 @@ class PlDataset extends PlElement {
                     if (data[data.length - 1]._rn > chunk_end) {
                         data[data.length - 1] = new PlaceHolder({rn: data[data.length - 1]._rn ?? chunk_end});
                     }
+                }
+
+                if(returnOnly) {
+                    resolve({data: data, metaData: metaData});
+                    return {data: data, metaData: metaData};
                 }
 
                 if (this.data instanceof ControlledArray) {
