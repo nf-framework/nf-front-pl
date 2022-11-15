@@ -34,6 +34,7 @@ class PlFilePreview extends PlElement {
             border-radius: var(--border-radius);
             position: relative;
             overflow: hidden;
+            margin-bottom: 8px;
         }
 
         .file-info-container {
