@@ -12,7 +12,8 @@ class PlFilePreview extends PlElement {
             value: false
         },
         endpoint: {
-            type: String
+            type: String,
+            value: '/@nfjs/download'
         }
     }
 
