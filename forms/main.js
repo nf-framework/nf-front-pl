@@ -156,7 +156,7 @@ export default class MainView extends PlForm {
         } else if (event.detail.url) {
             if (event.detail.url.startsWith('config://')) {
                 const configName = event.detail.url.replace('config://', '');
-                const url = NF?.config?.front?.[configName];
+                const url = NF?.config?.[configName];
                 if(!url) {
                     console.log(`Параметр конфигурации ${configName} не объявлен`);
                     return;
