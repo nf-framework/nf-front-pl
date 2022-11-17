@@ -153,6 +153,18 @@ export default class MainView extends PlForm {
         if (event.detail.form) {
             this.$.formManager.open(event.detail.form, { newThread: event.detail.newThread, extKey: event.detail.form });
             this.$.menu.close();
+        } else if (event.detail.url) {
+            if (event.detail.url.startsWith('config://')) {
+                const configName = event.detail.url.replace('config://', '');
+                const url = NF?.config?.front?.[configName];
+                if(!url) {
+                    console.log(`Параметр конфигурации ${configName} не объявлен`);
+                    return;
+                }
+                window.open(url, '_blank');
+            } else {
+                window.open(event.detail.url, '_blank');
+            }
         }
     }
 
