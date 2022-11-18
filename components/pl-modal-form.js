@@ -2,7 +2,7 @@ import { PlElement, html, css } from "polylib";
 import { addOverlay, removeOverlay } from "@plcmp/utils";
 import '@plcmp/pl-icon-button';
 
-class PlModalForm extends PlElement {
+export class PlModalForm extends PlElement {
     static properties = {
         opened: { type: Boolean, reflectToAttribute: true },
         position: { type: String, value: 'right', reflectToAttribute: true },

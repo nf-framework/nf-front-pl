@@ -1,6 +1,6 @@
-import {css, PlElement} from "polylib";
-import {openForm} from "../lib/FormUtils.js";
-import './pl-modal-form.js';
+import { css, PlElement } from "polylib";
+import { openForm } from "../lib/FormUtils.js";
+import { PlModalForm } from './pl-modal-form.js';
 
 class FormThreadManager extends PlElement {
     openedForms = [];
@@ -40,16 +40,21 @@ class FormThreadManager extends PlElement {
             }
             this.root.append(drawer);
         }
-        return new Promise( async (resolve,reject) => {
+        return new Promise(async (resolve, reject) => {
             let form;
             let closeForm = (result) => {
                 resolve(result);
                 let i = this.openedForms.indexOf(form);
                 if (i >= 0) {
-                    this.openedForms.splice(i,1);
+                    this.openedForms.splice(i, 1);
                     if (!form.hidden) {
                         let ni = Math.min(this.openedForms.length - 1, i);
-                        if (ni >= 0) this.openedForms[ni].hidden = false;
+                        if (ni >= 0) {
+                            if (this.openedForms[ni].parentElement instanceof PlModalForm) {
+                                this.openedForms[ni].parentElement.hidden = false;
+                            }
+                            this.openedForms[ni].hidden = false;
+                        }
                         this.currentForm = this.openedForms[ni]
                     }
                 }
@@ -67,13 +72,18 @@ class FormThreadManager extends PlElement {
                 form._dashboard = options.dashboard;
                 drawer?.open();
                 drawer || this.openedForms.forEach(f => {
-                    if (!f.hidden) f.hidden = true;
+                    if (!f.hidden) {
+                        if (f.parentElement instanceof PlModalForm) {
+                            f.parentElement.hidden = true;
+                        }
+                        f.hidden = true
+                    };
                 })
                 this.openedForms.push(form);
-                if(!drawer) this.currentForm = form;
-            } catch (e){
+                if (!drawer) this.currentForm = form;
+            } catch (e) {
                 reject(e);
-                document.dispatchEvent(new CustomEvent('toast', { detail: { message: `Ошибка загрузки формы ${name}\n ${e}`, options: { type: 'error', header: 'Ошибка', icon: 'close-circle'  } } }));
+                document.dispatchEvent(new CustomEvent('toast', { detail: { message: `Ошибка загрузки формы ${name}\n ${e}`, options: { type: 'error', header: 'Ошибка', icon: 'close-circle' } } }));
                 if (this.openedForms.length === 0) {
                     this.notifyEmpty();
                 }
@@ -81,12 +91,12 @@ class FormThreadManager extends PlElement {
         });
     }
     notifyEmpty() {
-        this.dispatchEvent( new CustomEvent('pl-form-thread-empty', { bubbles: true, detail: { thread: this.getAttribute('id') } }));
+        this.dispatchEvent(new CustomEvent('pl-form-thread-empty', { bubbles: true, detail: { thread: this.getAttribute('id') } }));
     }
     async closeAll() {
         while (this.openedForms.length > 0) {
             let r = await this.currentForm.close();
-            if (r===false) return false;
+            if (r === false) return false;
         }
         return true;
     }
