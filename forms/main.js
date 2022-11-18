@@ -172,8 +172,8 @@ export default class MainView extends PlForm {
         this.$.ddProfile.open(this.$.btnProfile)
     }
 
-    onLogoutClick() {
-        this.$.aLogout.execute();
+    async onLogoutClick() {
+        await this.$.aLogout.execute();
         document.location.reload();
     }
     isHeaderHidden(form) {
