@@ -4,7 +4,6 @@ import '@plcmp/pl-icon-button';
 
 export class PlModalForm extends PlElement {
     static properties = {
-        opened: { type: Boolean, reflectToAttribute: true },
         position: { type: String, value: 'right', reflectToAttribute: true },
         size: { type: String, value: 'large', reflectToAttribute: true },
         formTitle: { type: String, value: '' },
@@ -13,7 +12,7 @@ export class PlModalForm extends PlElement {
 
     static css = css`
         :host {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(36, 51, 49, 0.4);
             height: 100%;
             position: fixed;
             top: 0;
@@ -23,22 +22,29 @@ export class PlModalForm extends PlElement {
             width: 100%;
             z-index: 10000;
         }
+
+        :host(.out) > .modal {
+			animation: flyOut 0.3s ease-out;
+		}
+
         :host .modal{
-            height: 100%;
-            position: absolute;
-            background: var(--background-color);
-            will-change: contents;
-            opacity: 0;
-            transform: translateX(30%);
-            box-sizing: border-box;
-            visibility: hidden;
             display: flex;
-            inset-block-start: 0px;
-            inset-inline-end: 0;
             flex-direction: column;
-            will-change: transform, opacity;
-            transition: all ease 200ms;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            height: 100%;
+            box-sizing: border-box;
+            position: absolute;
+            inset-block-start: 0;
+            inset-inline-end: 0;
+            background: var(--background-color);
+            will-change: transform, opacity, visibility;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        :host(.in) > .modal {
+            animation: flyIn 0.3s ease-out;
+            visibility: visible;
+            opacity: 1;
         }
 
         .content-header {
@@ -69,12 +75,6 @@ export class PlModalForm extends PlElement {
             width: 920px;
         }
 
-        :host([opened]) .modal{
-            opacity: 1;
-            transform: translateX(0);
-            visibility: visible;
-        }
-
         :host ::slotted(*) {
             padding: 0 16px 16px 16px;
             flex: 1;
@@ -83,6 +83,32 @@ export class PlModalForm extends PlElement {
             overflow: auto;
             box-sizing: border-box;
         }
+
+        @keyframes flyIn {
+			from {
+                transform: translateX(30%);
+                opacity: 0;
+                visibility: hidden;
+            }
+			to {
+                transform: translateX(0);
+                opacity: 1;
+                visibility: visible;
+			}
+		}
+
+		@keyframes flyOut {
+			from {
+                transform: translateX(0);
+                opacity: 1;
+                visibility: visible;
+			}
+			to {
+                transform: translateX(30%);
+                opacity: 0;
+                visibility: hidden;
+			}
+		}
     `;
 
     static template = html`
@@ -114,7 +140,9 @@ export class PlModalForm extends PlElement {
         super.connectedCallback();
         this.addEventListener('close-form', (event) => {
             event.stopPropagation();
-            this.opened = false;
+            this.classList.remove('in');
+            this.classList.add('out');
+
             setTimeout(() => {
                 removeEventListener('click', this._close);
                 removeOverlay(this);
@@ -122,17 +150,22 @@ export class PlModalForm extends PlElement {
             }, 200);
         });
 
-        addEventListener('click', this._close );
+        addEventListener('click', this._close);
         // stop all click events to prevent actions under modal window
-        this.addEventListener('click',  e => {
+        this.addEventListener('click', e => {
             this._close(e);
         });
     }
 
     open() {
-        this.opened = true;
-        addOverlay(this);
         this.formTitle = this.firstChild.formTitle;
+        setTimeout(() => {
+            addOverlay(this);
+            this.classList.add('in');
+            this.firstChild.addEventListener('formTitle-changed', () => {
+                this.formTitle = this.firstChild.formTitle;
+            });
+        }, 200)
     }
 
     async close(result) {

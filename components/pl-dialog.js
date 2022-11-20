@@ -11,7 +11,7 @@ class PlAppMenu extends PlElement {
 
     static css = css`
         :host {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(36, 51, 49, 0.4);
             height: 100%;
             position: fixed;
             top: 0;
@@ -31,7 +31,6 @@ class PlAppMenu extends PlElement {
             left: 50%;
             transform: translate(-50%, -50%);                
             background: var(--surface-color);
-            box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.08);
             border-radius: var(--border-radius);
             gap: var(--space-md);
         }
