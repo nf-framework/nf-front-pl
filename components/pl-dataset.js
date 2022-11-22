@@ -122,7 +122,14 @@ class PlDataset extends PlElement {
                         this.data.control.treeMode.hidValue = null;
                     }
                 }
-                const req = await requestData(this.endpoint, {
+
+                let url = this.endpoint;
+                if (!url) {
+                    // значение по умолчанию это fse(formServerEndpoint)
+                    const formName = this.parentNode.host.localName.replace('pl-form-','');
+                    url = `/@nfjs/front-pl/fse/${formName}/dataset/${this.id}`;
+                }
+                const req = await requestData(url, {
                     headers: {'Content-Type': 'application/json'},
                     method: 'POST',
                     body: JSON.stringify(this.prepareEndpointParams(_args, {range: {chunk_start, chunk_end}})),
