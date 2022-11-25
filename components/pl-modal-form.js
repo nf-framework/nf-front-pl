@@ -150,7 +150,6 @@ export class PlModalForm extends PlElement {
             }, 200);
         });
 
-        addEventListener('click', this._close);
         // stop all click events to prevent actions under modal window
         this.addEventListener('click', e => {
             this._close(e);
