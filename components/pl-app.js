@@ -39,50 +39,44 @@ class App extends PlElement {
 
 	async connectedCallback() {
 		super.connectedCallback();
-
-		addEventListener('authorized', () => {
-			this.auth = true;
-		});
-
-		addEventListener('unauthorized', () => {
-			this.auth = false;
-		});
-
 		window.NF = {};
 
-		requestData('/pl-get-config', {
-			 unauthorized: true 
-			})
-			.then(r => r.json())
-			.then(config => {
-				NF.config = config;
-				let { includeTimeZone } = config || {};
-				Date.prototype.toJSON = function () {
-					var tzo = -this.getTimezoneOffset(),
-						dif = tzo >= 0 ? '+' : '-',
-						pad = function (num) {
-							var norm = Math.floor(Math.abs(num));
-							return (norm < 10 ? '0' : '') + norm;
-						},
-						pad3 = function (num) {
-							var norm = Math.floor(Math.abs(num));
-							return (norm < 10 ? '00' : (norm < 100 ? '0' : '')) + norm;
-						};
-					return this.getFullYear() +
-						'-' + pad(this.getMonth() + 1) +
-						'-' + pad(this.getDate()) +
-						'T' + pad(this.getHours()) +
-						':' + pad(this.getMinutes()) +
-						':' + pad(this.getSeconds()) +
-						'.' + pad3(this.getMilliseconds()) +
-						(includeTimeZone ? (dif + pad(tzo / 60) + ':' + pad(tzo % 60)) : '');
-				}
-
-				this.$.toastManager.position = NF?.config?.front?.toastPosition || 'top-right';
-				this.$.aSessionCheck.execute();
-				document.querySelector('#preloader').style.display = "none";
-			});
+		addEventListener('authorized', () => { this.auth = true; });
+		addEventListener('unauthorized', () => { this.auth = false; });
 		document.addEventListener('toast', this.showToast.bind(this));
+
+		const cfgResp = await requestData('/pl-get-config', {
+			unauthorized: true
+		});
+
+		const config = await cfgResp.json();
+		NF.config = config;
+
+		let { includeTimeZone } = config || {};
+		Date.prototype.toJSON = function () {
+			var tzo = -this.getTimezoneOffset(),
+				dif = tzo >= 0 ? '+' : '-',
+				pad = function (num) {
+					var norm = Math.floor(Math.abs(num));
+					return (norm < 10 ? '0' : '') + norm;
+				},
+				pad3 = function (num) {
+					var norm = Math.floor(Math.abs(num));
+					return (norm < 10 ? '00' : (norm < 100 ? '0' : '')) + norm;
+				};
+			return this.getFullYear() +
+				'-' + pad(this.getMonth() + 1) +
+				'-' + pad(this.getDate()) +
+				'T' + pad(this.getHours()) +
+				':' + pad(this.getMinutes()) +
+				':' + pad(this.getSeconds()) +
+				'.' + pad3(this.getMilliseconds()) +
+				(includeTimeZone ? (dif + pad(tzo / 60) + ':' + pad(tzo % 60)) : '');
+		}
+
+		this.$.toastManager.position = NF?.config?.front?.toastPosition || 'top-right';
+		document.querySelector('#preloader').style.display = "none";
+		this.$.aSessionCheck.execute();
 	}
 
 	showToast(e) {
