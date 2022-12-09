@@ -49,7 +49,7 @@ async function formsHandler(context) {
         if (response.stream) context.send(response.stream);
     }
     catch (err) {
-        context.send(err);
+        throw new Error(err);
     }
 }
 
