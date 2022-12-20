@@ -62,16 +62,28 @@ export default class MainView extends PlForm {
             overflow: hidden;
         }
 
+        .menu {
+            display: flex;
+            margin: 8px 0;
+            align-self: flex-end;
+            min-width: 64px;
+            justify-content: center;
+        }
+
+        .profile {
+            width: 64px;
+            display: flex;
+            justify-content: center;
+        }
+
         #btnProfile {
             margin: 8px 0 16px 0;
             align-self: flex-start;
-            width: 64px;
         }
 
         #btnMenu {
             margin: 8px 0;
             align-self: flex-end;
-            width: 64px;
         }
 
         .logo{
@@ -94,12 +106,14 @@ export default class MainView extends PlForm {
             <div slot="top" class="logo-wrapper">
                 <div class="logo"></div>
             </div>
-        
-            <pl-icon-button variant="link" size="24" class="icon-open" slot="top" iconset="pl-default" icon="[[menuIcon(menuOpened)]]"
-                on-click="[[onMenuButtonClick]]" id="btnMenu"></pl-icon-button>
-        
-            <pl-icon-button slot="bottom" variant="link" size="24" id="btnProfile" iconset="pl-default" icon="profile"
+            <div class="menu" slot="top">
+                <pl-icon-button variant="link" size="24" class="icon-open" slot="top" iconset="pl-default" icon="[[menuIcon(menuOpened)]]"
+                    on-click="[[onMenuButtonClick]]" id="btnMenu"></pl-icon-button>
+            </div>
+            <div class="profile" slot="bottom">
+                <pl-icon-button id="btnProfile" variant="link" size="24"  iconset="pl-default" icon="profile"
                 on-click="[[onProfileClick]]"></pl-icon-button>
+            </div>
         </pl-app-side>
         <div class="content">
             <pl-forms-manager id="formManager" current-form="{{currentForm}}" current-thread="{{currentThread}}" single-thread="[[singleThread]]" dashboard="[[dashboard]]">
