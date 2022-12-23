@@ -47,7 +47,13 @@ class FormManager extends PlElement {
         if (!newThread) {
             // search and show existing thread, new window will not open
             thread = this.threads.find( i => i.name === name);
-            if (thread) showOnly = true;
+            if (thread) {
+                showOnly = true;
+                //if form already opened update props
+                Object.entries(options.params).forEach( ([k,v]) => {
+                    thread.currentForm[k] = v;
+                });
+            };
         }
         if (this.singleThread && !this.currentThread?.dashboard && this.currentThread !== thread) {
             if (this.currentThread?.node.closeAll() === false) return;
@@ -66,6 +72,7 @@ class FormManager extends PlElement {
             this.switchTo(this.currentThread.id);
          else
             this.switchTo(thread.id);
+
         return result;
     }
     threadFormChange(v,o,m) {
