@@ -50,10 +50,11 @@ class FormManager extends PlElement {
             if (thread) {
                 showOnly = true;
                 //if form already opened update props
-                Object.entries(options.params).forEach( ([k,v]) => {
-                    thread.currentForm[k] = v;
-                });
-            };
+                if (options?.params && options.params instanceof Object)
+                    Object.entries(options.params).forEach( ([k,v]) => {
+                        thread.currentForm[k] = v;
+                    });
+            }
         }
         if (this.singleThread && !this.currentThread?.dashboard && this.currentThread !== thread) {
             if (this.currentThread?.node.closeAll() === false) return;
