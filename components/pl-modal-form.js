@@ -23,11 +23,11 @@ export class PlModalForm extends PlElement {
             z-index: 10000;
         }
 
-        :host(.out) > .modal {
+        :host(.out) > #modal {
 			animation: flyOut 0.3s ease-out;
 		}
 
-        :host .modal{
+        :host #modal{
             display: flex;
             flex-direction: column;
             height: 100%;
@@ -41,7 +41,7 @@ export class PlModalForm extends PlElement {
             opacity: 0;
         }
 
-        :host(.in) > .modal {
+        :host(.in) > #modal {
             animation: flyIn 0.3s ease-out;
             visibility: visible;
             opacity: 1;
@@ -63,15 +63,15 @@ export class PlModalForm extends PlElement {
             color: var(--text-color);
         }
 
-        :host([size=small]) .modal{
+        :host([size=small]) #modal{
             width: 320px;
         }
 
-        :host([size=medium]) .modal{
+        :host([size=medium]) #modal{
             width: 560px;
         }
 
-        :host([size=large]) .modal{
+        :host([size=large]) #modal{
             width: 920px;
         }
 
@@ -113,7 +113,7 @@ export class PlModalForm extends PlElement {
     `;
 
     static template = html`
-        <div class="modal">
+        <div id="modal">
             <div id="header" class="content-header">
                 <span id="form-label">[[formTitle]]</span>
                 <pl-icon-button on-click="[[close]]" variant="link" iconset="pl-default" size="16" icon="close">
@@ -145,13 +145,16 @@ export class PlModalForm extends PlElement {
             this.classList.add('out');
 
             setTimeout(() => {
-                removeEventListener('click', this._close);
                 removeOverlay(this);
                 this.parentNode.removeChild(this);
             }, 200);
         });
 
-        // stop all click events to prevent actions under modal window
+        this.$.modal.addEventListener('mousedown', e => {
+            // prevent window click event when mousedown was in dropdown area and click outside
+            addEventListener('click', e => { if (!e.composedPath().includes(this.$.modal)) e.stopImmediatePropagation() }, { once: true, capture: true });
+        });
+
         this.addEventListener('click', e => {
             this._close(e);
         });
