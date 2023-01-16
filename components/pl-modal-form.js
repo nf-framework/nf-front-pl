@@ -82,6 +82,7 @@ export class PlModalForm extends PlElement {
             flex-direction: column;
             overflow: auto;
             box-sizing: border-box;
+            position: relative;
         }
 
         @keyframes flyIn {
