@@ -163,10 +163,10 @@ export default class MainView extends PlForm {
         }
     }
 
-    onMenuItemSelected(event) {
+    async onMenuItemSelected(event) {
         if (event.detail.form) {
-            this.$.formManager.open(event.detail.form, { newThread: event.detail.newThread, extKey: event.detail.form });
             this.$.menu.close();
+            await this.$.formManager.open(event.detail.form, { newThread: event.detail.newThread, extKey: event.detail.form });
         } else if (event.detail.url) {
             if (event.detail.url.startsWith('config://')) {
                 const configName = event.detail.url.replace('config://', '');

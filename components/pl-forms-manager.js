@@ -35,7 +35,7 @@ class FormManager extends PlElement {
         this.container.addEventListener('pl-form-thread-empty', (e)=>this.onThreadEmpty(e));
     }
 
-    open(name, options = {} ) {
+    async open(name, options = {} ) {
         let {threadId, newThread, extKey, dashboard} = options;
         if (name === this.dashboard) {
             dashboard = true;
@@ -57,7 +57,7 @@ class FormManager extends PlElement {
             }
         }
         if (this.singleThread && !this.currentThread?.dashboard && this.currentThread !== thread) {
-            if (this.currentThread?.node.closeAll() === false) return;
+            if (await this.currentThread?.node.closeAll() === false) return;
         }
         if (!thread || newThread) {
             //Create new thread
