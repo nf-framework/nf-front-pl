@@ -2,7 +2,7 @@ import { PlElement, html, css } from "polylib";
 import '@plcmp/pl-icon';
 
 class PlAppSideList extends PlElement {
-    static properties =  {
+    static properties = {
         items: { type: Array },
         parent: { type: Object }
     };
@@ -22,8 +22,7 @@ class PlAppSideList extends PlElement {
 
         .items {
             height: 100%;
-            overflow-y: auto;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
         :host([variant="main"]) .items-flex:hover {
@@ -92,19 +91,30 @@ class PlAppSideList extends PlElement {
         <div class="submenu-title">
             [[parent.caption]]
         </div>
-        <div class="items">
+        <div id="scroller" class="items">
             <template d:repeat="{{items}}">
                 <div class="items-flex" on-click="[[onMenuClick]]">
                     <pl-icon class="icon" iconset="[[_iconset(item.iconset)]]" icon="[[item.icon]]"></pl-icon>
                     <span class="submenu-caption">[[item.caption]]</span>
-                    <pl-icon iconset="pl-default" hidden="[[!item.hasChildren]]" icon="chevron-right"></pl-icon>   
-                </div> 
+                    <pl-icon iconset="pl-default" hidden="[[!item.hasChildren]]" icon="chevron-right"></pl-icon>
+                </div>
             </template>
         </div>
     `;
 
+    connectedCallback() {
+        super.connectedCallback();
+        this.$.scroller.addEventListener('wheel', (event) => {
+            event.preventDefault();
+
+            this.$.scroller.scrollBy({
+                top: event.deltaY < 0 ? -30 : 30,
+            });
+        });
+    }
+
     onMenuClick(event) {
-        this.dispatchEvent(new CustomEvent('menuClick', { detail: {...event.model.item, newThread: event.shiftKey }, bubbles: true, composed: true }));
+        this.dispatchEvent(new CustomEvent('menuClick', { detail: { ...event.model.item, newThread: event.shiftKey }, bubbles: true, composed: true }));
     }
 
     _iconset(iconset) {
