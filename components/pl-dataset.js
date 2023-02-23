@@ -56,7 +56,7 @@ class PlDataset extends PlElement {
         this.data.control.range.chunk_start = placeHolder.rn ?? 0;
         this.data.control.range.chunk_end = (placeHolder.rn ?? 0) + 99;
         if (this.data.control.treeMode) {
-            this.data.control.treeMode.hidValue = placeHolder.hid;
+            this.data.control.treeMode.hidValue = placeHolder.hid ?? null;
         }
         return this.execute(undefined, { merge: true, placeHolder });
     }
