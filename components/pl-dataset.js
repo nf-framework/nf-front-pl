@@ -163,8 +163,9 @@ class PlDataset extends PlElement {
                     // По умолчанию при фильтрации в режиме дерева, если не стоит filterByHid то возвращается все дерево, игнорируя chunk start и chunk End
                     // Если для режима дерева стоит filterByHid, то добавляем плейсхолдер и подгружаем записи
                     // Иначе игнорируем
-                    if (data[data.length - 1]._rn > chunk_end && this.data?.control?.treeMode?.filterByHid) {
-                        data[data.length - 1] = new PlaceHolder({rn: data[data.length - 1]._rn ?? chunk_end});
+                    if (data[data.length - 1]._rn > chunk_end) {
+                        if(this.data?.control?.treeMode && !this.data?.control?.treeMode?.filterByHid && this.data.filters.length > 0) {}
+                        else data[data.length - 1] = new PlaceHolder({rn: data[data.length - 1]._rn ?? chunk_end});
                     }
                 }
 
