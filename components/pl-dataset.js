@@ -56,7 +56,7 @@ class PlDataset extends PlElement {
         this.data.control.range.chunk_start = placeHolder.rn ?? 0;
         this.data.control.range.chunk_end = (placeHolder.rn ?? 0) + 99;
         if (this.data.control.treeMode) {
-            this.data.control.treeMode.hidValue = placeHolder.hid ?? null;
+            this.data.control.treeMode.hidValue = placeHolder.hid;
         }
         return this.execute(undefined, { merge: true, placeHolder });
     }
@@ -164,8 +164,7 @@ class PlDataset extends PlElement {
                     // Если для режима дерева стоит filterByHid, то добавляем плейсхолдер и подгружаем записи
                     // Иначе игнорируем
                     if (data[data.length - 1]._rn > chunk_end) {
-                        if(this.data?.control?.treeMode && !this.data?.control?.treeMode?.filterByHid && this.data.filters.length > 0) {}
-                        else data[data.length - 1] = new PlaceHolder({rn: data[data.length - 1]._rn ?? chunk_end});
+                        data[data.length - 1] = new PlaceHolder({rn: data[data.length - 1]._rn ?? chunk_end, hid: this.data?.control?.treeMode?.hidValue})
                     }
                 }
 
