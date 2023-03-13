@@ -58,7 +58,7 @@ class PlDataset extends PlElement {
         if (this.data.control.treeMode) {
             this.data.control.treeMode.hidValue = placeHolder.hid;
         }
-        return this.execute(undefined, { merge: true, placeHolder });
+        return this.execute(this._args, { merge: true, placeHolder });
     }
     _argsChanged() {
         if (this.executeOnArgsChange) {
