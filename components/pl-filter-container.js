@@ -45,7 +45,7 @@ class PlFilterContainer extends PlElement {
     }
 
     applyFilters() {
-        this.set('data.filters', this._filters.filter(x => x.value != null));
+        this.set('data.filters', this._filters.filter(x => x.value));
     }
 
     clearFilters() {
