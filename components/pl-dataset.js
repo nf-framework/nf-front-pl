@@ -67,7 +67,7 @@ class PlDataset extends PlElement {
     }
     _dataObserver(val, oldVal, mut) {
         if (mut.path === 'data.sorts') {
-            this.execute(this.args);
+            this.execute(this._args);
         }
     }
     prepareEndpointParams(args, control) {
