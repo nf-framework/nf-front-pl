@@ -22,6 +22,10 @@ class FormThreadManager extends PlElement {
         *[hidden] {
             display: none;
         }
+
+        * {
+            outline: none;
+        }
     `;
     connectedCallback() {
         super.connectedCallback();
@@ -79,6 +83,8 @@ class FormThreadManager extends PlElement {
                         f.hidden = true
                     };
                 })
+
+                form.tabIndex = 0;
                 this.openedForms.push(form);
                 if (!drawer) this.currentForm = form;
             } catch (e) {
