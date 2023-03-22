@@ -43,7 +43,9 @@ class PlRouter extends PlElement {
                 })
             });
 
-            this.setUrlParams(thread);
+            if(!this.currentForm.isModal) {
+                this.setUrlParams(thread);
+            }
         } else {
             history.replaceState(null, null, location.pathname + location.search);
         }

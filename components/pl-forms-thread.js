@@ -74,6 +74,8 @@ class FormThreadManager extends PlElement {
                     formManager: this
                 });
                 form._dashboard = options.dashboard;
+                form.isModal = options?.modal;
+
                 drawer?.open();
                 drawer || this.openedForms.forEach(f => {
                     if (!f.hidden) {

@@ -98,18 +98,17 @@ class PlHeader extends PlElement {
     `;
 
     currentFormObserver(form) {
-        if (form) {
+        if (form && !form.isModal) {
             this.formTitle = form.formTitle;
 
             if (!form._titleChangedEventFlag) {
                 form.addEventListener('formTitle-changed', () => {
-                    this.formTitle = this.currentForm.formTitle;
+                    if(!this.currentForm.isModal)
+                        this.formTitle = this.currentForm.formTitle;
                 });
             }
 
             form._titleChangedEventFlag = true;
-        } else {
-            this.formTitle = null;
         }
     }
 
