@@ -7,7 +7,7 @@ import '@plcmp/pl-input';
 
 class PlComboinput extends PlElement {
     static properties = {
-        value: { type: String, value: null },
+        value: { type: String, value: null, observer: '_valueObserver' },
         text: { type: String },
         selected: { type: Object, value: null, observer: '_selectedObserver' },
         contentWidth: { type: Number },
@@ -28,16 +28,15 @@ class PlComboinput extends PlElement {
         hidden: { type: Boolean, reflectToAttribute: true },
 
         multiSelect: { type: Boolean, value: false, observer: '_multiSelectObserver' },
-        valueList: { type: Array, value: () => [] },
-        selectedList: { type: Array, value: () => [], observer: '_selectedListObserver' },
-        _multiTemplate: { type: Object }
+        valueList: { type: Array, value: () => [], observer: '_valueListObserver' },
+        selectedList: { type: Array, value: () => [], observer: '_selectedListObserver' }
     };
 
     static css = css`
         :host {
             min-width: 0;
             flex-shrink: 0;
-        }
+        }s
 
         :host([hidden]) {
             display: none;
@@ -152,6 +151,14 @@ class PlComboinput extends PlElement {
         }
     }
 
+    _valueObserver(val) {
+        this.$.input.validate();
+    }
+
+    _valueListObserver() {
+        this.$.input.validate();
+    }
+
     _multiSelectObserver() {
         if(this.multiSelect) {
             if(this._multiTemplate != PlComboinput.tagsTemplate && this.variant == 'tags') {
@@ -167,7 +174,7 @@ class PlComboinput extends PlElement {
     validator() {
         let messages = [];
         if (this.multiSelect) {
-            if (this.selectedList.length === 0 && this.required) {
+            if (this.valueList.length === 0 && this.required) {
                 messages.push('Значение не может быть пустым');
             }
         } else if ((this.value === null || this.value === undefined) && this.required) {
@@ -216,7 +223,6 @@ class PlComboinput extends PlElement {
         this.inStack = true;
 
         this.valueList = this.selectedList.map(x => x[this.valueProperty]);
-        this.$.input.validate();
         this.inStack = false;
     }
 
