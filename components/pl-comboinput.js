@@ -29,7 +29,8 @@ class PlComboinput extends PlElement {
 
         multiSelect: { type: Boolean, value: false, observer: '_multiSelectObserver' },
         valueList: { type: Array, value: () => [], observer: '_valueListObserver' },
-        selectedList: { type: Array, value: () => [], observer: '_selectedListObserver' }
+        selectedList: { type: Array, value: () => [], observer: '_selectedListObserver' },
+        _multiTemplate: { type: Object }
     };
 
     static css = css`
