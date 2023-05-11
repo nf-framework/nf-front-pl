@@ -10,7 +10,6 @@ class PlHeader extends PlElement {
 
     static css = css`
         :host{
-            margin: 8px 0;
             display: flex;
             height: 48px;
             box-sizing: border-box;
@@ -33,18 +32,17 @@ class PlHeader extends PlElement {
             border-radius: 4px;
             cursor: pointer;
         }
-        .back[hidden] {
-            display: none;
-        }
+
         .back:hover {
             border: 1px solid var(--grey-base);
         }
-        
+
         .content-header {
             display: flex;
             flex-direction: column;
             user-select: none;
         }
+
         .form-breadcrumbs {
             display: flex;
             align-items: center;
@@ -63,19 +61,16 @@ class PlHeader extends PlElement {
         .form-breadcrumbs a:hover, .form-breadcrumbs pl-icon:hover {
             color: var(--text-color);
         }
-        #form-label {
-            font: var(--font-h2);
-            color: var(--text-color);
-        }
         .form-breadcrumbs .item:not(:first-child)::before {
             content: '>';
             margin: 0 4px;
             color: var(--grey-darkest);
         }
-        .homeIcon {
-            display: inline-flex;
+        #form-label {
+            font: var(--font-h2);
+            color: var(--text-color);
         }
-        .homeIcon[hidden] {
+        [hidden] {
             display: none;
         }
     `;
@@ -86,11 +81,11 @@ class PlHeader extends PlElement {
             <pl-icon iconset="pl-default" size="16" icon="chevron-left"></pl-icon>
         </div>
         <div class="content-header">
-            <div class="form-breadcrumbs">
+            <div class="form-breadcrumbs" hidden="[[currentForm._dashboard]]">
                 <pl-icon class="homeIcon" iconset="pl-default" icon="home" size="12" on-click="[[onBreadCrumbsClick]]" hidden="[[currentForm._dashboard]]"></pl-icon>
-                    <template d:repeat="[[breadcrumbs]]">
-                        <span class="item"><a href="javascript:void(0)" on-click="[[onBreadCrumbsClick]]">[[item.title]]</a></span>    
-                    </template>
+                <template d:repeat="[[breadcrumbs]]">
+                    <span class="item"><a href="javascript:void(0)" on-click="[[onBreadCrumbsClick]]">[[item.title]]</a></span>    
+                </template>
             </div>
             <div id="form-label">[[formTitle]]</div>
             <slot name="suffix"></slot>
