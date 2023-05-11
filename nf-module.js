@@ -74,7 +74,6 @@ async function checkSession(context) {
     if (context.session.get('context.user')) {
         context.send({ data: true });
     } else {
-        context.code(401);
         context.send({ data: false });
     }
 }
@@ -126,7 +125,7 @@ async function init() {
     web.on('GET', '/forms/:form', formsHandler);
     web.on('GET', '/load-custom-element/:component', customElementsHandler);
 
-    web.on('POST', '/front/action/checkSession', { middleware: ['session', 'auth'] }, checkSession);
+    web.on('POST', '/front/action/checkSession', { middleware: ['session'] }, checkSession);
     web.on('POST', '/front/action/getUserProfile', { middleware: ['session', 'auth'] }, getUserProfile);
 
     web.on('POST', '/front/action/login', { middleware: ['json', 'session'] }, login);
