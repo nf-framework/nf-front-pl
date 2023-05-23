@@ -19,6 +19,7 @@ class PlDataset extends PlElement {
             type: Boolean,
             value: false
         },
+        executingController: {},
         partialData: {
             type: Boolean
         },
@@ -86,6 +87,7 @@ class PlDataset extends PlElement {
         this._args = args || this.args;
         this.opts = opts
         this.executing = true;
+        this.executingController = new AbortController();
         if (!this.pending) {
             this.pending = new Promise(resolve => setTimeout(resolve, 0));
         }
@@ -133,7 +135,8 @@ class PlDataset extends PlElement {
                     headers: {'Content-Type': 'application/json'},
                     method: 'POST',
                     body: JSON.stringify(this.prepareEndpointParams(_args, {range: {chunk_start, chunk_end}})),
-                    unauthorized: this.unauthorized
+                    unauthorized: this.unauthorized,
+                    signal: this.executingController.signal
                 });
                 const json = await req.json();
                 let {data, rowMode, metaData, error} = json;
@@ -202,10 +205,15 @@ class PlDataset extends PlElement {
             } finally {
                 this.pending = null;
                 this.executing = false;
+                this.executingController = undefined;
                 this.result = null;
             }
         });
         return this.result;
+    }
+
+    cancel() {
+        if (this.executingController) this.executingController.abort();
     }
 }
 
