@@ -1,6 +1,5 @@
 import { PlElement, html, css } from "polylib";
 
-
 import '@plcmp/pl-icon';
 import '@plcmp/pl-iconset-default';
 import '@plcmp/pl-input';
@@ -15,6 +14,7 @@ class PlComboinput extends PlElement {
         label: { type: String },
         required: { type: Boolean },
         readonly: { type: Boolean },
+        editable: { type: Boolean },
         invalid: { type: Boolean },
         variant: { type: String, value: 'text', observer: '_variantObserver' },
         orientation: { type: String },
@@ -37,7 +37,7 @@ class PlComboinput extends PlElement {
         :host {
             min-width: 0;
             flex-shrink: 0;
-        }s
+        }
 
         :host([hidden]) {
             display: none;
@@ -110,7 +110,7 @@ class PlComboinput extends PlElement {
         </div>
     `;
     static template = html`
-        <pl-input content-width="[[contentWidth]]" label-width="[[labelWidth]]" stretch="[[stretch]]" readonly
+        <pl-input content-width="[[contentWidth]]" label-width="[[labelWidth]]" stretch="[[stretch]]" readonly="[[!editable]]"
             disabled="{{disabled}}" id="input" placeholder="[[_getPlaceholder(placeholder, selectedList)]]" value="{{text}}" required="[[required]]"
             invalid="{{invalid}}" label="[[label]]" orientation="[[orientation]]" on-dblclick="[[_onMenuClick]]">
             <slot name="prefix" slot="prefix"></slot>
