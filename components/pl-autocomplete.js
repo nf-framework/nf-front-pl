@@ -1,15 +1,16 @@
 import { PlElement, html, css } from "polylib";
+import "@plcmp/pl-dropdown";
 
 class PlAutocomplete extends PlElement {
     static properties = {
-        search: { type: String, observer: 'searchObserver' },
+        text: { type: String, observer: 'textObserver' },
         textProperty: { type: String },
-        valueProperty: { type: String },
-        data: { type: Array },
         value: { type: String },
+        valueProperty: { type: String },
+        searchProperty: { type: String },
+        data: { type: Array, observer: 'textObserver' },
         vdata: { type: Array },
         selected: { type: Object },
-        _openedForDomIf: { type: Boolean },
         target: { type: Object }
     }
 
@@ -47,21 +48,22 @@ class PlAutocomplete extends PlElement {
     static template = html`
         <pl-dropdown id="dd">
             <div class="comboitem" on-click="[[_onSelect]]" d:repeat="{{vdata}}">
-                <div inner-h-t-m-l="[[_itemText(item, textProperty, search)]]"></div>
+                <div inner-h-t-m-l="[[_itemText(item, searchProperty, text)]]"></div>
             </div>
         </pl-dropdown>
     `;
 
-    searchObserver(val) {
-        if (this._flag || !val) { this.$.dd.close(); return }
-        this.vdata = this.data.filter(x => x[this.textProperty].toLowerCase().includes(val.toLowerCase()));
+    textObserver() {
+        if (this._flag || !this.text || this.data.length == 0) { if (this.$.dd) { this.$.dd.close(); } return }
+        this.vdata = this.data.filter(x => x[this.searchProperty].toLowerCase().includes(this.text.toLowerCase()));
         this.$.dd.open(this.target);
+        this.$.dd.style.minWidth = this.target.offsetWidth + 'px';
     }
 
-    _itemText(item, textProperty, search) {
-        if (search) {
-            const txtPart = item[this.textProperty].match(new RegExp(search, 'i'));
-            return item[this.textProperty].replace(new RegExp(search, 'i'), `<b>${txtPart?.[0]}</b>`);
+    _itemText(item, textProperty, text) {
+        if (text) {
+            const txtPart = item[textProperty].match(new RegExp(text, 'i'));
+            return item[textProperty].replace(new RegExp(text, 'i'), `<b>${txtPart?.[0]}</b>`);
         }
 
         return item[textProperty];
@@ -70,7 +72,8 @@ class PlAutocomplete extends PlElement {
     _onSelect(event) {
         this.selected = event.model.item;
         this._flag = true;
-        this.search = this.selected[this.textProperty];
+        this.text = this.selected[this.textProperty];
+        this.value = this.selected[this.valueProperty];
         this._flag = false;
         this.$.dd.close();
     }
