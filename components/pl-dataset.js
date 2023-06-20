@@ -127,6 +127,10 @@ class PlDataset extends PlElement {
 
                 let url = this.endpoint;
                 if (!url) {
+                    if(!this.parentNode) {
+                        resolve(ControlledArray.from([]));
+                        return;
+                    }
                     // значение по умолчанию это fse(formServerEndpoint)
                     const formName = this.parentNode.host.localName.replace('pl-form-','');
                     url = `/@nfjs/front-pl/fse/${formName}/dataset/${this.id}`;
