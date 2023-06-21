@@ -59,7 +59,9 @@ class FormThreadManager extends PlElement {
                             }
                             this.openedForms[ni].hidden = false;
                         }
-                        this.currentForm = this.openedForms[ni]
+                        this.currentForm = this.openedForms[ni];
+                        this.currentForm.tabIndex = 0;
+                        this.currentForm.focus()
                     }
                 }
                 if (this.openedForms.length === 0) {
@@ -83,6 +85,7 @@ class FormThreadManager extends PlElement {
                             f.parentElement.hidden = true;
                         }
                         f.hidden = true
+                        f.tabIndex = -1;
                     };
                 })
 
