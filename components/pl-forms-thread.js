@@ -60,8 +60,10 @@ class FormThreadManager extends PlElement {
                             this.openedForms[ni].hidden = false;
                         }
                         this.currentForm = this.openedForms[ni];
-                        this.currentForm.tabIndex = 0;
-                        this.currentForm.focus()
+                        if(this.currentForm) {
+                            this.currentForm.tabIndex = 0;
+                            this.currentForm.focus()
+                        }
                     }
                 }
                 if (this.openedForms.length === 0) {
