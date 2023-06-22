@@ -92,6 +92,7 @@ class FormThreadManager extends PlElement {
                 })
 
                 form.tabIndex = 0;
+                form.focus();
                 this.openedForms.push(form);
                 if (!drawer) this.currentForm = form;
             } catch (e) {
