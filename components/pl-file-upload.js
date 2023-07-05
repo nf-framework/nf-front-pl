@@ -38,7 +38,11 @@ class PlFileUpload extends PlElement {
             value: 'Перетащите файлы или нажмите здесь, чтобы загрузить'
         },
         maxFileSize: { type: Number },
-        maxFileCount: { type: Number }
+        maxFileCount: { type: Number },
+        stretch: { 
+            type: Boolean,
+            reflectToAttribute: true
+        }
     }
 
     static css = css`
@@ -71,6 +75,17 @@ class PlFileUpload extends PlElement {
             overflow: hidden;
         }
 
+        :host([stretch]) {
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        :host([stretch]) .uploader-container {
+            max-width: 100%;
+            width: 100%;
+        }
+        
         :host([hidden]) .uploader-container{
             display: none !important;
         }
