@@ -162,12 +162,12 @@ export class PlModalForm extends PlElement {
 
     open() {
         this.formTitle = this.firstChild.formTitle;
+    	this.firstChild.addEventListener('formTitle-changed', () => {
+		this.formTitle = this.firstChild.formTitle;
+    	});
         setTimeout(() => {
             addOverlay(this);
             this.classList.add('in');
-            this.firstChild.addEventListener('formTitle-changed', () => {
-                this.formTitle = this.firstChild.formTitle;
-            });
         }, 200)
     }
 
