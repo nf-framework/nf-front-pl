@@ -14,13 +14,14 @@ export class PlModalForm extends PlElement {
         :host {
             background: rgba(36, 51, 49, 0.4);
             height: 100%;
-            position: fixed;
+            position: var(--pl-modal-position, fixed);
             top: 0;
             right: 0;
             bottom: 0;
             left: 0;
             width: 100%;
             z-index: 10000;
+            box-sizing: border-box;
         }
 
         :host(.out) > #modal {
@@ -39,6 +40,7 @@ export class PlModalForm extends PlElement {
             will-change: transform, opacity, visibility;
             visibility: hidden;
             opacity: 0;
+            border: 1px solid var(--grey-base);
         }
 
         :host(.in) > #modal {
