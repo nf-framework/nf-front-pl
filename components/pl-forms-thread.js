@@ -15,6 +15,7 @@ class FormThreadManager extends PlElement {
           height: 100%;
           width: 100%;
           contain: size;
+          position: relative;
         }
         :host([hidden]) {
           display: none;
@@ -47,6 +48,9 @@ class FormThreadManager extends PlElement {
         return new Promise(async (resolve, reject) => {
             let form;
             let closeForm = (result) => {
+                if(options?.promiseResolver) {
+                    options?.promiseResolver(result);
+                }
                 resolve(result);
                 let i = this.openedForms.indexOf(form);
                 if (i >= 0) {
@@ -69,13 +73,12 @@ class FormThreadManager extends PlElement {
                 if (this.openedForms.length === 0) {
                     this.notifyEmpty();
                 }
-                //drawer?.remove();
             }
             try {
                 form = await openForm(name, drawer ?? this.container, {
                     params: options.params,
                     _closeCallback: closeForm,
-                    formManager: this
+                    formsThread: this
                 });
                 form._dashboard = options.dashboard;
                 form.isModal = options?.modal;
