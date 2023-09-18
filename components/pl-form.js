@@ -1,5 +1,5 @@
 import { PlElement, css } from "polylib";
-import {loadTemplateComponents} from "../lib/FormUtils.js";
+import { loadTemplateComponents } from "../lib/FormUtils.js";
 
 export class PlForm extends PlElement {
     static properties = {
@@ -15,13 +15,13 @@ export class PlForm extends PlElement {
     }
     connectedCallback() {
         super.connectedCallback();
-        // lookup for formManager if it's not assigned, usually for sub forms
-        // search the closest element with _formManager
-        if (!this._formManager) {
+        // lookup for formsThread if it's not assigned, usually for sub forms
+        // search the closest element with _formsThread
+        if (!this._formsThread) {
             let node = this;
             while (node) {
-                if (node._formManager) {
-                    this._formManager = node._formManager;
+                if (node._formsThread) {
+                    this._formsThread = node._formsThread;
                     break;
                 } else
                     node = node.parentNode ?? node.host;
@@ -61,7 +61,20 @@ export class PlForm extends PlElement {
     }
 
     open(name, params, opts) {
-        return this._formManager?.open(name, { ...opts, params });
+        if (opts?.newThread) {
+            return new Promise((resolve, reject) => {
+                this.dispatchEvent(new CustomEvent('pl-open-in-new-thread', {
+                    detail: {
+                        name: name,
+                        options: { ...opts, params, promiseResolver: resolve },
+                    },
+                    bubbles: true,
+                    composed: true
+                }))
+            })
+        } else {
+            return this._formsThread?.open(name, { ...opts, params });
+        }
     }
 
     openModal(name, params, options) {
@@ -88,8 +101,8 @@ export class PlForm extends PlElement {
         dialog.header = header;
         dialog.content = content;
         dialog.buttons = buttons;
-        if(this._formManager) {
-            this._formManager.root.appendChild(dialog);
+        if (this._formsThread) {
+            this._formsThread.root.appendChild(dialog);
         } else {
             document.body.appendChild(dialog);
         }
@@ -131,7 +144,7 @@ export class PlForm extends PlElement {
         return this.showDialog(options.header, content, options.buttons)
     }
 
-    notify(message,  options) {
+    notify(message, options) {
         options = Object.assign({
             type: 'success',
             header: 'Успех',

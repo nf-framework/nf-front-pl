@@ -33,6 +33,11 @@ class FormManager extends PlElement {
         super.connectedCallback();
         this.container = this.container ?? this.root;
         this.container.addEventListener('pl-form-thread-empty', (e)=>this.onThreadEmpty(e));
+        this.container.addEventListener('pl-open-in-new-thread', (e)=>this.onOpenInNewThread(e));
+    }
+
+    async onOpenInNewThread(event) {
+        await this.open(event.detail.name, event.detail.options)
     }
 
     async open(name, options = {} ) {
