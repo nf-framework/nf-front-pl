@@ -87,12 +87,14 @@ class PlComboinput extends PlElement {
             display: flex;
             flex-wrap: wrap;
             gap: 4px;
+            flex-shrink: 0;
         }
 
         .text-cont {
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
+            flex-shrink: 0;
         }
     `;
     static tagsTemplate = html`
