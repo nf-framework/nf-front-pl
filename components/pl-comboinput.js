@@ -23,7 +23,6 @@ class PlComboinput extends PlElement {
         textProperty: { type: String, value: 'text' },
         valueProperty: { type: String, value: 'value' },
         titleProperty: { type: String, value: undefined },
-
         disabled: { type: Boolean, reflectToAttribute: true },
         hidden: { type: Boolean, reflectToAttribute: true },
 
@@ -64,9 +63,9 @@ class PlComboinput extends PlElement {
             border-radius: 4px;
             width: auto;
             height: 20px;
-            max-width: 140px;
             padding: 0 4px;
             align-items: center;
+            max-width: var(--pl-tag-max-width, 140px);
         }
 
         .tag pl-icon {
@@ -87,7 +86,6 @@ class PlComboinput extends PlElement {
             display: flex;
             flex-wrap: wrap;
             gap: 4px;
-            flex-shrink: 0;
         }
 
         .text-cont {
