@@ -152,7 +152,7 @@ class PlDataset extends PlElement {
                     data = data.map(element => {
                         const newElement = {};
                         metaData.forEach((currField, i) => {
-                            newElement[currField.name] = element[i];
+                            newElement[currField.name] = this._convertValueByType(element[i], currField.dataType, currField.dataSubType);
                         });
                         return newElement;
                     });
@@ -218,6 +218,43 @@ class PlDataset extends PlElement {
 
     cancel() {
         if (this.executingController) this.executingController.abort();
+    }
+
+    _convertValueByType(value, dataType, dataSubType) {
+        if (value === null) {
+            return null;
+        }
+
+        let val = value;
+        switch (dataType) {
+            case 'date':
+                switch (dataSubType) {
+                    case 'date':
+                    case 'timestamp':
+                        val = value.replace(/(Z|[+-]\d\d(?::\d\d))/, '');
+                    case 'timestamptz':
+                    default:
+                        val = new Date(val);
+                        break;
+                }
+                break;
+            case 'numb':
+                if (typeof val === 'string' && !Number.isNaN(val)) {
+                    val = Number(val);
+                }
+                break;
+            case 'json':
+                val = JSON.parse(JSON.stringify(val), (k, v) => {
+                    if (v && typeof v === 'string' && reDate.test(v)) {
+                        return new Date(v);
+                    }
+                    return v;
+                });
+                break;
+            default:
+                break;
+        }
+        return val;
     }
 }
 
