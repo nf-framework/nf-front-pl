@@ -3,6 +3,8 @@ import { ControlledArray, PlaceHolder } from "@plcmp/utils";
 import { requestData } from "../lib/RequestServer.js";
 import assignDeep from "deep-object-assign-with-reduce";
 
+const reDate = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)?/;
+
 class PlDataset extends PlElement {
     static properties = {
         endpoint: {
