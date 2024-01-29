@@ -1,12 +1,9 @@
 import { PlElement, html, css } from "polylib";
 import '@plcmp/pl-iconset-default';
-import { customLoader } from "../lib/CustomElementsLoader.js";
-import { requestData } from "../lib/RequestServer.js";
-import { openForm } from "../lib/FormUtils.js";
+import { requestData, openForm } from "@nfjs/front-pl";
 import './pl-action.js';
 import './pl-toast-manager.js';
 
-window.customLoader = customLoader;
 
 class App extends PlElement {
 	static properties = {

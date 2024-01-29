@@ -1,5 +1,6 @@
-import { PlElement, css } from "polylib";
+import { PlElement } from "polylib";
 import { loadTemplateComponents } from "../lib/FormUtils.js";
+import { customLoader } from "@nfjs/front-pl";
 
 export class PlForm extends PlElement {
     static properties = {

@@ -22,6 +22,17 @@
 			"email": "andrmaxmail@gmail.com"
 		}
 	],
+	"exports": {
+		".": {
+			"browser": {
+				"default": "./index.js"
+			},
+			"node": {
+				"default": "./node-index.js"
+			}
+		},
+		"./nf-module.js": "./nf-module.js"
+	},
 	"dependencies": {
 		"polylib": "^1.1.5",
 		"@nfjs/back": "^1.0.6",
