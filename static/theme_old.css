@@ -1,0 +1,53 @@
+:root{
+    --primary-base: #3A817D;
+    --primary-dark: #1C635F;
+    --primary-darkest: #244751;
+    --primary-light: #BBD8CB;
+    --primary-lightest: #EAF4EF;
+    
+    --negative-base: #F54A4B;
+    --negative-dark: #C83739;
+    --negative-darkest: #7D2223;
+    --negative-light: #FEC3C4;
+    --negative-lightest: #FFECED;;
+
+    --grey-base: #CAD0D6;
+    --grey-dark: #A6B0B8;
+    --grey-darkest: #85919C;
+    --grey-light: #E9EDF0;
+    --grey-lightest: #F5F6F7;
+
+    --attention: #F9B922;
+    --background-color: #fff;
+    --surface-color: #fff;
+
+    --header-color: #2B2F33;
+    --header-font: normal 500 12px/1.2 apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    
+    --text-font: normal 400 13px/1.2 apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    --text-color: #464B52;
+
+    --subtext-font: normal 400 12px/1.2 apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    --font-h4: normal 500 14px apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    --font-h3: normal 500 16px apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    --font-h2: normal 500 18px apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    --font-h1: normal 500 20px apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+
+    --border-radius: 4px;
+
+    --label-width: 240px;
+    --content-width: 240px;
+
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 12px;
+    --space-lg: 16px;
+
+    --base-size-xxs: 16px;
+    --base-size-xs: 20px;
+    --base-size-sm: 24px;
+    --base-size-md: 28px;
+    --base-size-lg: 32px;
+
+    --menu-background-color: #244751;
+}

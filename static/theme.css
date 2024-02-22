@@ -1,131 +1,129 @@
-:root{
-    --primary-base: #3A817D;
-    --primary-dark: #1C635F;
-    --primary-darkest: #244751;
-    --primary-light: #BBD8CB;
-    --primary-lightest: #EAF4EF;
+:root {
+    --pl-base-size: 28px;
+    --pl-border-radius: 4px;
+
+    --pl-primary-base: #3A817D;
+    --pl-primary-dark: #1C635F;
+    --pl-primary-darkest: #244751;
+    --pl-primary-light: #BBD8CB;
+    --pl-primary-lightest: #EAF4EF;
     
-    --negative-base: #F54A4B;
-    --negative-dark: #C83739;
-    --negative-darkest: #7D2223;
-    --negative-light: #FEC3C4;
-    --negative-lightest: #FFECED;;
+    --pl-negative-base: #F54A4B;
+    --pl-negative-dark: #C83739;
+    --pl-negative-darkest: #7D2223;
+    --pl-negative-light: #FEC3C4;
+    --pl-negative-lightest: #FFECED;;
 
-    --grey-base: #CAD0D6;
-    --grey-dark: #A6B0B8;
-    --grey-darkest: #85919C;
-    --grey-light: #E9EDF0;
-    --grey-lightest: #F5F6F7;
+    --pl-grey-base: #CAD0D6;
+    --pl-grey-dark: #A6B0B8;
+    --pl-grey-darkest: #85919C;
+    --pl-grey-light: #E9EDF0;
+    --pl-grey-lightest: #F5F6F7;
 
-    --attention: #F9B922;
-    --background-color: #fff;
-    --surface-color: #fff;
+    --pl-attention: #F2D26E;
+    --pl-background-color: #fff;
+    --pl-surface-color: #fff;
 
-    --header-color: #2B2F33;
-    --header-font: normal 500 12px/1.2 apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    
-    --text-font: normal 400 13px/1.2 apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    --text-color: #464B52;
+    --pl-header-color: rgba(94, 100, 113, 1);
+    --pl-header-font: normal 500 12px/1.2 apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    --pl-text-font: normal 400 13px/1.2 apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    --pl-text-color: rgba(42, 49, 67, 1);
 
-    --subtext-font: normal 400 12px/1.2 apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    --font-h4: normal 500 14px apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    --font-h3: normal 500 16px apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    --font-h2: normal 500 18px apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    --font-h1: normal 500 20px apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    --pl-label-width: 240px;
+    --pl-content-width: 240px;
 
-    --border-radius: 4px;
+    --pl-space-xxs: 2px;
+    --pl-space-xs: 4px;
+    --pl-space-sm: 8px;
+    --pl-space-md: 12px;
+    --pl-space-lg: 16px;
 
-    --label-width: 240px;
-    --content-width: 240px;
 
-    --space-xs: 4px;
-    --space-sm: 8px;
-    --space-md: 12px;
-    --space-lg: 16px;
-
-    --base-size-xxs: 16px;
-    --base-size-xs: 20px;
-    --base-size-sm: 24px;
-    --base-size-md: 28px;
-    --base-size-lg: 32px;
-
-    --menu-background-color: #244751;
+    --pl-menu-background-color: rgba(43, 70, 84, 1);
 }
 
-  body {
+body {
     background-color: var(--background-color);
     overflow: hidden;
-  }
-  #preloader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #fff;
-      z-index: 10000000;
-  }
-  #loader {
-      display: block;
-      position: relative;
-      left: 50%;
-      top: 50%;
-      width: 150px;
-      height: 150px;
-      margin: -75px 0 0 -75px;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      border-top-color: var(--primary-base);
-      -webkit-animation: spin 2s linear infinite;
-      animation: spin 2s linear infinite;
-  }
-  #loader:before {
-      content: "";
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      right: 5px;
-      bottom: 5px;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      border-top-color: #BA55D3;
-      -webkit-animation: spin 3s linear infinite;
-      animation: spin 3s linear infinite;
-  }
-  #loader:after {
-      content: "";
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      right: 15px;
-      bottom: 15px;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      border-top-color: var(--primary-dark);
-      -webkit-animation: spin 1.5s linear infinite;
-      animation: spin 1.5s linear infinite;
-  }
-  @-webkit-keyframes spin {
-      0%   {
-          -webkit-transform: rotate(0deg);
-          -ms-transform: rotate(0deg);
-          transform: rotate(0deg);
-      }
-      100% {
-          -webkit-transform: rotate(360deg);
-          -ms-transform: rotate(360deg);
-          transform: rotate(360deg);
-      }
-  }
-  @keyframes spin {
-      0%   {
-          -webkit-transform: rotate(0deg);
-          -ms-transform: rotate(0deg);
-          transform: rotate(0deg);
-      }
-      100% {
-          -webkit-transform: rotate(360deg);
-          -ms-transform: rotate(360deg);
-          transform: rotate(360deg);
-      }
-  }
+}
+
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    z-index: 10000000;
+}
+
+#loader {
+    display: block;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: var(--pl-primary-base);
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+#loader:before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #BA55D3;
+    -webkit-animation: spin 3s linear infinite;
+    animation: spin 3s linear infinite;
+}
+
+#loader:after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: var(--pl-primary-dark);
+    -webkit-animation: spin 1.5s linear infinite;
+    animation: spin 1.5s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
