@@ -16,12 +16,12 @@ class PlAutocomplete extends PlElement {
 
     static css = css`
         pl-dropdown {
-            background: var(--surface-color);
-            border-radius: var(--border-radius);
+            background: var(--pl-surface-color);
+            border-radius: var(--pl-border-radius);
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-            border: 1px solid var(--grey-lightest);
-            max-height: var(--dropdown-max-height, 254px);
-            min-width: var(--content-width);
+            border: 1px solid var(--pl-grey-lightest);
+            max-height: var(--pl-dropdown-max-height, 254px);
+            min-width: var(--pl-content-width);
             box-sizing: border-box;
             overflow: auto;
             padding: 0;
@@ -30,18 +30,18 @@ class PlAutocomplete extends PlElement {
 
         .comboitem {
             box-sizing: border-box;
-            padding: 2px var(--space-sm);
-            min-height: var(--base-size-md);
+            padding: 2px var(--pl-space-sm);
+            min-height: var(--pl-base-size);
             width: 100%;
-            font: var(--text-font);
-            color: var(--text-color);
+            font: var(--pl-text-font);
+            color: var(--pl-text-color);
             display: flex;
             align-items: center;
             cursor: pointer;
         }
 
         .comboitem:hover {
-            background-color: var(--grey-lightest)
+            background-color: var(--pl-grey-lightest)
         }
     `
 

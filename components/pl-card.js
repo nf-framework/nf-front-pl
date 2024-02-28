@@ -20,9 +20,9 @@ class PlCard extends PlElement {
         }
 
         :host([border]) {
-            border: 1px solid var(--grey-base);
-            border-radius: var(--border-radius);
-            padding: 8px 8px 8px 8px;
+            border: 1px solid var(--pl-grey-base);
+            border-radius: var(--pl-border-radius);
+            padding: 8px;
         }
 
         :host([hidden]) {
@@ -64,8 +64,9 @@ class PlCard extends PlElement {
         }
 
         .header-text {
-            font: var(--font-h1);
-            color: var(--black-base);
+            font: var(--pl-text-font);
+            font-size: 20px;
+            color: var(--pl-text-color);
             text-align: start;
             flex: 1 1 0%;
         }

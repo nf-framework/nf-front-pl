@@ -16,22 +16,23 @@ class PlAppSide extends PlElement {
 
 	static css = css`
 		:host {
+			--pl-menu-width: 64px;
+			--pl-menu-opened-width: 280px;
+
 			display: flex;
 			flex-direction: column;
 			box-sizing: border-box;
-			width: var(--menu-width);
+			width: var(--pl-menu-width);
 			user-select: none;
 			height: 100%;
-			background: var(--menu-background-color);
+			background: var(--pl-menu-background-color);
 			transition: all 0.3s ease-in-out;
-			--menu-width: 64px;
-			--menu-opened-width: 280px;
 			will-change: width;
 			position: relative;
 		}
 
 		:host([opened]) {
-			width: var(--menu-opened-width);
+			width: var(--pl-menu-opened-width);
 			transition: all 0.3s ease-in-out;
 		}
 
@@ -60,7 +61,7 @@ class PlAppSide extends PlElement {
 			position: relative;
 			height: 100%; 
 			background: #fff; 
-			min-width: var(--menu-opened-width);
+			min-width: var(--pl-menu-opened-width);
 			animation: fade 0.3s;
 		}
 

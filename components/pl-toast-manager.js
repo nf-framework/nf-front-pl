@@ -24,37 +24,37 @@ class PlToastManager extends PlElement {
 		switch (this.position) {
 			case 'top-right': {
 
-				toast.style.setProperty('--toast-position-right', '1.5em');
-				toast.style.setProperty('--toast-position-top', '1.5em');
-				toast.style.setProperty('--toast-fly-in', 'translateX(calc(100% + 1.5em))');
-				toast.style.setProperty('--toast-translate', `translateY(${translateVal}px)`);
+				toast.style.setProperty('--pl-toast-position-right', '1.5em');
+				toast.style.setProperty('--pl-toast-position-top', '1.5em');
+				toast.style.setProperty('--pl-toast-fly-in', 'translateX(calc(100% + 1.5em))');
+				toast.style.setProperty('--pl-toast-translate', `translateY(${translateVal}px)`);
 
 
 				break;
 			}
 			case 'top-left': {
-				toast.style.setProperty('--toast-position-left', '1.5em');
-				toast.style.setProperty('--toast-position-top', '1.5em');
-				toast.style.setProperty('--toast-fly-in', 'translateX(calc(-100% + 1.5em))');
-				toast.style.setProperty('--toast-translate', `translateY(${translateVal}px)`);
+				toast.style.setProperty('--pl-toast-position-left', '1.5em');
+				toast.style.setProperty('--pl-toast-position-top', '1.5em');
+				toast.style.setProperty('--pl-toast-fly-in', 'translateX(calc(-100% + 1.5em))');
+				toast.style.setProperty('--pl-toast-translate', `translateY(${translateVal}px)`);
 
 				break;
 
 			}
 			case 'bottom-right': {
-				toast.style.setProperty('--toast-position-right', '1.5em');
-				toast.style.setProperty('--toast-position-bottom', '1.5em');
-				toast.style.setProperty('--toast-fly-in', 'translateX(calc(100% + 1.5em))');
-				toast.style.setProperty('--toast-translate', `translateY(${-translateVal}px)`);
+				toast.style.setProperty('--pl-toast-position-right', '1.5em');
+				toast.style.setProperty('--pl-toast-position-bottom', '1.5em');
+				toast.style.setProperty('--pl-toast-fly-in', 'translateX(calc(100% + 1.5em))');
+				toast.style.setProperty('--pl-toast-translate', `translateY(${-translateVal}px)`);
 
 				break;
 
 			}
 			case 'bottom-left': {
-				toast.style.setProperty('--toast-position-left', '1.5em');
-				toast.style.setProperty('--toast-position-bottom', '1.5em');
-				toast.style.setProperty('--toast-fly-in', 'translateX(calc(-100% + 1.5em))');
-				toast.style.setProperty('--toast-translate', `translateY(${-translateVal}px)`);
+				toast.style.setProperty('--pl-toast-position-left', '1.5em');
+				toast.style.setProperty('--pl-toast-position-bottom', '1.5em');
+				toast.style.setProperty('--pl-toast-fly-in', 'translateX(calc(-100% + 1.5em))');
+				toast.style.setProperty('--pl-toast-translate', `translateY(${-translateVal}px)`);
 
 				break;
 			}

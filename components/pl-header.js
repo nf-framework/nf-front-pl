@@ -28,13 +28,13 @@ class PlHeader extends PlElement {
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid var(--grey-light);
+            border: 1px solid var(--pl-grey-light);
             border-radius: 4px;
             cursor: pointer;
         }
 
         .back:hover {
-            border: 1px solid var(--grey-base);
+            border: 1px solid var(--pl-grey-base);
         }
 
         .content-header {
@@ -49,26 +49,27 @@ class PlHeader extends PlElement {
             height: 16px;
         }
         .form-breadcrumbs a {
-            font: var(--header-font);
-            color: var(--grey-darkest);
+            font: var(--pl-header-font);
+            color: var(--pl-grey-darkest);
             font-weight: 400;
             text-decoration: none;
         }
         .form-breadcrumbs pl-icon {
-            color: var(--grey-darkest);
+            color: var(--pl-grey-darkest);
             cursor: pointer;
         }
         .form-breadcrumbs a:hover, .form-breadcrumbs pl-icon:hover {
-            color: var(--text-color);
+            color: var(--pl-text-color);
         }
         .form-breadcrumbs .item:not(:first-child)::before {
             content: '>';
             margin: 0 4px;
-            color: var(--grey-darkest);
+            color: var(--pl-grey-darkest);
         }
         #form-label {
-            font: var(--font-h2);
-            color: var(--text-color);
+            font: var(--pl-text-font);
+            font-size: 18px;
+            color: var(--pl-text-color);
         }
         [hidden] {
             display: none;

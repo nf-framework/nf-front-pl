@@ -14,22 +14,22 @@ class PlToast extends PlElement {
 
 	static css = css`
 		:host([type=success]) {
-			--pl-toast-background: var(--primary-lightest);
-			--pl-toast-icon-color: var(--primary-base);
+			--pl-toast-background: var(--pl-primary-lightest);
+			--pl-toast-icon-color: var(--pl-primary-base);
 		}
 		:host([type=error]) {
-			--pl-toast-background: var(--negative-lightest);
-			--pl-toast-icon-color: var(--negative-base);
+			--pl-toast-background: var(--pl-negative-lightest);
+			--pl-toast-icon-color: var(--pl-negative-base);
 		}
 
         :host {
 			position: fixed;
-			top: var(--toast-position-top);
-			right: var(--toast-position-right);
-			bottom: var(--toast-position-bottom);
-			left: var(--toast-position-left);
+			top: var(--pl-toast-position-top);
+			right: var(--pl-toast-position-right);
+			bottom: var(--pl-toast-position-bottom);
+			left: var(--pl-toast-position-left);
 			transition: transform 0.15s ease-out;
-			transform: var(--toast-translate);
+			transform: var(--pl-toast-translate);
 			padding-bottom: 8px;
 		}
 
@@ -54,8 +54,8 @@ class PlToast extends PlElement {
 			display: flex;
 			align-items: center;
 			width: 100%;
-			font: var(--header-font);
-			color: var(--header-color);
+			font: var(--pl-header-font);
+			color: var(--pl-header-color);
 			font-weight: 700;
 			font-size: 14px;
 			line-height: 16px;
@@ -68,22 +68,22 @@ class PlToast extends PlElement {
 			display: -webkit-box;
 			-webkit-line-clamp: 3;
 			-webkit-box-orient: vertical;
-			font: var(--text-font);
-			color: var(--text-color);
+			font: var(--pl-text-font);
+			color: var(--pl-text-color);
 			max-height: 42px;
 		}
 
 		:host([type=success]) .full{
-			color: var(--primary-dark);
+			color: var(--pl-primary-dark);
 		}
 		:host([type=error]) .full{
-			color: var(--negative-dark);
+			color: var(--pl-negative-dark);
 		}
 
 		
 		.full {
 			padding: 0 0 8px 24px;
-			font: var(--header-font);
+			font: var(--pl-header-font);
 			cursor: pointer;
 		}
 
@@ -99,14 +99,14 @@ class PlToast extends PlElement {
 
 		.button {
             display: flex;
-            gap: var(--space-sm);
+            gap: var(--pl-space-sm);
             width: 100%;
             justify-content: flex-end;
         }
 
 		@keyframes flyIn {
 			from {
-				transform: var(--toast-fly-in)
+				transform: var(--pl-toast-fly-in)
 			}
 			to {
 				transform: translateX(0);
@@ -118,11 +118,9 @@ class PlToast extends PlElement {
 				transform: translateX(0);
 			}
 			to {
-				transform: var(--toast-fly-in)
+				transform: var(--pl-toast-fly-in)
 			}
 		}
-		
-		
 	`;
 
 	static template = html`

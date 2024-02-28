@@ -47,7 +47,7 @@ class PlFileUpload extends PlElement {
 
     static css = css`
         :host {
-            gap: var(--space-sm);
+            gap: var(--pl-space-sm);
             max-height: 100%;
             display:flex;
             flex-direction: column;
@@ -62,14 +62,15 @@ class PlFileUpload extends PlElement {
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: var(--space-lg);
-            font: var(--subtext-font);
+            padding: var(--pl-space-lg);
+            font: var(--pl-text-font);
+            font-size: 12px;
             max-width: 300px;
             height: 92px;
-            border: 1px dashed var(--grey-dark);
+            border: 1px dashed var(--pl-grey-dark);
             box-sizing: border-box;
-            border-radius: var(--border-radius);
-            color: var(--grey-dark);
+            border-radius: var(--pl-border-radius);
+            color: var(--pl-grey-dark);
             position: relative;
             cursor: pointer;
             overflow: hidden;
@@ -91,9 +92,9 @@ class PlFileUpload extends PlElement {
         }
 
         .uploader-container:hover, :host([drag-active]) .uploader-container{
-            background: var(--primary-lightest);
-            border: 1px dashed  var(--primary-base);
-            color: var(--primary-base);
+            background: var(--pl-primary-lightest);
+            border: 1px dashed  var(--pl-primary-base);
+            color: var(--pl-primary-base);
         }
 
         .uploader-container::before {
@@ -106,10 +107,10 @@ class PlFileUpload extends PlElement {
         }
 
         :host([required]) .uploader-container::before {
-            border-top: calc(var(--space-md) / 2) solid var(--attention);
-            border-left: calc(var(--space-md) / 2)  solid var(--attention);
-            border-bottom: calc(var(--space-md) / 2) solid transparent;
-            border-right: calc(var(--space-md) / 2) solid transparent;
+            border-top: calc(var(--pl-space-md) / 2) solid var(--pl-attention);
+            border-left: calc(var(--pl-space-md) / 2)  solid var(--pl-attention);
+            border-bottom: calc(var(--pl-space-md) / 2) solid transparent;
+            border-right: calc(var(--pl-space-md) / 2) solid transparent;
         }
         .files {
             overflow: auto;

@@ -17,7 +17,7 @@ class PlAppSideList extends PlElement {
         }
 
         :host([variant=main]) {
-            color: var(--menu-text-color);
+            color: var(--pl-menu-text-color);
         }
 
         .items {
@@ -26,13 +26,13 @@ class PlAppSideList extends PlElement {
         }
 
         :host([variant="main"]) .items-flex:hover {
-            --menu-background-color: var(--primary-base);
-            color: var(--primary-lightest);
+            --pl-menu-background-color: var(--pl-primary-base);
+            color: var(--pl-primary-lightest);
             transition: 0.3s;
         }
 
         .items-flex {
-            --menu-text-color: #464B52;
+            --pl-menu-text-color: #464B52;
             display: flex;
             align-items: center;
             height: 48px;
@@ -41,12 +41,12 @@ class PlAppSideList extends PlElement {
         }
 
         .items-flex:hover {
-            --menu-background-color: #F5F6F7;
-            background-color: var(--menu-background-color);
+            --pl-menu-background-color: #F5F6F7;
+            background-color: var(--pl-menu-background-color);
         }
 
         .items-flex pl-icon {
-            --menu-text-color: #464B52;
+            --pl-menu-text-color: #464B52;
             padding: 0 12px;
         }
 
@@ -55,14 +55,14 @@ class PlAppSideList extends PlElement {
         }
 
         .submenu-title {
-            --menu-text-color: #1C273D;
+            --pl-menu-text-color: #1C273D;
             font-size: 16px;
             font-weight: 700;
             margin: 12px;
         }
 
         .submenu-title pl-icon-button {
-            --menu-text-color: #1C273D;
+            --pl-menu-text-color: #1C273D;
         }
 
         .submenu-title:empty {

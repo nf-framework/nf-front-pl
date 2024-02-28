@@ -36,11 +36,11 @@ export class PlModalForm extends PlElement {
             position: absolute;
             inset-block-start: 0;
             inset-inline-end: 0;
-            background: var(--background-color);
+            background: var(--pl-background-color);
             will-change: transform, opacity, visibility;
             visibility: hidden;
             opacity: 0;
-            border: 1px solid var(--grey-base);
+            border: 1px solid var(--pl-grey-base);
         }
 
         :host(.in) > #modal {
@@ -61,8 +61,9 @@ export class PlModalForm extends PlElement {
         }
 
         #form-label {
-            font: var(--font-h2);
-            color: var(--text-color);
+            font: var(--pl-text-font);
+            font-size: 18px;
+            color: var(--pl-text-color);
         }
 
         :host([size=small]) #modal{

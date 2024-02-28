@@ -31,7 +31,7 @@ class PlMenuForm extends PlElement {
             flex-direction: column;
             width: 200px;
             height: 100%;
-            border-right: 1px solid var(--grey-light);
+            border-right: 1px solid var(--pl-grey-light);
             padding-top: 16px;
             box-sizing: border-box;
             gap: 4px;
@@ -58,15 +58,15 @@ class PlMenuForm extends PlElement {
         }
 
         .menu-item:hover, .menu-item[selected] {
-            background: var(--primary-base);
-            color: var(--primary-lightest);
+            background: var(--pl-primary-base);
+            color: var(--pl-primary-lightest);
             font-weight: 500;
         }
 
         .main-container {
             display: flex;
             flex-direction: row;
-            border-top: 1px solid var(--grey-base);
+            border-top: 1px solid var(--pl-grey-base);
             width: 100%;
             height: 100%;
             box-sizing: border-box;
@@ -92,7 +92,7 @@ class PlMenuForm extends PlElement {
             display: flex;
             width: 8px;
             height: 8px;
-            background: var(--attention);
+            background: var(--pl-attention);
             border-radius: 8px;
         }
 

@@ -31,7 +31,7 @@ export default class MainView extends PlForm {
         }
         
         .content {
-            background: var(--background-color);
+            background: var(--pl-background-color);
             display: flex;
             flex-direction: column;
             flex: 1;
@@ -41,17 +41,17 @@ export default class MainView extends PlForm {
 
         #ddProfile {
             width: auto;
-            background: var(--background-color);
+            background: var(--pl-background-color);
             color: #3F3F3F;
             padding: 16px 8px;
-            border-radius: var(--border-radius);
+            border-radius: var(--pl-border-radius);
             box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.12);
         }
 
         pl-icon-button[variant="link"] {
-            --primary-base: var(--grey-light);
-            --primary-dark: var(--grey-lightest);
-            --primary-darkest:#fff;
+            --pl-primary-base: var(--pl-grey-light);
+            --pl-primary-dark: var(--pl-grey-lightest);
+            --pl-primary-darkest:#fff;
         }
 
         .logo-wrapper {
@@ -96,7 +96,7 @@ export default class MainView extends PlForm {
         }
         
         #formManager {
-            padding: 0 var(--space-lg) var(--space-lg) var(--space-lg);
+            padding: 0 var(--pl-space-lg) var(--pl-space-lg) var(--pl-space-lg);
         }
     `;
 
