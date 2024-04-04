@@ -69,7 +69,6 @@
 		"@plcmp/pl-textarea": "^0.1.0",
 		"@plcmp/pl-valid-observer": "^0.1.0",
 		"@plcmp/pl-virtual-scroll": "^0.1.0",
-		"deep-object-assign-with-reduce": "^3.0.2",
-		"vm2": "^3.6.4"
+		"deep-object-assign-with-reduce": "^3.0.2"
 	}
 }
