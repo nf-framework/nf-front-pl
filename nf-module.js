@@ -118,8 +118,8 @@ async function init() {
     registerLibDir('@nfjs/front-pl');
     registerLibDir('@plcmp');
     registerLibDir('@nfjs/core/api/common.js', 'node_modules/@nfjs/core/api/common.js', { singleFile: true });
-    registerCustomElementsDir('@plcmp', null, { recursive: true });
-    registerCustomElementsDir('@nfjs/front-pl/components')
+    await registerCustomElementsDir('@plcmp', null, { recursive: true });
+    await registerCustomElementsDir('@nfjs/front-pl/components')
 
 
     web.on('GET', '/forms/:form', formsHandler);
