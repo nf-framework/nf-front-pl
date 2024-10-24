@@ -157,7 +157,8 @@ class PlAction extends PlElement {
             this.executing = false;
             let errorMessage = '';
             if (e instanceof Response) {
-                errorMessage = e.statusText;
+                if (e.type === 'basic') errorMessage = await e.text();
+                else errorMessage = e.statusText;
             }
             if(e instanceof Error) {
                 errorMessage = e.message;
