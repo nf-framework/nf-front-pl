@@ -48,7 +48,7 @@ class PlMenuForm extends PlElement {
             line-height: 16px;
             display: flex;
             align-items: center;
-            color: #464B52;
+            color: var(--pl-text-color);
             cursor: pointer;
             gap: 8px;
         }
@@ -57,7 +57,13 @@ class PlMenuForm extends PlElement {
             display: none;
         }
 
-        .menu-item:hover, .menu-item[selected] {
+        .menu-item[disabled] {
+            color: var(--pl-grey-dark);
+            cursor: not-allowed;
+        }
+
+        .menu-item:not([disabled]):hover, 
+        .menu-item[selected] {
             background: var(--pl-primary-base);
             color: var(--pl-primary-lightest);
             font-weight: 500;
@@ -106,7 +112,7 @@ class PlMenuForm extends PlElement {
             <div id="menu">
                 <template d:repeat="[[items]]">
                     <div class="menu-item" hidden$="[[item.menuHidden]]" selected$="[[item.selected]]" name$="[[item.name]]"
-                        on-click="[[onMenuClick]]">
+                        on-click="[[onMenuClick]]" disabled$="[[item.disabled]]">
                         [[item.title]]
                         <div class="mark" hidden$="[[!item.invalid]]"></div>
                     </div>
@@ -127,6 +133,7 @@ class PlMenuForm extends PlElement {
     }
 
     onMenuClick(event) {
+        if(event.model.item.disabled) return;
         if (this.scrollable) {
             this.selected = null;
         }
@@ -162,6 +169,7 @@ class PlMenuForm extends PlElement {
                 title: item.label,
                 menuHidden: item.menuHidden,
                 hidden: item.hasAttribute('hidden'),
+                disabled: item.hasAttribute('disabled'),
                 dom: item
             }
             let l = item_cont.push(descriptor);

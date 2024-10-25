@@ -29,6 +29,10 @@ class PlMenuFormItem extends PlElement {
         fit: {
             type: Boolean,
             reflectToAttribute: true,
+        },
+        disabled: {
+            type: Boolean,
+            reflectToAttribute: true
         }
     };
 
