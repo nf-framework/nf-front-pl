@@ -2,7 +2,7 @@ import path from 'path';
 import mime from 'mime';
 import fs from 'fs/promises';
 import url from 'url';
-import { NodeVM, VMScript } from "vm2";
+import VM from "vm";
 
 import { auth } from '@nfjs/auth';
 import { web, ComponentCache, endpointData } from '@nfjs/back';
@@ -147,9 +147,8 @@ async function init() {
             const rex = new RegExp('serverEndpoints[^{]+(.*)\\/\\/serverEndpoints', 's');
             const serverEndpointText = data.match(rex);
             try {
-                const vm = new NodeVM({wrapper: 'none'});
-                const script = new VMScript(`return {serverEndpoints:${serverEndpointText[1]}}`);
-                formCache = vm.run(script);
+                const script = new VM.Script(`function a() {return {serverEndpoints:${serverEndpointText[1]}}}; a();`);
+                formCache = script.runInNewContext();
             } catch (err) {
                 console.error('component-cache-syntax-error');
                 return false;
