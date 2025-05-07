@@ -2,25 +2,24 @@ import path from 'path';
 import mime from 'mime';
 import fs from 'fs/promises';
 import url from 'url';
-import VM from "vm";
+import VM from 'vm';
 
 import { auth } from '@nfjs/auth';
 import { web, ComponentCache, endpointData } from '@nfjs/back';
-import { registerLibDir, prepareResponse, getCacheKey, registerCustomElementsDir, customElements } from '@nfjs/front-server';
+import { registerLibDir, prepareResponse, getCacheKey, registerCustomElementsDir, customElements, addClientURLCacheString } from '@nfjs/front-server';
 import { api, extension, config } from '@nfjs/core';
 
 import { endpointHandlers } from './lib/FormServerEndpoints.js';
 
-const __dirname = path.join(path.dirname(decodeURI(new URL(import.meta.url).pathname))).replace(/^\\([A-Z]:\\)/, "$1");
+const __dirname = path.join(path.dirname(decodeURI(new URL(import.meta.url).pathname))).replace(/^\\([A-Z]:\\)/, '$1');
 const menu = await api.loadJSON(`${__dirname}/menu.json`);
-
 
 async function formsHandler(context) {
     try {
         const formPath = context.params.form.replace(/\./g, '/');
         const formsDir = 'forms/';
 
-        let file = await extension.getFiles(formsDir + formPath + '.js');
+        const file = await extension.getFiles(formsDir + formPath + '.js');
         if (!file) {
             context.code(404);
             context.end();
@@ -47,8 +46,7 @@ async function formsHandler(context) {
         );
         if (response.headers) context.headers(response.headers);
         if (response.stream) context.send(response.stream);
-    }
-    catch (err) {
+    } catch (err) {
         throw new Error(err);
     }
 }
@@ -56,15 +54,14 @@ async function formsHandler(context) {
 async function customElementsHandler(context) {
     try {
         const customElementName = context.params.component;
-        let found = customElements.find(x => x.name == customElementName);
+        const found = customElements.find(x => x.name === customElementName);
 
         if (!found) {
             console.error('Not Found', customElementName);
             throw new Error(`${customElementName} not found`);
         }
-        context.send(found.path);
-    }
-    catch (err) {
+        context.send(addClientURLCacheString(found.path));
+    } catch (err) {
         context.code(404);
         context.send(err);
     }
@@ -79,9 +76,9 @@ async function checkSession(context) {
 }
 
 async function login(context) {
-    let { login, password } = context.body.args;
+    const { login, password } = context.body.args;
     let data = {};
-    let r = await auth.login(login, password, context.session);
+    const r = await auth.login(login, password, context.session);
 
     if (!r.result) {
         const err = api.nfError(new Error(r.detail.map(x => x.result.detail).join(';')));
@@ -104,7 +101,7 @@ async function logout(context) {
 async function getUserProfile(context) {
     const data = {
         username: context.session.get('context.user')
-    }
+    };
     context.send({ data });
     context.end();
 }
@@ -119,8 +116,7 @@ async function init() {
     registerLibDir('@plcmp');
     registerLibDir('@nfjs/core/api/common.js', 'node_modules/@nfjs/core/api/common.js', { singleFile: true });
     await registerCustomElementsDir('@plcmp', null, { recursive: true });
-    await registerCustomElementsDir('@nfjs/front-pl/components')
-
+    await registerCustomElementsDir('@nfjs/front-pl/components');
 
     web.on('GET', '/forms/:form', formsHandler);
     web.on('GET', '/load-custom-element/:component', customElementsHandler);
@@ -130,8 +126,7 @@ async function init() {
 
     web.on('POST', '/front/action/login', { middleware: ['json', 'session'] }, login);
     web.on('POST', '/front/action/logout', { middleware: ['session', 'json'] }, logout);
-    web.on('POST', '/front/action/getMenu', {}, (context) => context.send({ data: extension.menuInfo }));
-
+    web.on('POST', '/front/action/getMenu', {}, context => context.send({ data: extension.menuInfo }));
 
     async function loadFormServerEndpoint(context, type) {
         const path = ComponentCache.getPath(context, 'pl-form', `${context?.params?.form}.js`);
@@ -140,7 +135,7 @@ async function init() {
         if (config?.debug?.need) {
             try {
                 await fs.access(path, fs.F_OK);
-            } catch (err) {
+            } catch {
                 await api.processHooks('component-cache-miss', undefined, context);
             }
             const data = await fs.readFile(path, 'utf8');
@@ -149,7 +144,7 @@ async function init() {
             try {
                 const script = new VM.Script(`function a() {return {serverEndpoints:${serverEndpointText[1]}}}; a();`);
                 formCache = script.runInNewContext();
-            } catch (err) {
+            } catch {
                 console.error('component-cache-syntax-error');
                 return false;
             }
@@ -171,14 +166,14 @@ async function init() {
         const exts = extension.getSortedExtensions().map(e => ({ name: e.name, version: e.version }));
         context.send({
             data: {
-                root: root,
+                root,
                 modules: exts
             }
         });
         context.end();
     });
 
-    web.on('GET', '/pl-get-config', context => {
+    web.on('GET', '/pl-get-config', (context) => {
         context.code(200);
         context.type('application/json');
         context.send(config.client || {});
