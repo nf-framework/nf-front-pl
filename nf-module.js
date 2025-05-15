@@ -32,7 +32,7 @@ async function formsHandler(context) {
 
         const response = await prepareResponse(
             cacheKey,
-            { customOptions, contentType, mimeType, minify: false },
+            { customOptions, contentType, mimeType, minify: false, addClientURLCacheString },
             async () => {
                 let form = await fs.readFile(file, 'utf8');
                 const rex = new RegExp('serverEndpoints.*\\/\\/serverEndpoints', 's');
