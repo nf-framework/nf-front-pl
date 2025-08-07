@@ -12,18 +12,33 @@ class PlFilterItem extends PlElement {
     static template = html`
         <slot></slot>
     `;
-
+    
     connectedCallback() {
         super.connectedCallback();
-        let el = this.root.querySelector('slot').assignedElements()[0];
-        this.value = el.value;
-        this.notifyChanged();
-        el.addEventListener('value-changed', (event) => {
-            this.value = event.detail.value;
-            this.notifyChanged();
-        });
-    }
+        if (this._initiated) return;
 
+        let element = this.root.querySelector('slot').assignedElements()[0];
+        if (element) {
+            element.addEventListener('value-changed', (event) => {
+                this.value = event.detail.value;
+                this.notifyChanged();
+            });
+
+            const constructor = customElements.get(element.tagName.toLowerCase());
+            if (constructor && constructor.properties && 'operator' in constructor.properties) {
+                this.operator = element.operator || '=';
+                element.addEventListener('operator-changed', ({ detail }) => {
+                    this.operator = detail.value;
+                    this.notifyChanged();
+                });
+            }
+
+            this.value = element.value;
+            this.notifyChanged();
+        }
+
+        this._initiated = true;
+    }
 
     notifyChanged() {
         this.dispatchEvent(new CustomEvent('filter-changed', {
