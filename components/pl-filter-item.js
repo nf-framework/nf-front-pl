@@ -4,7 +4,7 @@ class PlFilterItem extends PlElement {
     static properties = {
         field: { type: String },
         fieldtype: { type: String },
-        value: { type: Object },
+        value: { type: Object, observer: 'observeValueChanged' },
         operator: { type: String },
         cast: { type: String }
     }
@@ -54,7 +54,14 @@ class PlFilterItem extends PlElement {
         }));
     }
 
-    clear() {
+    observeValueChanged(newVal) {
+        const element = this.root.querySelector('slot').assignedElements()[0];
+        if (element && element.value !== newVal) {
+            element.value = newVal;
+        }
+    }
+
+     clear() {
         this.root.querySelector('slot').assignedElements()[0].value = null;
     }
 }
