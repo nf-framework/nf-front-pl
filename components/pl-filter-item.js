@@ -1,10 +1,11 @@
 import { PlElement, html, css } from "polylib";
 
 class PlFilterItem extends PlElement {
+    #lockObserver = false;
     static properties = {
         field: { type: String },
         fieldtype: { type: String },
-        value: { type: Object },
+        value: { type: Object, observer: 'observeValueChanged' },
         operator: { type: String },
         cast: { type: String }
     }
@@ -17,24 +18,28 @@ class PlFilterItem extends PlElement {
         super.connectedCallback();
         if (this._initiated) return;
 
-        let element = this.root.querySelector('slot').assignedElements()[0];
-        if (element) {
-            element.addEventListener('value-changed', (event) => {
+        this._elementControl = this.root.querySelector('slot').assignedElements()[0];
+        if (this._elementControl) {
+            this._elementControl.addEventListener('value-changed', (event) => {
+                this.#lockObserver = true;
                 this.value = event.detail.value;
+                this.#lockObserver = false;
                 this.notifyChanged();
             });
 
-            const constructor = customElements.get(element.tagName.toLowerCase());
+            const constructor = customElements.get(this._elementControl.tagName.toLowerCase());
             if (constructor && constructor.properties && 'operator' in constructor.properties) {
-                this.operator = element.operator || '=';
-                element.addEventListener('operator-changed', ({ detail }) => {
+                this.operator = this._elementControl.operator || '=';
+                this._elementControl.addEventListener('operator-changed', ({ detail }) => {
                     this.operator = detail.value;
                     this.notifyChanged();
                 });
             }
 
-            this.value = element.value;
+            this.#lockObserver = true;
+            this.value = this._elementControl.value;
             this.notifyChanged();
+            this.#lockObserver = false;
         }
 
         this._initiated = true;
@@ -54,8 +59,18 @@ class PlFilterItem extends PlElement {
         }));
     }
 
-    clear() {
-        this.root.querySelector('slot').assignedElements()[0].value = null;
+    observeValueChanged(newVal) {
+        if (this.#lockObserver) return; 
+
+        if (this._elementControl && this._elementControl.value !== newVal) {
+            this._elementControl.value = newVal;
+        }
+    }
+
+     clear() {
+        if (this._elementControl) {
+            this._elementControl.value = null;
+        }
     }
 }
 
