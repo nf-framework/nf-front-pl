@@ -61,8 +61,10 @@ class PlFilterItem extends PlElement {
         }
     }
 
-     clear() {
-        this.root.querySelector('slot').assignedElements()[0].value = null;
+    clear() {
+        const element = this.root.querySelector('slot').assignedElements()[0];
+        if (Object.hasOwn(element, "valueList")) element.valueList = [];
+        element.value = null;
     }
 }
 
