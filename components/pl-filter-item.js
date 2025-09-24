@@ -19,8 +19,8 @@ class PlFilterItem extends PlElement {
 
         let element = this.root.querySelector('slot').assignedElements()[0];
         if (element) {
-            element.addEventListener('value-changed', (event) => {
-                this.value = event.detail.value;
+            element.addEventListener('value-changed', ({ detail: { value } }) => {
+                this.value = value === undefined || value === '' ? null : value;
                 this.notifyChanged();
             });
 
@@ -33,11 +33,17 @@ class PlFilterItem extends PlElement {
                 });
             }
 
-            this.value = element.value;
+            this.value = element.value === undefined || element.value === '' ? null : element.value;
             this.notifyChanged();
         }
 
         this._initiated = true;
+    }
+    
+    disconnectedCallback(){
+        super.disconnectedCallback();
+        
+        this.dispatchEvent(new CustomEvent('filter-removed', { composed: true, bubbles: true }));
     }
 
     notifyChanged() {
