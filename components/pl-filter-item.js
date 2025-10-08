@@ -1,8 +1,10 @@
 import { PlElement, html, css } from "polylib";
 
+let fieldCounter = 0;
+
 class PlFilterItem extends PlElement {
     static properties = {
-        field: { type: String },
+        field: { type: String, value: () => Symbol('filter-item ' + (fieldCounter++)) },
         fieldtype: { type: String },
         value: { type: Object, observer: 'observeValueChanged' },
         operator: { type: String },
@@ -70,7 +72,7 @@ class PlFilterItem extends PlElement {
     clear() {
         const element = this.root.querySelector('slot').assignedElements()[0];
         if (Object.hasOwn(element, "valueList")) element.valueList = [];
-        element.value = null;
+        element.value = element.matches('pl-checkbox') ? false : null;
     }
 }
 
