@@ -70,7 +70,8 @@ class PlFilterItem extends PlElement {
     clear() {
         const element = this.root.querySelector('slot').assignedElements()[0];
         if (Object.hasOwn(element, "valueList")) element.valueList = [];
-        element.value = null;
+        if (typeof element.clearValue === 'function') element.clearValue();
+        else element.value = null;
     }
 }
 
