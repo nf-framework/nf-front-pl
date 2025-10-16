@@ -23,6 +23,12 @@ class PlFilterItem extends PlElement {
                 this.value = value === undefined || value === '' ? null : value;
                 this.notifyChanged();
             });
+            element.addEventListener('valueList-changed', ({ detail: { value } }) => {
+                this.value = Array.isArray(value)
+                    ? (value.length > 0 ? value : null)
+                    : element.valueList;
+                this.notifyChanged();
+            });
 
             const constructor = customElements.get(element.tagName.toLowerCase());
             if (constructor && constructor.properties && 'operator' in constructor.properties) {
