@@ -6,7 +6,8 @@ class PlFilterItem extends PlElement {
         fieldtype: { type: String },
         value: { type: Object, observer: 'observeValueChanged' },
         operator: { type: String },
-        cast: { type: String }
+        cast: { type: String },
+        useAs: { type: String, value: 'filter' } // filter | argument | no use
     }
 
     static template = html`
@@ -59,6 +60,7 @@ class PlFilterItem extends PlElement {
                 fieldtype: this.fieldtype,
                 value: this.value,
                 operator: this.operator,
+                useAs: this.useAs,
                 cast: this.cast
             },
             composed: true,
